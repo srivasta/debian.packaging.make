@@ -26,7 +26,7 @@ if WINDOWSENV
   W32LIB =	-Lw32 -lw32
 endif
 
-SUBDIRS =	glob config po doc $(MAYBE_W32)
+SUBDIRS =	glob config po $(MAYBE_W32)
 
 bin_PROGRAMS =	make
 
@@ -83,11 +83,6 @@ MAKE_HOST =	@MAKE_HOST@
 
 
 # Forward targets
-
-html:
-	cd doc && $(MAKE) $(AM_MAKEFLAGS) $@
-
-.PHONY: html
 
 # --------------- Internationalization Section
 
