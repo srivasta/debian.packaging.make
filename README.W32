@@ -167,7 +167,7 @@ GNU make handling of drive letters in pathnames (PATH, vpath, VPATH):
 GNU make test suite:
 
 	I verified all functionality with a slightly modified version
-	of make-test-3.81rc2 (modifications to get test suite to run
+	of make-test-3.81 (modifications to get test suite to run
 	on Windows NT). All tests pass in an environment that includes
 	sh.exe.  Tests were performed on both Windows NT and Windows 95.
 
