@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: make 3.79.1\n"
 "Report-Msgid-Bugs-To: bug-make@gnu.org\n"
-"POT-Creation-Date: 2006-03-19 22:07-0500\n"
+"POT-Creation-Date: 2006-04-01 01:40-0500\n"
 "PO-Revision-Date: 2002-01-07 19:34GMT+06\n"
 "Last-Translator: Denis Perchine <dyp@perchine.com>\n"
 "Language-Team: Russian <ru@li.org>\n"
@@ -395,22 +395,22 @@ msgstr "CreatePipe() вернула код ошибки (e=%d)\n"
 msgid "windows32_openpipe (): process_init_fd() failed\n"
 msgstr "windows32_openpipe(): process_init_fd() вернула код ошибки\n"
 
-#: function.c:1727
+#: function.c:1725
 #, c-format
 msgid "Cleaning up temporary batch file %s\n"
 msgstr "Очищаю временный пакетный файл %s\n"
 
-#: function.c:2105
+#: function.c:2101
 #, fuzzy, c-format
 msgid "insufficient number of arguments (%d) to function `%s'"
 msgstr "Недостаточно аргументов (всего %d) функции `%s'"
 
-#: function.c:2117
+#: function.c:2113
 #, fuzzy, c-format
 msgid "unimplemented on this platform: function `%s'"
 msgstr "Не реализовано на этой платформе: функция `%s'"
 
-#: function.c:2167
+#: function.c:2163
 #, c-format
 msgid "unterminated call to function `%s': missing `%c'"
 msgstr "незавершенный вызов функции `%s': пропущено `%c'"
@@ -512,32 +512,32 @@ msgstr "Избежание рекурсивного вызова неявного правила.\n"
 msgid "Trying pattern rule with stem `%.*s'.\n"
 msgstr "Попытка применения правила с образцом, основа `%.*s'.\n"
 
-#: implicit.c:658
+#: implicit.c:667
 #, c-format
 msgid "Rejecting impossible implicit prerequisite `%s'.\n"
 msgstr "Отвержение невозможной неявной зависимости `%s'.\n"
 
-#: implicit.c:659
+#: implicit.c:668
 #, c-format
 msgid "Rejecting impossible rule prerequisite `%s'.\n"
 msgstr "Отвержение невозможной зависимости правила `%s'.\n"
 
-#: implicit.c:669
+#: implicit.c:678
 #, c-format
 msgid "Trying implicit prerequisite `%s'.\n"
 msgstr "Попытка применения неявной зависимости `%s'.\n"
 
-#: implicit.c:670
+#: implicit.c:679
 #, c-format
 msgid "Trying rule prerequisite `%s'.\n"
 msgstr "Попытка применения правила зависимости `%s'.\n"
 
-#: implicit.c:701
+#: implicit.c:710
 #, c-format
 msgid "Found prerequisite `%s' as VPATH `%s'\n"
 msgstr "Обнаружена зависимость `%s' в виде VPATH `%s'\n"
 
-#: implicit.c:721
+#: implicit.c:730
 #, c-format
 msgid "Looking for a rule with intermediate file `%s'.\n"
 msgstr "Поиск правила с промежуточным файлом `%s'.\n"
