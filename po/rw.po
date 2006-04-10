@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: make 3.80\n"
 "Report-Msgid-Bugs-To: bug-make@gnu.org\n"
-"POT-Creation-Date: 2006-03-19 22:07-0500\n"
+"POT-Creation-Date: 2006-04-01 01:40-0500\n"
 "PO-Revision-Date: 2005-04-04 10:55-0700\n"
 "Last-Translator: Steven Michael Murphy <murf@e-tools.com>\n"
 "Language-Team: Kinyarwanda <translation-team-rw@lists.sourceforge.net>\n"
@@ -430,22 +430,22 @@ msgstr "Byanze E"
 msgid "windows32_openpipe (): process_init_fd() failed\n"
 msgstr ""
 
-#: function.c:1727
+#: function.c:1725
 #, fuzzy, c-format
 msgid "Cleaning up temporary batch file %s\n"
 msgstr "Hejuru By'igihe gito IDOSIYE"
 
-#: function.c:2105
+#: function.c:2101
 #, fuzzy, c-format
 msgid "insufficient number of arguments (%d) to function `%s'"
 msgstr "Umubare Bya ingingo Kuri Umumaro"
 
-#: function.c:2117
+#: function.c:2113
 #, fuzzy, c-format
 msgid "unimplemented on this platform: function `%s'"
 msgstr "ku iyi Umumaro"
 
-#: function.c:2167
+#: function.c:2163
 #, fuzzy, c-format
 msgid "unterminated call to function `%s': missing `%c'"
 msgstr "Kuri Umumaro Ibuze"
@@ -544,32 +544,32 @@ msgstr ""
 msgid "Trying pattern rule with stem `%.*s'.\n"
 msgstr "Ishusho Na:"
 
-#: implicit.c:658
+#: implicit.c:667
 #, c-format
 msgid "Rejecting impossible implicit prerequisite `%s'.\n"
 msgstr ""
 
-#: implicit.c:659
+#: implicit.c:668
 #, c-format
 msgid "Rejecting impossible rule prerequisite `%s'.\n"
 msgstr ""
 
-#: implicit.c:669
+#: implicit.c:678
 #, c-format
 msgid "Trying implicit prerequisite `%s'.\n"
 msgstr ""
 
-#: implicit.c:670
+#: implicit.c:679
 #, c-format
 msgid "Trying rule prerequisite `%s'.\n"
 msgstr ""
 
-#: implicit.c:701
+#: implicit.c:710
 #, fuzzy, c-format
 msgid "Found prerequisite `%s' as VPATH `%s'\n"
 msgstr "Nka"
 
-#: implicit.c:721
+#: implicit.c:730
 #, fuzzy, c-format
 msgid "Looking for a rule with intermediate file `%s'.\n"
 msgstr "kugirango a Na: IDOSIYE"
