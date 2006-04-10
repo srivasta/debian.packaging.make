@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNU make 3.79.1\n"
 "Report-Msgid-Bugs-To: bug-make@gnu.org\n"
-"POT-Creation-Date: 2006-03-19 22:07-0500\n"
+"POT-Creation-Date: 2006-04-01 01:40-0500\n"
 "PO-Revision-Date: 2001-06-08 01:30+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -388,22 +388,22 @@ msgstr "CreatePipe() 실패 (e=%d)\n"
 msgid "windows32_openpipe (): process_init_fd() failed\n"
 msgstr "windows32_openpipe (): process_init_fd() 실패\n"
 
-#: function.c:1727
+#: function.c:1725
 #, c-format
 msgid "Cleaning up temporary batch file %s\n"
 msgstr "임시 배치 파일 %s을(를) 지웁니다\n"
 
-#: function.c:2105
+#: function.c:2101
 #, fuzzy, c-format
 msgid "insufficient number of arguments (%d) to function `%s'"
 msgstr "함수 `%2$s'에 인자 갯수(%1$d)가 부족합니다 "
 
-#: function.c:2117
+#: function.c:2113
 #, fuzzy, c-format
 msgid "unimplemented on this platform: function `%s'"
 msgstr "이 플랫폼에서는 구현되지 않았습니다: `%s' 함수"
 
-#: function.c:2167
+#: function.c:2163
 #, c-format
 msgid "unterminated call to function `%s': missing `%c'"
 msgstr "함수 `%s'에 대해 종료되지 않은 호출: `%c'가 빠졌음"
@@ -504,32 +504,32 @@ msgstr "묵시적 규칙의 재귀를 피함.\n"
 msgid "Trying pattern rule with stem `%.*s'.\n"
 msgstr "스템 `%.*s'에서부터 패턴 규칙 시도.\n"
 
-#: implicit.c:658
+#: implicit.c:667
 #, c-format
 msgid "Rejecting impossible implicit prerequisite `%s'.\n"
 msgstr "불가능한 묵시적 선행조건 `%s'은(는) 거부됩니다.\n"
 
-#: implicit.c:659
+#: implicit.c:668
 #, c-format
 msgid "Rejecting impossible rule prerequisite `%s'.\n"
 msgstr "불가능한 규칙 선행조건 `%s'은(는) 거부됩니다.\n"
 
-#: implicit.c:669
+#: implicit.c:678
 #, c-format
 msgid "Trying implicit prerequisite `%s'.\n"
 msgstr "묵시적 선행조건 `%s'을(를) 시도합니다\n"
 
-#: implicit.c:670
+#: implicit.c:679
 #, c-format
 msgid "Trying rule prerequisite `%s'.\n"
 msgstr "규칙 선행조건 `%s'을(를) 시도합니다.\n"
 
-#: implicit.c:701
+#: implicit.c:710
 #, c-format
 msgid "Found prerequisite `%s' as VPATH `%s'\n"
 msgstr "VPATH `%2$s'에서 선행조건 `%1$s'을(를) 찾았습니다\n"
 
-#: implicit.c:721
+#: implicit.c:730
 #, c-format
 msgid "Looking for a rule with intermediate file `%s'.\n"
 msgstr "중간 파일 `%s'에 대한 묵시적 규칙을 찾고 있습니다.\n"
