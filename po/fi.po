@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: make 3.81-b3\n"
 "Report-Msgid-Bugs-To: bug-make@gnu.org\n"
-"POT-Creation-Date: 2006-03-19 22:07-0500\n"
+"POT-Creation-Date: 2006-04-01 01:40-0500\n"
 "PO-Revision-Date: 2005-07-06 21:36+0300\n"
 "Last-Translator: Lauri Nurmi <lanurmi@iki.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -390,22 +390,22 @@ msgstr "CreatePipe() epäonnistui (v=%d)\n"
 msgid "windows32_openpipe (): process_init_fd() failed\n"
 msgstr "windows32_openpipe (): process_init_fd() epäonnistui\n"
 
-#: function.c:1727
+#: function.c:1725
 #, c-format
 msgid "Cleaning up temporary batch file %s\n"
 msgstr "Siivotaan väliaikainen komentotiedosto %s\n"
 
-#: function.c:2105
+#: function.c:2101
 #, fuzzy, c-format
 msgid "insufficient number of arguments (%d) to function `%s'"
 msgstr "Liian vähän (%d) argumenttejeja funktiolle \"%s\""
 
-#: function.c:2117
+#: function.c:2113
 #, fuzzy, c-format
 msgid "unimplemented on this platform: function `%s'"
 msgstr "Ei toteutettu tällä alustalla: funktio \"%s\""
 
-#: function.c:2167
+#: function.c:2163
 #, c-format
 msgid "unterminated call to function `%s': missing `%c'"
 msgstr "päättämätön kutsu funktioon \"%s\": puuttuva \"%c\""
@@ -504,32 +504,32 @@ msgstr "Vältetään oletussääntörekursio.\n"
 msgid "Trying pattern rule with stem `%.*s'.\n"
 msgstr "Kokeillaan hahmosääntöä rungolla \"%.*s\".\n"
 
-#: implicit.c:658
+#: implicit.c:667
 #, c-format
 msgid "Rejecting impossible implicit prerequisite `%s'.\n"
 msgstr "Hylätään mahdoton oletusennakkoehto \"%s\".\n"
 
-#: implicit.c:659
+#: implicit.c:668
 #, c-format
 msgid "Rejecting impossible rule prerequisite `%s'.\n"
 msgstr "Hylätään mahdoton säännön ennakkoehto \"%s\".\n"
 
-#: implicit.c:669
+#: implicit.c:678
 #, c-format
 msgid "Trying implicit prerequisite `%s'.\n"
 msgstr "Yritetään käyttää oletusennakkoehtoa \"%s\".\n"
 
-#: implicit.c:670
+#: implicit.c:679
 #, c-format
 msgid "Trying rule prerequisite `%s'.\n"
 msgstr "Yritetään käyttää säännön ennakkoehtoa \"%s\".\n"
 
-#: implicit.c:701
+#: implicit.c:710
 #, c-format
 msgid "Found prerequisite `%s' as VPATH `%s'\n"
 msgstr "Löydettiin ennakkoehto \"%s\", joka on VPATH \"%s\"\n"
 
-#: implicit.c:721
+#: implicit.c:730
 #, c-format
 msgid "Looking for a rule with intermediate file `%s'.\n"
 msgstr "Etsitään sääntöä aputiedostolla \"%s\".\n"

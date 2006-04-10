@@ -356,9 +356,8 @@ pattern_search (struct file *file, int archive,
               /* Didn't find it yet: check for DOS-type directories.  */
               if (check_lastslash)
                 {
-                  char *b = strrchr (target, '\\');
-                  check_lastslash = !(b ? b > lastslash
-                                      : (target[0] && target[1] == ':'));
+                  char *b = strchr (target, '\\');
+                  check_lastslash = !(b || (target[0] && target[1] == ':'));
                 }
 #endif
 #endif
@@ -442,6 +441,7 @@ pattern_search (struct file *file, int archive,
           struct file *f;
           unsigned int failed = 0;
 	  int check_lastslash;
+          int file_variables_set = 0;
 
 	  rule = tryrules[i];
 
@@ -479,9 +479,9 @@ pattern_search (struct file *file, int archive,
           strncpy (stem_str, stem, stemlen);
           stem_str[stemlen] = '\0';
 
-          /* Temporary assign STEM to file->stem and set file variables. */
+          /* Temporary assign STEM to file->stem (needed to set file
+             variables below).   */
           file->stem = stem_str;
-          set_file_variables (file);
 
 	  /* Try each dependency; see if it "exists".  */
 
@@ -548,6 +548,15 @@ pattern_search (struct file *file, int archive,
                         {
                           bcopy (p, depname, len);
                           depname[len] = '\0';
+                        }
+
+                      /* Set file variables. Note that we cannot do it once
+                         at the beginning of the function because of the stem
+                         value.  */
+                      if (!file_variables_set)
+                        {
+                          set_file_variables (file);
+                          file_variables_set = 1;
                         }
 
                       p2 = variable_expand_for_file (depname, file);

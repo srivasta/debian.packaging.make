@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: make 3.80\n"
 "Report-Msgid-Bugs-To: bug-make@gnu.org\n"
-"POT-Creation-Date: 2006-03-19 22:07-0500\n"
+"POT-Creation-Date: 2006-04-01 01:40-0500\n"
 "PO-Revision-Date: 2002-10-05 22:56+0200\n"
 "Last-Translator: Byrial Ole Jensen <byrial@image.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -387,22 +387,22 @@ msgstr "CreatePipe() mislykkedes (e=%d)\n"
 msgid "windows32_openpipe (): process_init_fd() failed\n"
 msgstr "windows32_openpipe(): process_init_fd() mislykkedes\n"
 
-#: function.c:1727
+#: function.c:1725
 #, c-format
 msgid "Cleaning up temporary batch file %s\n"
 msgstr "Afrydder midlertidig batchfil %s\n"
 
-#: function.c:2105
+#: function.c:2101
 #, fuzzy, c-format
 msgid "insufficient number of arguments (%d) to function `%s'"
 msgstr "Utilstrækkeligt antal argumenter (%d) til funktionen '%s'"
 
-#: function.c:2117
+#: function.c:2113
 #, fuzzy, c-format
 msgid "unimplemented on this platform: function `%s'"
 msgstr "Uimplementeret på denne platform: funktion '%s'"
 
-#: function.c:2167
+#: function.c:2163
 #, c-format
 msgid "unterminated call to function `%s': missing `%c'"
 msgstr "Uafsluttet kald til funktionen '%s'; manglende '%c'"
@@ -501,32 +501,32 @@ msgstr "Undgår rekursion i implicitte regler.\n"
 msgid "Trying pattern rule with stem `%.*s'.\n"
 msgstr "Prøver mønsterregel med stammen '%.*s'.\n"
 
-#: implicit.c:658
+#: implicit.c:667
 #, c-format
 msgid "Rejecting impossible implicit prerequisite `%s'.\n"
 msgstr "Afviser umulig implicit forudsætning '%s'.\n"
 
-#: implicit.c:659
+#: implicit.c:668
 #, c-format
 msgid "Rejecting impossible rule prerequisite `%s'.\n"
 msgstr "Afviser umulig regelforudsætning '%s'.\n"
 
-#: implicit.c:669
+#: implicit.c:678
 #, c-format
 msgid "Trying implicit prerequisite `%s'.\n"
 msgstr "Prøver implicit forudsætning '%s'.\n"
 
-#: implicit.c:670
+#: implicit.c:679
 #, c-format
 msgid "Trying rule prerequisite `%s'.\n"
 msgstr "Prøver regelforudsætning '%s'.\n"
 
-#: implicit.c:701
+#: implicit.c:710
 #, c-format
 msgid "Found prerequisite `%s' as VPATH `%s'\n"
 msgstr "Fandt forudsætning '%s' som VPATH '%s'\n"
 
-#: implicit.c:721
+#: implicit.c:730
 #, c-format
 msgid "Looking for a rule with intermediate file `%s'.\n"
 msgstr "Kigger efter en regel med mellemfil '%s'.\n"
