@@ -190,7 +190,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.  */
 #define PACKAGE "make"
 
 /* Version of this package (needed by automake) */
-#define VERSION "3.81rc2"
+#define VERSION "3.81"
 
 /* Define to the name of the SCCS `get' command.  */
 #define SCCS_GET "get"

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: make 3.79.1\n"
 "Report-Msgid-Bugs-To: bug-make@gnu.org\n"
-"POT-Creation-Date: 2006-03-19 22:07-0500\n"
+"POT-Creation-Date: 2006-04-01 01:40-0500\n"
 "PO-Revision-Date: 2002-03-30 21:33+0300\n"
 "Last-Translator: Eli Zaretskii <eliz@gnu.org>\n"
 "Language-Team: Hebrew <eliz@gnu.org>\n"
@@ -390,22 +390,22 @@ msgstr "CreatePipe() failed (e=%d)\n"
 msgid "windows32_openpipe (): process_init_fd() failed\n"
 msgstr "windows32_openpipe (): process_init_fd() failed\n"
 
-#: function.c:1727
+#: function.c:1725
 #, c-format
 msgid "Cleaning up temporary batch file %s\n"
 msgstr "`%s' ינמז batch ץבוק קלסמ\n"
 
-#: function.c:2105
+#: function.c:2101
 #, fuzzy, c-format
 msgid "insufficient number of arguments (%d) to function `%s'"
 msgstr "קפסמ וניאש (%d) םיטנמוגרא רפסמ םע הארקנ `%s' היצקנופ"
 
-#: function.c:2117
+#: function.c:2113
 #, fuzzy, c-format
 msgid "unimplemented on this platform: function `%s'"
 msgstr "וז תכרעמב תשמוממ הניא `%s' היצקנופ"
 
-#: function.c:2167
+#: function.c:2163
 #, c-format
 msgid "unterminated call to function `%s': missing `%c'"
 msgstr "`%s' היצקנופל האירקב `%c' רסח"
@@ -504,32 +504,32 @@ msgstr ".תשרופמ-יתלב היסרוקרמ ענמנ\n"
 msgid "Trying pattern rule with stem `%.*s'.\n"
 msgstr ".`%.*s' שרוש םע תינבת ללכ הסנמ\n"
 
-#: implicit.c:658
+#: implicit.c:667
 #, c-format
 msgid "Rejecting impossible implicit prerequisite `%s'.\n"
 msgstr ".תירשפא-יתלב הניהש םושמ `%s' תשרופמ-יתלב םדק תשירד החוד\n"
 
-#: implicit.c:659
+#: implicit.c:668
 #, c-format
 msgid "Rejecting impossible rule prerequisite `%s'.\n"
 msgstr ".תירשפא-יתלב הניהש םושמ `%s' םדק תשירד החוד\n"
 
-#: implicit.c:669
+#: implicit.c:678
 #, c-format
 msgid "Trying implicit prerequisite `%s'.\n"
 msgstr ".`%s' תשרופמ-יתלב םדק תשירד הסנמ\n"
 
-#: implicit.c:670
+#: implicit.c:679
 #, c-format
 msgid "Trying rule prerequisite `%s'.\n"
 msgstr ".`%s' םדק תשירד ללכ הסנמ\n"
 
-#: implicit.c:701
+#: implicit.c:710
 #, c-format
 msgid "Found prerequisite `%s' as VPATH `%s'\n"
 msgstr "`%s' םדק תשירדכ VPATH `%s' יתאצמ\n"
 
-#: implicit.c:721
+#: implicit.c:730
 #, c-format
 msgid "Looking for a rule with intermediate file `%s'.\n"
 msgstr ".`%s' ינמז ץבוק םע ללכ שפחמ\n"
