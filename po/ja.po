@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: make 3.80\n"
 "Report-Msgid-Bugs-To: bug-make@gnu.org\n"
-"POT-Creation-Date: 2006-03-19 22:07-0500\n"
+"POT-Creation-Date: 2006-04-01 01:40-0500\n"
 "PO-Revision-Date: 2004-05-18 00:47+0900\n"
 "Last-Translator: GOTO Masanori <gotom@debian.or.jp>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
@@ -389,22 +389,22 @@ msgstr "CreatePipe() が失敗 (e=%d)\n"
 msgid "windows32_openpipe (): process_init_fd() failed\n"
 msgstr "windows32_openpipe (): process_init_fd() が失敗\n"
 
-#: function.c:1727
+#: function.c:1725
 #, c-format
 msgid "Cleaning up temporary batch file %s\n"
 msgstr "一時的なバッチファイル %s を消去します\n"
 
-#: function.c:2105
+#: function.c:2101
 #, fuzzy, c-format
 msgid "insufficient number of arguments (%d) to function `%s'"
 msgstr "引数の数(%d)が関数 `%s' にとって不十分です"
 
-#: function.c:2117
+#: function.c:2113
 #, fuzzy, c-format
 msgid "unimplemented on this platform: function `%s'"
 msgstr "このプラットフォームでは実装されていません: 関数 `%s'"
 
-#: function.c:2167
+#: function.c:2163
 #, c-format
 msgid "unterminated call to function `%s': missing `%c'"
 msgstr "終端がない関数呼び出し `%s': `%c' がありません"
@@ -505,32 +505,32 @@ msgstr "暗黙ルールの再帰を回避します.\n"
 msgid "Trying pattern rule with stem `%.*s'.\n"
 msgstr "語幹 `%.*s' とのパターンルールを試します.\n"
 
-#: implicit.c:658
+#: implicit.c:667
 #, c-format
 msgid "Rejecting impossible implicit prerequisite `%s'.\n"
 msgstr "適用不能な暗黙の必要条件 `%s' を却下します.\n"
 
-#: implicit.c:659
+#: implicit.c:668
 #, c-format
 msgid "Rejecting impossible rule prerequisite `%s'.\n"
 msgstr "適用不能なルールの必要条件 `%s' を却下します.\n"
 
-#: implicit.c:669
+#: implicit.c:678
 #, c-format
 msgid "Trying implicit prerequisite `%s'.\n"
 msgstr "暗黙の必要条件 `%s' を試します.\n"
 
-#: implicit.c:670
+#: implicit.c:679
 #, c-format
 msgid "Trying rule prerequisite `%s'.\n"
 msgstr "ルールの必要条件 `%s' を試します.\n"
 
-#: implicit.c:701
+#: implicit.c:710
 #, c-format
 msgid "Found prerequisite `%s' as VPATH `%s'\n"
 msgstr "VPATH `%2$s' として必要条件 `%1$s' を見つけました\n"
 
-#: implicit.c:721
+#: implicit.c:730
 #, c-format
 msgid "Looking for a rule with intermediate file `%s'.\n"
 msgstr "中間ファイル `%s' のルールを探します.\n"

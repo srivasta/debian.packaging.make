@@ -24,9 +24,9 @@
 #
 
 # Ultrix 2.2 make doesn't expand the value of VPATH.
-VPATH = /make-3.81rc2/
+VPATH = /make-3.81/
 # This must repeat the value, because configure will remove `VPATH = .'.
-srcdir = /make-3.81rc2/
+srcdir = /make-3.81/
 
 CC = sc
 RM = delete
