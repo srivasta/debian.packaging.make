@@ -3104,6 +3104,7 @@ multi_glob (struct nameseq *chain, unsigned int size)
 		      }
 
 		    free (memname);
+                    memname = 0;
 		  }
 		else
 #endif /* !NO_ARCHIVES */
