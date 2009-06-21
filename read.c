@@ -1794,6 +1794,7 @@ record_target_var (struct nameseq *filenames, char *defn,
           v = parse_variable_definition (&p->variable, defn);
           assert (v != 0);
 
+          v->origin = origin;
           if (v->flavor == f_simple)
             v->value = allocated_variable_expand (v->value);
           else
@@ -1826,7 +1827,6 @@ record_target_var (struct nameseq *filenames, char *defn,
         }
 
       /* Set up the variable to be *-specific.  */
-      v->origin = origin;
       v->per_target = 1;
       v->export = exported ? v_export : v_default;
 
