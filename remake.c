@@ -1451,6 +1451,9 @@ library_search (char **lib, FILE_TIMESTAMP *mtime_ptr)
 {
   static char *dirs[] =
     {
+#ifdef MULTIARCH_DIRS
+      MULTIARCH_DIRS
+#endif
 #ifndef _AMIGA
       "/lib",
 #endif
