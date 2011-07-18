@@ -374,6 +374,24 @@ AC_DEFINE_UNQUOTED(MAKE_HOST,"$host",[Build host information.])
 MAKE_HOST="$host"
 AC_SUBST(MAKE_HOST)
 
+AC_PATH_TOOL([DPKG_ARCH], [dpkg-architecture])
+AC_MSG_CHECKING([for multiarch paths])
+multiarch_triplet=""
+if test -n "$DPKG_ARCH"; then
+	multiarch_triplet=$($DPKG_ARCH -qDEB_HOST_MULTIARCH)
+	if test -z "$multiarch_triplet"; then
+		multiarch_triplet=$($DPKG_ARCH -qDEB_HOST_GNU_TYPE)
+	fi
+fi
+if test -n "$multiarch_triplet"; then
+	MULTIARCH_DIRS="\\\"/lib/$multiarch_triplet\\\", \\\"/usr/lib/$multiarch_triplet\\\","
+	AC_MSG_RESULT([$MULTIARCH_DIRS])
+else
+	AC_MSG_RESULT([not found])
+fi
+
+AC_SUBST(MULTIARCH_DIRS)
+
 w32_target_env=no
 AM_CONDITIONAL([WINDOWSENV], false)
 
