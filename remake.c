@@ -1513,7 +1513,6 @@ library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
 #endif
 #ifndef _AMIGA
       "/lib",
-      "/usr/lib",
 #endif
 #if defined(WINDOWS32) && !defined(LIBDIR)
 /*
@@ -1523,6 +1522,18 @@ library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
 #define LIBDIR "."
 #endif
       LIBDIR,			/* Defined by configuration.  */
+#ifndef _AMIGA
+/*
+ * In the Debian binaries, PREFIX is /usr and thus this searches /lib,
+ * /usr/lib and /usr/lib again and therefore misses any libraries that
+ * are not packaged and were installed by the site admin.  The ideal
+ * behaviour would be to have the search path set by a Makefile
+ * variable (other than the VPATH blunt object) but even absent that,
+ * it would be more useful if it looked in /usr/local/lib even though
+ * make itself hasn't been installed in the /usr/local tree -- manoj
+ */
+      "/usr/local/lib",
+#endif
       0
     };
 
