@@ -1,0 +1,28 @@
+#!/usr/bin/make -f
+# Uncomment this to turn on verbose mode.
+# export DH_VERBOSE=1
+package:=make
+SRCTOP:= $(shell if [ "$$PWD" != "" ]; then echo $$PWD; else pwd; fi)
+INSTALL = install
+ifeq (,$(filter nostrip,$(DEB_BUILD_OPTIONS)))
+    INSTALL_PROGRAM += -s
+endif
+install_file	= $(INSTALL) -p	   -o root -g root  -m	644
+install_program = $(INSTALL) -p	   -o root -g root  -m	755
+install_script	= $(INSTALL) -p	   -o root -g root  -m	755
+make_directory	= $(INSTALL) -p -d -o root -g root  -m	755
+PREFIX=/usr
+
+DPKG_ARCH := dpkg-architecture
+export DEB_HOST_MULTIARCH  := $(shell $(DPKG_ARCH) $(ha) -qDEB_HOST_MULTIARCH)
+
+%:
+	dh $@  --with autoreconf
+
+override_dh_auto_configure:
+	ac_cv_lib_util_getloadavg=no dh_auto_configure --    \
+	   --prefix=$(PREFIX) $(confflags)
+
+#Local variables:
+#mode: makefile
+#End:
