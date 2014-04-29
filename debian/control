@@ -1,6 +1,6 @@
 Source: make-dfsg
 VCS-Git: git://anonscm.debian.org/users/srivasta/debian/make-dfsg.git
-VCS-Browser: http://git.debian.org/git/users/srivasta/debian/make-dfsg.git
+VCS-Browser: http://anonscm.debian.org/gitweb/?p=users/srivasta/debian/make-dfsg.git
 Section: devel
 Priority: standard
 Maintainer: Manoj Srivastava <srivasta@debian.org>
@@ -12,6 +12,7 @@ Build-Depends: gettext, po-debconf, debhelper (>= 9.0.0), dh-autoreconf,
 Package: make
 Suggests: make-doc
 Architecture: any
+Multi-Arch: foreign
 Description: utility for directing compilation
  GNU Make is a utility which controls the generation of executables
  and other target files of a program from the program's source

@@ -1,3 +1,36 @@
+make-dfsg (4.0-2) experimental; urgency=medium
+
+  * Pull back some patches from upstream git that fix bugs. One of these
+    converts the mixed implicit and explicit rule error into a warning,
+    and that should give us a grace period to fix the Makefiles,
+  * Bug fix: "FTBFS with make 3.82 from experimental", thanks to Daniel
+    Schepler. This package was not reported broken in the archive rebuild:
+    see http://aws-logs.debian.net/ftbfs-logs/results-make4/ (Closes: #720686).
+  * Bug fix: "make 3.82: with -j tries to run receipes without
+    prerequisites yet done", thanks to Bernhard R. Link. This was not seen
+    in the archive rebuild, and the upstream report has ben closed a being
+    fixed in 4.0 (Closes: #722520).
+  * Bug fix: "run dh-autoreconf to update config.{sub,guess} and
+    {libtool,aclocal}.m4", thanks to Wookey. We now do indeed run
+    autoreconf.  (Closes: #689626).
+  * Bug fix: "spurious circular dependency", thanks to Frank Heckenbach
+    Bug fixed in new version.  (Closes: #669968).
+  * Bug fix: "make 3.82: fails to parse archive syntax", thanks to Andrew
+    Shadura (Closes: #675612).
+  * Bug fix: "binary package make lacks &quot;Multi-Arch: foreign&quot;
+    declaration", thanks to Helmut Grohne (Closes: #693926).
+  * Bug fix: "make 3.82 breaks kernel module build: &#39;mixed implicit
+    and normal rules&#39; in linux-headers-*", thanks to Dean Loros
+    (Closes: #635317).
+  * Bug fix: "please package upstream version 4.0", thanks to Andrew
+    Shadura (Closes: #734387).
+  * Bug fix: "optionally echo all commands, even if preceded with @",
+    thanks to Vincent Lefevre (Closes: #451092).
+  * Bug fix: "&quot;Make is a HUGE memory hog&quot;", thanks to Matthias
+    Klose (Closes: #342726).
+
+ -- Manoj Srivastava <srivasta@debian.org>  Mon, 28 Apr 2014 23:57:19 -0700
+
 make-dfsg (4.0-1) experimental; urgency=low
 
   * New upstream release
