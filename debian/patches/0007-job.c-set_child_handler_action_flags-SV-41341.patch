@@ -1,7 +1,7 @@
-From 2cfe181b4250fcd689f111f871a3ef3eafe5422c Mon Sep 17 00:00:00 2001
+From 97d392ba2eda5ba02362bde26d0e2cd0d8e23eed Mon Sep 17 00:00:00 2001
 From: Paul Smith <psmith@gnu.org>
 Date: Sat, 1 Feb 2014 23:08:59 -0500
-Subject: [PATCH 7/7] * job.c (set_child_handler_action_flags): [SV 41341]
+Subject: [PATCH 7/8] * job.c (set_child_handler_action_flags): [SV 41341]
 
 Ensure signal handler is in place before alarm(1).
 ---

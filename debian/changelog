@@ -1,3 +1,11 @@
+make-dfsg (4.0-3) experimental; urgency=medium
+
+  * Cherry pick upstream patch to Propagate correct rule status results.
+  * Bug fix: "New make behaviour confuses dpkg-buildpackages&#39; test for
+    make targets". Fixed by above. (Closes: #746443).
+
+ -- Manoj Srivastava <srivasta@debian.org>  Thu, 01 May 2014 22:09:08 -0700
+
 make-dfsg (4.0-2) experimental; urgency=medium
 
   * Pull back some patches from upstream git that fix bugs. One of these

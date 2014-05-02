@@ -1,7 +1,7 @@
-From c81b80ce5034ecf87ffc1732cfb8910317cfe3de Mon Sep 17 00:00:00 2001
+From 34f050af570b26e48175260eea4f71ba93241c7e Mon Sep 17 00:00:00 2001
 From: Alan Hourihane <alanh@fairlite.co.uk>
 Date: Sat, 18 Jan 2014 16:41:47 -0500
-Subject: [PATCH 6/7] * configure.ac: [SV 40790] Fix load autoconf variables.
+Subject: [PATCH 6/8] * configure.ac: [SV 40790] Fix load autoconf variables.
 
 Copyright-paperwork-exempt: yes
 ---

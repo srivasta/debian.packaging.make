@@ -1,7 +1,7 @@
-From 601714947082bf11e01db7765b4329aae9148c26 Mon Sep 17 00:00:00 2001
+From 1fcf6c773d8f836c1cbeb6f223ce9b823ee6cb99 Mon Sep 17 00:00:00 2001
 From: Manoj Srivastava <srivasta@golden-gryphon.com>
-Date: Mon, 28 Apr 2014 23:19:46 -0700
-Subject: [PATCH 1/7] debcherry fixup patch
+Date: Thu, 1 May 2014 22:09:31 -0700
+Subject: [PATCH 1/8] debcherry fixup patch
 
 147ab2d git-archimport-id: srivasta@debian.org--lenny/make-dfsg--debian--3.81--patch-3
 	 - no changes against upstream or conflicts

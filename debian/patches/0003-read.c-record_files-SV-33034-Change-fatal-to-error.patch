@@ -1,7 +1,7 @@
-From 43cbac294cc0cc9464e841e28e09f5d3c8d0feec Mon Sep 17 00:00:00 2001
+From 2661239889c1902a7babf62030109865179fae0f Mon Sep 17 00:00:00 2001
 From: Paul Smith <psmith@gnu.org>
 Date: Sun, 20 Oct 2013 12:49:01 -0400
-Subject: [PATCH 3/7] * read.c (record_files): [SV 33034] Change fatal() to
+Subject: [PATCH 3/8] * read.c (record_files): [SV 33034] Change fatal() to
  error()
 
 Allows deprecated syntax.  However we don't guarantee this syntax
