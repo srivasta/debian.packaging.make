@@ -1,3 +1,11 @@
+make-dfsg (4.0-4) unstable; urgency=low
+
+  * Movint this version of make to unstable, All known problems exposed in
+    the archive rebuild have been fixed. There is no change in this
+    version apart from the ditribution change
+
+ -- Manoj Srivastava <srivasta@debian.org>  Fri, 02 May 2014 18:32:32 -0700
+
 make-dfsg (4.0-3) experimental; urgency=medium
 
   * Cherry pick upstream patch to Propagate correct rule status results.
