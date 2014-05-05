@@ -1,3 +1,24 @@
+make-dfsg (4.0-5) unstable; urgency=low
+
+  * When presented with a very very long command line (e.g. WebKit's linking
+    of libWebCore.la in current git), make fails to execute the command as
+    it doesn't split the command line to fit within the limits. There is a
+    patch used by people to solve this (gentoo, etc). Adam Conrad has
+    provided a patch to fix this.  (Closes: #688601).
+  * Pre-4.0 make had an memory corruption issue that caused repeated
+    execution of a specific makefile to display the cirruption. Running
+    with make 4.0 does not show the issue. (Closes: #682895).
+  * recently, the Multi-Arch: foreign tag was added toth make binary
+    package.  Jakub Wilk pointed out that this is not correct, some of the
+    make interfaces are actually architecture-dependent. Reverting that
+    change.
+  * Bug fix #688601: "fails to execute extraordinarily long command
+    lines", thanks to Daniel Stone
+  * Bug fix #682895: "incorrect variable handling and corruption", thanks
+    to Tim Spriggs
+
+ -- Manoj Srivastava <srivasta@debian.org>  Sun, 04 May 2014 18:13:40 -0700
+
 make-dfsg (4.0-4) unstable; urgency=low
 
   * Movint this version of make to unstable, All known problems exposed in

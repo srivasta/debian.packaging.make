@@ -7,3 +7,4 @@
 0006-configure.ac-SV-40790-Fix-load-autoconf-variables.patch
 0007-job.c-set_child_handler_action_flags-SV-41341.patch
 0008-SV-42249-Propagate-correct-rule-status-results.patch
+0009-handle_excessive_command_length-Patch-to-fix-large-c.patch

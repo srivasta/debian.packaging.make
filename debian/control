@@ -12,7 +12,6 @@ Build-Depends: gettext, po-debconf, debhelper (>= 9.0.0), dh-autoreconf,
 Package: make
 Suggests: make-doc
 Architecture: any
-Multi-Arch: foreign
 Description: utility for directing compilation
  GNU Make is a utility which controls the generation of executables
  and other target files of a program from the program's source
