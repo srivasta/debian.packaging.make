@@ -1,3 +1,16 @@
+make-dfsg (4.0-6) unstable; urgency=medium
+
+  * Also create a new binary package, make-guile, which is identical to
+    the make package, but has built in support for Guile a a programming
+    langiage, and adds run time dependencies outside of libc.
+    (Closes: #747615,  #747674).
+  * Bug fix #747615: "Please provide a version with Guile support
+    enabled", thanks to Jose Antonio Ortega Ruiz
+  * Bug fix #747674: "undeterministic build due to missing configure
+    arguments/build-conflicts", thanks to Bernhard R. Link
+
+ -- Manoj Srivastava <srivasta@debian.org>  Sun, 11 May 2014 20:51:24 -0700
+
 make-dfsg (4.0-5) unstable; urgency=low
 
   * When presented with a very very long command line (e.g. WebKit's linking
