@@ -1,3 +1,22 @@
+make-dfsg (4.0-7) unstable; urgency=low
+
+  * There is an issue involving UTF-8 characters and the function
+    find_char_unquote (read.c). The problem in the macro STOP_SET
+    (makeint.h) where a character is converted to an int. Conversion to
+    int is not correct. Characters with codes greater than 0x7f ( in
+    particular in Cyrillic UTF- 8 ) into a large negative number. Thnks to
+    the analysis from Юрий Матронов <ymuser@mail.ru>. This bug was
+    independently reported and fixed upstream, so cherry picking that
+    commit from upstream (which also comes with a test).
+    (Closes: #747764).
+  * added a script that, given a list of targets, will build the first
+    target that actually exists. Script created by Joey Hess.
+    (Closes: #598534).
+  * Bug fix #747764: "make 4.0-5 bug", thanks to Юрий Матронов
+  * Bug fix #598534: "add make-first-existing-target", thanks to Joey Hess
+
+ -- Manoj Srivastava <srivasta@debian.org>  Tue, 13 May 2014 18:22:39 -0700
+
 make-dfsg (4.0-6) unstable; urgency=medium
 
   * Also create a new binary package, make-guile, which is identical to

@@ -1,7 +1,7 @@
-From c86ae865daba2bdf3359c90a50e19be345df6302 Mon Sep 17 00:00:00 2001
+From edc7725f040e6eeffead0c552b7fc76bae6fe4f2 Mon Sep 17 00:00:00 2001
 From: Paul Smith <psmith@gnu.org>
 Date: Sun, 13 Oct 2013 16:01:22 -0400
-Subject: [PATCH 2/9] [SV 40139] Modify "missing separator" for better
+Subject: [PATCH 02/10] [SV 40139] Modify "missing separator" for better
  translation
 
 ---
@@ -27,5 +27,5 @@ index 15d1b13..83224ac 100644
            }
  
 -- 
-2.0.0.rc0
+2.0.0.rc2
 

@@ -1,7 +1,7 @@
-From cf1badbb49aa083ebc5f895a97039f42bb143a8b Mon Sep 17 00:00:00 2001
+From c52aa61dfa2a1263500fcd66590502e34384cad8 Mon Sep 17 00:00:00 2001
 From: Alan Hourihane <alanh@fairlite.co.uk>
 Date: Sat, 18 Jan 2014 16:41:47 -0500
-Subject: [PATCH 6/9] * configure.ac: [SV 40790] Fix load autoconf variables.
+Subject: [PATCH 06/10] * configure.ac: [SV 40790] Fix load autoconf variables.
 
 Copyright-paperwork-exempt: yes
 ---
@@ -40,5 +40,5 @@ index 9684749..7490b4d 100644
  # See if we can figure it out.  Unfortunately this is very difficult.
  # For example passing -rdynamic to the SunPRO linker gives a warning
 -- 
-2.0.0.rc0
+2.0.0.rc2
 
