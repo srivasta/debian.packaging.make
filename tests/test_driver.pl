@@ -419,7 +419,9 @@ sub run_all_tests
 {
     $categories_run = 0;
 
+    my $save_timeout = $test_timeout;
     foreach $testname (sort @TESTS) {
+        local $test_timeout = $save_timeout;
         $suite_passed = 1;       # reset by test on failure
         $num_of_logfiles = 0;
         $num_of_tmpfiles = 0;
@@ -462,6 +464,7 @@ sub run_all_tests
         $tests_run = 0;
         $tests_passed = 0;
 
+	if ($testname =~ m{misc/fopen-fail}msx) { $test_timeout = 300; }
         # Run the test!
         $code = do $perl_testname;
 
