@@ -1,7 +1,7 @@
-From c1f1784bab4dd1d9ad02a51044662ac832b6d549 Mon Sep 17 00:00:00 2001
+From a81b184a680d8bfba523ac974c4c9b700e0fbb21 Mon Sep 17 00:00:00 2001
 From: Paul Smith <psmith@gnu.org>
 Date: Sat, 26 Oct 2013 00:10:17 -0400
-Subject: [PATCH 10/10] * makeint.h (STOP_SET): [SV 40371] Cast to unsigned
+Subject: [PATCH 10/11] * makeint.h (STOP_SET): [SV 40371] Cast to unsigned
  char.
 
 * tests/scripts/misc/utf8: Test variable names with characters >127.
@@ -46,5 +46,5 @@ index 0000000..2adcd07
 +
 +1;
 -- 
-2.0.0.rc2
+2.0.0
 

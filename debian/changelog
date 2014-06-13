@@ -1,3 +1,13 @@
+make-dfsg (4.0-8) unstable; urgency=high
+
+  * Update the timeout for the fopen fail test to 300 seconds, since the
+    test was taking longer than the default 5 seconds to run. The root
+    cause was discovered by Víctor M. Jáquez L. (Closes: #748657)
+  * Bug fix #748657: "make-dfsg failed to run test: work/misc/fopen-fail.mk",
+    thanks to Yunqiang Su.
+
+ -- Manoj Srivastava <srivasta@debian.org>  Fri, 13 Jun 2014 15:54:27 -0700
+
 make-dfsg (4.0-7) unstable; urgency=low
 
   * There is an issue involving UTF-8 characters and the function

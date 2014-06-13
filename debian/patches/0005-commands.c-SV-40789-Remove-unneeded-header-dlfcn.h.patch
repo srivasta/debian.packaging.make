@@ -1,7 +1,7 @@
-From 70e9a2027e80ffa7791017987d5d1f11a5682b85 Mon Sep 17 00:00:00 2001
+From accf44ed08577a5df94eca5bf67583827b900eb2 Mon Sep 17 00:00:00 2001
 From: Paul Smith <psmith@gnu.org>
 Date: Sun, 12 Jan 2014 00:13:22 -0500
-Subject: [PATCH 05/10] * commands.c: [SV 40789] Remove unneeded header dlfcn.h
+Subject: [PATCH 05/11] * commands.c: [SV 40789] Remove unneeded header dlfcn.h
 
 ---
  commands.c | 2 --
@@ -21,5 +21,5 @@ index f910358..eda75df 100644
  #include "filedef.h"
  #include "dep.h"
 -- 
-2.0.0.rc2
+2.0.0
 
