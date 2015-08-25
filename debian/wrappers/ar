@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Force ar to not run in deterministic mode, as the testsuite relies
+# on UID, GID, timestamp and file mode values to be correctly stored.
+
+exec /usr/bin/ar U$@
