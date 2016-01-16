@@ -2,7 +2,7 @@ Source: make-dfsg
 VCS-Git: https://anonscm.debian.org/git/users/srivasta/debian/make-dfsg.git
 VCS-Browser: http://anonscm.debian.org/gitweb/?p=users/srivasta/debian/make-dfsg.git
 Section: devel
-Priority: standard
+Priority: optional
 Maintainer: Manoj Srivastava <srivasta@debian.org>
 Standards-Version: 3.9.6
 Homepage: http://www.gnu.org/software/make/
@@ -14,6 +14,7 @@ Package: make
 Suggests: make-doc
 Conflicts: make-guile
 Architecture: any
+Priority: optional
 Replaces: make-guile
 Description: utility for directing compilation
  GNU Make is a utility which controls the generation of executables
@@ -29,6 +30,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 
 Package: make-guile
 Suggests: make-doc
+Priority: extra
 Conflicts: make
 Provides: make
 Replaces: make

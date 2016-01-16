@@ -9,8 +9,14 @@ make-dfsg (4.1-1) unstable; urgency=low
    (Closes: #763147).
   * Bug fix: "[make] make version 4.1 available", thanks to LeJacq, Jean
     Pierre (Closes: #766383).
+  * Demote make to priority optional, along with gcc and such. And bump
+    make-guile to extra.
+  * Bug fix: "Neither make nor make-guile should be standard", thanks to
+    Josh Triplett (Closes: #761301).
+  * Bug fix: "make instead of make-guile should be standard", thanks to
+    Joey Hess (Closes: #762017).
 
- -- Manoj Srivastava <srivasta@debian.org>  Sat, 16 Jan 2016 00:53:52 -0800
+ -- Manoj Srivastava <srivasta@debian.org>  Sat, 16 Jan 2016 01:04:09 -0800
 
 make-dfsg (4.0-8) unstable; urgency=high
 
