@@ -435,7 +435,7 @@ static const char *default_variables[] =
 #else /* !VMS */
 
     "AR", "ar",
-    "ARFLAGS", "rv",
+    "ARFLAGS", "rvU",
     "AS", "as",
 #ifdef GCC_IS_NATIVE
     "CC", "gcc",
