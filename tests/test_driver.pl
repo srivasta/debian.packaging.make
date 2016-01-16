@@ -495,17 +495,11 @@ sub run_all_tests
 {
     $categories_run = 0;
 
-<<<<<<< HEAD
-    my $save_timeout = $test_timeout;
-    foreach $testname (sort @TESTS) {
-        local $test_timeout = $save_timeout;
-=======
     $lasttest = '';
     foreach $testname (sort @TESTS) {
         # Skip duplicates on VMS caused by logical name search lists.
         next if $testname eq $lasttest;
         $lasttest = $testname;
->>>>>>> upstream
         $suite_passed = 1;       # reset by test on failure
         $num_of_logfiles = 0;
         $num_of_tmpfiles = 0;

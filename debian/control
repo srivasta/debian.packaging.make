@@ -1,10 +1,10 @@
 Source: make-dfsg
-VCS-Git: git://anonscm.debian.org/users/srivasta/debian/make-dfsg.git
+VCS-Git: https://anonscm.debian.org/git/users/srivasta/debian/make-dfsg.git
 VCS-Browser: http://anonscm.debian.org/gitweb/?p=users/srivasta/debian/make-dfsg.git
 Section: devel
 Priority: standard
 Maintainer: Manoj Srivastava <srivasta@debian.org>
-Standards-Version: 3.9.5.0
+Standards-Version: 3.9.6
 Homepage: http://www.gnu.org/software/make/
 Build-Depends: gettext, po-debconf, debhelper (>= 9.0.0), dh-autoreconf,
                autoconf, automake | automaken, autopoint, file, pkg-config,
