@@ -5,8 +5,12 @@ make-dfsg (4.1-1) unstable; urgency=low
   * Updated the VCS-Git field of the control file to use HTTPS transport
   * Updated the copyright file to DEP-5 format.
   * Reverted to source format 1.0 , and use dgit
+  * Bug fix: "Typos in manpage", thanks to Josh Triplett
+   (Closes: #763147).
+  * Bug fix: "[make] make version 4.1 available", thanks to LeJacq, Jean
+    Pierre (Closes: #766383).
 
- -- Manoj Srivastava <srivasta@debian.org>  Sat, 16 Jan 2016 00:37:31 -0800
+ -- Manoj Srivastava <srivasta@debian.org>  Sat, 16 Jan 2016 00:53:52 -0800
 
 make-dfsg (4.0-8) unstable; urgency=high
 
