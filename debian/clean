@@ -36,6 +36,8 @@ config/wint_t.m4
 config/xsize.m4
 debian/autoreconf.after
 debian/autoreconf.before
+debian/build-make-guile/
+debian/build-make/
 debian/files
 debian/make.debhelper.log
 debian/make.substvars
@@ -48,4 +50,3 @@ po/Makevars.template
 po/POTFILES
 stamp-h1
 w32/Makefile
-
