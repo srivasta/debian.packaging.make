@@ -1,5 +1,5 @@
 /* Internals of variables for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -222,8 +222,7 @@ define_variable_in_set (const char *name, unsigned int length,
          than this one, don't redefine it.  */
       if ((int) origin >= (int) v->origin)
         {
-          if (v->value != 0)
-            free (v->value);
+          free (v->value);
           v->value = xstrdup (value);
           if (flocp != 0)
             v->fileinfo = *flocp;
@@ -785,12 +784,8 @@ merge_variable_set_lists (struct variable_set_list **setlist0,
 void
 define_automatic_variables (void)
 {
-#if defined(WINDOWS32) || defined(__EMX__)
-  extern char* default_shell;
-#else
-  extern char default_shell[];
-#endif
-  register struct variable *v;
+  extern const char* default_shell;
+  struct variable *v;
   char buf[200];
 
   sprintf (buf, "%u", makelevel);
@@ -1045,7 +1040,7 @@ target_environment (struct file *file)
           }
     }
 
-  makelevel_key.name = MAKELEVEL_NAME;
+  makelevel_key.name = xstrdup (MAKELEVEL_NAME);
   makelevel_key.length = MAKELEVEL_LENGTH;
   hash_delete (&table, &makelevel_key);
 
@@ -1237,8 +1232,7 @@ do_variable_definition (const gmk_floc *flocp, const char *varname,
             alloc_value[oldlen] = ' ';
             memcpy (&alloc_value[oldlen + 1], val, vallen + 1);
 
-            if (tp)
-              free (tp);
+            free (tp);
           }
       }
     }
@@ -1328,7 +1322,7 @@ do_variable_definition (const gmk_floc *flocp, const char *varname,
   if ((origin == o_file || origin == o_override || origin == o_command)
       && streq (varname, "SHELL"))
     {
-      extern char *default_shell;
+      extern const char *default_shell;
 
       /* Call shell locator function. If it returns TRUE, then
          set no_default_sh_exe to indicate sh was found and
@@ -1363,8 +1357,7 @@ do_variable_definition (const gmk_floc *flocp, const char *varname,
           else
             v = lookup_variable (varname, strlen (varname));
 
-          if (tp)
-            free (tp);
+          free (tp);
         }
     }
   else
@@ -1384,8 +1377,7 @@ do_variable_definition (const gmk_floc *flocp, const char *varname,
   v->append = append;
   v->conditional = conditional;
 
-  if (alloc_value)
-    free (alloc_value);
+  free (alloc_value);
 
   return v->special ? set_special_var (v) : v;
 }
@@ -1537,7 +1529,7 @@ parse_variable_definition (const char *p, struct variable *var)
    returned.  */
 
 struct variable *
-assign_variable_definition (struct variable *v, char *line)
+assign_variable_definition (struct variable *v, const char *line)
 {
   char *name;
 
@@ -1551,7 +1543,7 @@ assign_variable_definition (struct variable *v, char *line)
   v->name = allocated_variable_expand (name);
 
   if (v->name[0] == '\0')
-    fatal (&v->fileinfo, _("empty variable name"));
+    O (fatal, &v->fileinfo, _("empty variable name"));
 
   return v;
 }
@@ -1570,7 +1562,7 @@ assign_variable_definition (struct variable *v, char *line)
    returned.  */
 
 struct variable *
-try_variable_definition (const gmk_floc *flocp, char *line,
+try_variable_definition (const gmk_floc *flocp, const char *line,
                          enum variable_origin origin, int target_var)
 {
   struct variable v;
@@ -1690,11 +1682,11 @@ print_noauto_variable (const void *item, void *arg)
 /* Print all the variables in SET.  PREFIX is printed before
    the actual variable definitions (everything else is comments).  */
 
-void
-print_variable_set (struct variable_set *set, char *prefix, int pauto)
+static void
+print_variable_set (struct variable_set *set, const char *prefix, int pauto)
 {
   hash_map_arg (&set->table, (pauto ? print_auto_variable : print_variable),
-                prefix);
+                (void *)prefix);
 
   fputs (_("# variable set hash-table stats:\n"), stdout);
   fputs ("# ", stdout);
@@ -1721,7 +1713,7 @@ print_variable_data_base (void)
       {
         ++rules;
         printf ("\n%s :\n", p->target);
-        print_variable (&p->variable, "# ");
+        print_variable (&p->variable, (void *)"# ");
       }
 
     if (rules == 0)
@@ -1768,16 +1760,10 @@ sync_Path_environment (void)
   if (!path)
     return;
 
-  /*
-   * If done this before, don't leak memory unnecessarily.
-   * Free the previous entry before allocating new one.
-   */
-  if (environ_path)
-    free (environ_path);
+  /* If done this before, free the previous entry before allocating new one.  */
+  free (environ_path);
 
-  /*
-   * Create something WINDOWS32 world can grok
-   */
+  /* Create something WINDOWS32 world can grok.  */
   convert_Path_to_windows32 (path, ';');
   environ_path = xstrdup (concat (3, "PATH", "=", path));
   putenv (environ_path);

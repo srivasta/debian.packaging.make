@@ -1,6 +1,6 @@
 # This is a -*-Makefile-*-, or close enough
 #
-# Copyright (C) 1997-2013 Free Software Foundation, Inc.
+# Copyright (C) 1997-2014 Free Software Foundation, Inc.
 # This file is part of GNU Make.
 #
 # GNU Make is free software; you can redistribute it and/or modify it under
@@ -40,14 +40,10 @@ else
 endif
 
 make_SOURCES =	ar.c arscan.c commands.c default.c dir.c expand.c file.c \
-		function.c getopt.c getopt1.c implicit.c job.c load.c \
+		function.c getopt.c getopt1.c guile.c implicit.c job.c load.c \
 		loadapi.c main.c misc.c output.c read.c remake.c rule.c \
 		signame.c strcache.c variable.c version.c vpath.c hash.c \
 		$(remote)
-
-if HAVE_GUILE
-  make_SOURCES += guile.c
-endif
 
 EXTRA_make_SOURCES = vmsjobs.c remote-stub.c remote-cstms.c
 
@@ -176,7 +172,7 @@ loadavg_LDADD = @GETLOADAVG_LIBS@
 #
 MAKETESTFLAGS =
 
-check-regression:
+check-regression: tests/config-flags.pm
 	@if test -f '$(srcdir)/tests/run_make_tests'; then \
 	  if $(PERL) -v >/dev/null 2>&1; then \
 	    case `cd '$(srcdir)'; pwd` in `pwd`) : ;; \

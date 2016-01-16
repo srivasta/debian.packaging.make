@@ -1,5 +1,5 @@
 /* Basic dependency engine for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -226,10 +226,10 @@ update_goal_chain (struct dep *goals)
                   && file->update_status == us_success && !g->changed
                   /* Never give a message under -s or -q.  */
                   && !silent_flag && !question_flag)
-                message (1, ((file->phony || file->cmds == 0)
-                             ? _("Nothing to be done for '%s'.")
-                             : _("'%s' is up to date.")),
-                         file->name);
+                OS (message, 1, ((file->phony || file->cmds == 0)
+                                 ? _("Nothing to be done for '%s'.")
+                                 : _("'%s' is up to date.")),
+                    file->name);
 
               /* This goal is finished.  Remove it from the chain.  */
               if (lastgoal == 0)
@@ -380,24 +380,30 @@ complain (struct file *file)
 
   if (d == 0)
     {
-      const char *msg_noparent
-        = _("%sNo rule to make target '%s'%s");
-      const char *msg_parent
-        = _("%sNo rule to make target '%s', needed by '%s'%s");
-
       /* Didn't find any dependencies to complain about. */
-      if (!keep_going_flag)
+      if (file->parent)
         {
-          if (file->parent == 0)
-            fatal (NILF, msg_noparent, "", file->name, "");
+          size_t l = strlen (file->name) + strlen (file->parent->name) + 4;
 
-          fatal (NILF, msg_parent, "", file->name, file->parent->name, "");
+          if (!keep_going_flag)
+            fatal (NILF, l,
+                   _("%sNo rule to make target '%s', needed by '%s'%s"),
+                   "", file->name, file->parent->name, "");
+
+          error (NILF, l, _("%sNo rule to make target '%s', needed by '%s'%s"),
+                 "*** ", file->name, file->parent->name, ".");
         }
-
-      if (file->parent == 0)
-        error (NILF, msg_noparent, "*** ", file->name, ".");
       else
-        error (NILF, msg_parent, "*** ", file->name, file->parent->name, ".");
+        {
+          size_t l = strlen (file->name) + 4;
+
+          if (!keep_going_flag)
+            fatal (NILF, l,
+                   _("%sNo rule to make target '%s'%s"), "", file->name, "");
+
+          error (NILF, l,
+                 _("%sNo rule to make target '%s'%s"), "*** ", file->name, ".");
+        }
 
       file->no_diag = 0;
     }
@@ -485,8 +491,9 @@ update_file_1 (struct file *file, unsigned int depth)
       /* Avoid spurious rebuilds due to low resolution time stamps.  */
       int ns = FILE_TIMESTAMP_NS (this_mtime);
       if (ns != 0)
-        error (NILF, _("*** Warning: .LOW_RESOLUTION_TIME file '%s' has a high resolution time stamp"),
-               file->name);
+        OS (error, NILF,
+            _("*** Warning: .LOW_RESOLUTION_TIME file '%s' has a high resolution time stamp"),
+            file->name);
       this_mtime += FILE_TIMESTAMPS_PER_S - 1 - ns;
     }
 
@@ -540,8 +547,8 @@ update_file_1 (struct file *file, unsigned int depth)
 
           if (is_updating (d->file))
             {
-              error (NILF, _("Circular %s <- %s dependency dropped."),
-                     file->name, d->file->name);
+              OSS (error, NILF, _("Circular %s <- %s dependency dropped."),
+                   file->name, d->file->name);
               /* We cannot free D here because our the caller will still have
                  a reference to it when we were called recursively via
                  check_dep below.  */
@@ -689,8 +696,8 @@ update_file_1 (struct file *file, unsigned int depth)
 
       if (depth == 0 && keep_going_flag
           && !just_print_flag && !question_flag)
-        error (NILF,
-               _("Target '%s' not remade because of errors."), file->name);
+        OS (error, NILF,
+            _("Target '%s' not remade because of errors."), file->name);
 
       return dep_status;
     }
@@ -1079,8 +1086,8 @@ check_dep (struct file *file, unsigned int depth,
 
               if (is_updating (d->file))
                 {
-                  error (NILF, _("Circular %s <- %s dependency dropped."),
-                         file->name, d->file->name);
+                  OSS (error, NILF, _("Circular %s <- %s dependency dropped."),
+                       file->name, d->file->name);
                   if (ld == 0)
                     {
                       file->deps = d->next;
@@ -1139,7 +1146,7 @@ static enum update_status
 touch_file (struct file *file)
 {
   if (!silent_flag)
-    message (0, "touch %s", file->name);
+    OS (message, 0, "touch %s", file->name);
 
   /* Print-only (-n) takes precedence over touch (-t).  */
   if (just_print_flag)
@@ -1386,8 +1393,9 @@ f_mtime (struct file *file, int search)
           if (adjusted_now < adjusted_mtime)
             {
 #ifdef NO_FLOAT
-              error (NILF, _("Warning: File '%s' has modification time in the future"),
-                     file->name);
+              OS (error, NILF,
+                  _("Warning: File '%s' has modification time in the future"),
+                  file->name);
 #else
               double from_now =
                 (FILE_TIMESTAMP_S (mtime) - FILE_TIMESTAMP_S (now)
@@ -1399,8 +1407,9 @@ f_mtime (struct file *file, int search)
                 sprintf (from_now_string, "%lu", (unsigned long) from_now);
               else
                 sprintf (from_now_string, "%.2g", from_now);
-              error (NILF, _("Warning: File '%s' has modification time %s s in the future"),
-                     file->name, from_now_string);
+              OSS (error, NILF,
+                   _("Warning: File '%s' has modification time %s s in the future"),
+                   file->name, from_now_string);
 #endif
               clock_skew_detected = 1;
             }
@@ -1537,7 +1546,7 @@ name_mtime (const char *name)
 static const char *
 library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
 {
-  static char *dirs[] =
+  static const char *dirs[] =
     {
 #ifdef MULTIARCH_DIRS
       MULTIARCH_DIRS
@@ -1581,7 +1590,7 @@ library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
   /* Information about the earliest (in the vpath sequence) match.  */
   unsigned int best_vpath = 0, best_path = 0;
 
-  char **dp;
+  const char **dp;
 
   libpatterns = xstrdup (variable_expand ("$(.LIBPATTERNS)"));
 
@@ -1611,7 +1620,8 @@ library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
         if (!p3)
           {
             /* Give a warning if there is no pattern.  */
-            error (NILF, _(".LIBPATTERNS element '%s' is not a pattern"), p);
+            OS (error, NILF,
+                _(".LIBPATTERNS element '%s' is not a pattern"), p);
             p[len] = c;
             continue;
           }

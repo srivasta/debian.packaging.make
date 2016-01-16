@@ -1,5 +1,5 @@
 /* Command processing for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -401,7 +401,7 @@ chop_commands (struct commands *cmds)
      CMDS->any_recurse flag.  */
 
   if (nlines > USHRT_MAX)
-    fatal (&cmds->fileinfo, _("Recipe has too many lines (%ud)"), nlines);
+    ON (fatal, &cmds->fileinfo, _("Recipe has too many lines (%ud)"), nlines);
 
   cmds->ncommand_lines = nlines;
   cmds->command_lines = lines;
@@ -585,7 +585,7 @@ fatal_error_signal (int sig)
   if (sig == SIGQUIT)
     /* We don't want to send ourselves SIGQUIT, because it will
        cause a core dump.  Just exit instead.  */
-    exit (EXIT_FAILURE);
+    exit (MAKE_TROUBLE);
 #endif
 
 #ifdef WINDOWS32
@@ -625,11 +625,13 @@ delete_target (struct file *file, const char *on_behalf_of)
       if (ar_member_date (file->name) != file_date)
         {
           if (on_behalf_of)
-            error (NILF, _("*** [%s] Archive member '%s' may be bogus; not deleted"),
-                   on_behalf_of, file->name);
+            OSS (error, NILF,
+                 _("*** [%s] Archive member '%s' may be bogus; not deleted"),
+                 on_behalf_of, file->name);
           else
-            error (NILF, _("*** Archive member '%s' may be bogus; not deleted"),
-                   file->name);
+            OS (error, NILF,
+                _("*** Archive member '%s' may be bogus; not deleted"),
+                file->name);
         }
       return;
     }
@@ -641,9 +643,10 @@ delete_target (struct file *file, const char *on_behalf_of)
       && FILE_TIMESTAMP_STAT_MODTIME (file->name, st) != file->last_mtime)
     {
       if (on_behalf_of)
-        error (NILF, _("*** [%s] Deleting file '%s'"), on_behalf_of, file->name);
+        OSS (error, NILF,
+             _("*** [%s] Deleting file '%s'"), on_behalf_of, file->name);
       else
-        error (NILF, _("*** Deleting file '%s'"), file->name);
+        OS (error, NILF, _("*** Deleting file '%s'"), file->name);
       if (unlink (file->name) < 0
           && errno != ENOENT)   /* It disappeared; so what.  */
         perror_with_name ("unlink: ", file->name);

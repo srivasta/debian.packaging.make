@@ -3,7 +3,7 @@
 # NOTE: If you have no 'make' program at all to process this makefile,
 # run 'build_w32.bat' instead.
 #
-# Copyright (C) 1996-2013 Free Software Foundation, Inc.
+# Copyright (C) 1996-2014 Free Software Foundation, Inc.
 # This file is part of GNU Make.
 #
 # GNU Make is free software; you can redistribute it and/or modify it under
@@ -32,9 +32,9 @@ CFLAGS_debug = $(CFLAGS_any) /Od /D DEBUG /D _DEBUG /FR.\WinDebug/ /Fp.\WinDebug
 CFLAGS_release = $(CFLAGS_any) /O2 /D NDEBUG /FR.\WinRel/ /Fp.\WinRel/make.pch /Fo.\WinRel/
 
 LDFLAGS_debug = w32\subproc\WinDebug\subproc.lib /NOLOGO /SUBSYSTEM:console\
-	/INCREMENTAL:no /PDB:WinDebug/make.pdb /OUT:WinDebug/make.exe /DEBUG
+	/STACK:0x400000 /INCREMENTAL:no /PDB:WinDebug/make.pdb /OUT:WinDebug/make.exe /DEBUG
 LDFLAGS_release = w32\subproc\WinRel\subproc.lib /NOLOGO /SUBSYSTEM:console\
-	/INCREMENTAL:no /OUT:WinRel/make.exe
+	/STACK:0x400000 /INCREMENTAL:no /OUT:WinRel/make.exe
 
 all: config.h subproc Release Debug
 
@@ -72,7 +72,7 @@ $(OUTDIR):
 
 LIBS = kernel32.lib user32.lib advapi32.lib
 
-#guile = $(OUTDIR)/guile.obj
+guile = $(OUTDIR)/guile.obj
 
 OBJS = \
 	$(OUTDIR)/ar.obj \
@@ -89,6 +89,7 @@ OBJS = \
 	$(OUTDIR)/hash.obj \
 	$(OUTDIR)/implicit.obj \
 	$(OUTDIR)/job.obj \
+	$(OUTDIR)/load.obj \
 	$(OUTDIR)/main.obj \
 	$(OUTDIR)/misc.obj \
 	$(OUTDIR)/output.obj \
@@ -105,6 +106,7 @@ OBJS = \
 	$(OUTDIR)/fnmatch.obj \
 	$(OUTDIR)/dirent.obj \
 	$(OUTDIR)/pathstuff.obj \
+	$(OUTDIR)/posixfcn.obj \
 	$(guile)
 
 $(OUTDIR)/make.exe: $(OUTDIR) $(OBJS)
@@ -120,6 +122,8 @@ $(OUTDIR)/glob.obj : glob/glob.c
 $(OUTDIR)/fnmatch.obj : glob/fnmatch.c
 	$(CC) $(CFLAGS) /c $?
 $(OUTDIR)/dirent.obj : w32/compat/dirent.c
+	$(CC) $(CFLAGS) /c $?
+$(OUTDIR)/posixfcn.obj : w32/compat/posixfcn.c
 	$(CC) $(CFLAGS) /c $?
 $(OUTDIR)/pathstuff.obj : w32/pathstuff.c
 	$(CC) $(CFLAGS) /c $?
@@ -144,8 +148,7 @@ $(OUTDIR)/arscan.obj: arscan.c makeint.h config.h \
  gettext.h \
 
 # .deps/commands.Po
-$(OUTDIR)/commands.obj: commands.c \
- makeint.h config.h \
+$(OUTDIR)/commands.obj: commands.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
@@ -304,7 +307,8 @@ $(OUTDIR)/remake.obj: remake.c makeint.h config.h \
 # dummy
 
 # .deps/remote-stub.Po
-$(OUTDIR)/remote-stub.obj: remote-stub.c makeint.h config.h \
+$(OUTDIR)/remote-stub.obj: remote-stub.c makeint.h \
+ config.h \
  gnumake.h \
  getopt.h \
  gettext.h \

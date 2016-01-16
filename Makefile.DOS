@@ -1,7 +1,7 @@
 # -*-Makefile-*- template for DJGPP
 # Makefile.in generated automatically by automake 1.2 from Makefile.am
 #
-# Copyright (C) 1994-2013 Free Software Foundation, Inc.
+# Copyright (C) 1994-2014 Free Software Foundation, Inc.
 # This file is part of GNU Make.
 #
 # GNU Make is free software; you can redistribute it and/or modify it under
@@ -71,13 +71,13 @@ PACKAGE = make
 PERL = perl
 RANLIB = ranlib
 REMOTE = stub
-VERSION = 4.0
+VERSION = 4.1
 
 AUTOMAKE_OPTIONS = 1.2
 
 bin_PROGRAMS =	make$(EXEEXT)
 
-make_SOURCES =	ar.c arscan.c commands.c default.c dir.c expand.c file.c function.c getopt.c getopt1.c implicit.c job.c load.c loadapi.c main.c misc.c output.c read.c remake.c rule.c signame.c strcache.c variable.c version.c vpath.c hash.c guile.c remote-$(REMOTE).c
+make_SOURCES =	ar.c arscan.c commands.c default.c dir.c expand.c file.c function.c getopt.c getopt1.c guile.c implicit.c job.c load.c loadapi.c main.c misc.c output.c read.c remake.c rule.c signame.c strcache.c variable.c version.c vpath.c hash.c remote-$(REMOTE).c
 # This should include the glob/ prefix
 libglob_a_SOURCES =	glob/fnmatch.c glob/glob.c glob/fnmatch.h glob/glob.h
 make_LDADD =	  glob/libglob.a
@@ -90,7 +90,7 @@ BUILT_SOURCES =	README build.sh-in
 
 EXTRA_DIST =	$(BUILT_SOURCES) $(man_MANS) README.customs remote-cstms.c  make-stds.texi texinfo.tex SCOPTIONS SMakefile  Makefile.ami README.Amiga config.ami amiga.c amiga.h  NMakefile README.DOS configh.dos configure.bat makefile.com  README.W32 build_w32.bat config.h-W32 subproc.bat make.lnk  config.h-vms makefile.vms README.VMS vmsdir.h vmsfunctions.c  vmsify.c gmk-default.scm gmk-default.h
 
-SUBDIRS =	glob 
+SUBDIRS =	glob doc
 mkinstalldirs = ${exec_prefix}/bin/gmkdir -p
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES =  build.sh
@@ -103,7 +103,7 @@ DEFS =  -I. -I$(srcdir) -I.
 CPPFLAGS = -DHAVE_CONFIG_H
 LDFLAGS =
 LIBS =
-make_OBJECTS =  ar.o arscan.o commands.o default.o dir.o expand.o file.o function.o getopt.o getopt1.o implicit.o job.o load.o loadapi.o main.o misc.o output.o read.o remake.o rule.o signame.o strcache.o variable.o version.o vpath.o hash.o guile.o remote-$(REMOTE).o
+make_OBJECTS =  ar.o arscan.o commands.o default.o dir.o expand.o file.o function.o getopt.o getopt1.o guile.o implicit.o job.o load.o loadapi.o main.o misc.o output.o read.o remake.o rule.o signame.o strcache.o variable.o version.o vpath.o hash.o remote-$(REMOTE).o
 make_DEPENDENCIES =    glob/libglob.a
 make_LDFLAGS =
 libglob_a_LIBADD =
@@ -606,8 +606,7 @@ arscan.o: arscan.c makeint.h config.h \
  gettext.h \
 
 # .deps/commands.Po
-commands.o: commands.c \
- makeint.h config.h \
+commands.o: commands.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
@@ -766,7 +765,8 @@ remake.o: remake.c makeint.h config.h \
 # dummy
 
 # .deps/remote-stub.Po
-remote-stub.o: remote-stub.c makeint.h config.h \
+remote-stub.o: remote-stub.c makeint.h \
+ config.h \
  gnumake.h \
  getopt.h \
  gettext.h \

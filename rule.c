@@ -1,5 +1,5 @@
 /* Pattern and suffix rule internals for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -140,8 +140,7 @@ count_implicit_rule_limits (void)
       rule = next;
     }
 
-  if (name != 0)
-    free (name);
+  free (name);
 }
 
 /* Create a pattern rule from a suffix rule.
@@ -357,7 +356,7 @@ void
 install_pattern_rule (struct pspec *p, int terminal)
 {
   struct rule *r;
-  char *ptr;
+  const char *ptr;
 
   r = xmalloc (sizeof (struct rule));
 
@@ -373,7 +372,7 @@ install_pattern_rule (struct pspec *p, int terminal)
   ++r->suffixes[0];
 
   ptr = p->dep;
-  r->deps = PARSE_SIMPLE_SEQ (&ptr, struct dep);
+  r->deps = PARSE_SIMPLE_SEQ ((char **)&ptr, struct dep);
 
   if (new_pattern_rule (r, 0))
     {
@@ -528,7 +527,7 @@ print_rule_data_base (void)
       /* This can happen if a fatal error was detected while reading the
          makefiles and thus count_implicit_rule_limits wasn't called yet.  */
       if (num_pattern_rules != 0)
-        fatal (NILF, _("BUG: num_pattern_rules is wrong!  %u != %u"),
-               num_pattern_rules, rules);
+        ONN (fatal, NILF, _("BUG: num_pattern_rules is wrong!  %u != %u"),
+             num_pattern_rules, rules);
     }
 }
