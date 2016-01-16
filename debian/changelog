@@ -15,8 +15,10 @@ make-dfsg (4.1-1) unstable; urgency=low
     Josh Triplett (Closes: #761301).
   * Bug fix: "make instead of make-guile should be standard", thanks to
     Joey Hess (Closes: #762017).
+  * Make make and make-guile be Multi-Arch: Allowed packages, since it
+    might not be feasible to make make architecture agnostic.
 
- -- Manoj Srivastava <srivasta@debian.org>  Sat, 16 Jan 2016 01:04:09 -0800
+ -- Manoj Srivastava <srivasta@debian.org>  Sat, 16 Jan 2016 01:47:13 -0800
 
 make-dfsg (4.0-8) unstable; urgency=high
 

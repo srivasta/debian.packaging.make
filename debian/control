@@ -16,6 +16,7 @@ Conflicts: make-guile
 Architecture: any
 Priority: optional
 Replaces: make-guile
+Multi-Arch: allowed
 Description: utility for directing compilation
  GNU Make is a utility which controls the generation of executables
  and other target files of a program from the program's source
@@ -35,6 +36,7 @@ Conflicts: make
 Provides: make
 Replaces: make
 Architecture: any
+Multi-Arch: allowed
 Description: utility for directing compilation with guile support
  GNU Make is a utility which controls the generation of executables
  and other target files of a program from the program's source
