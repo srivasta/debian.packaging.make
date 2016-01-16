@@ -1,6 +1,6 @@
 /* Replacements for Posix functions and Posix functionality for MS-Windows.
 
-Copyright (C) 2013 Free Software Foundation, Inc.
+Copyright (C) 2013-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -454,3 +454,33 @@ dlclose (void *handle)
 
 #endif  /* MAKE_LOAD */
 
+
+/* MS runtime's isatty returns non-zero for any character device,
+   including the null device, which is not what we want.  */
+int
+isatty (int fd)
+{
+  HANDLE fh = (HANDLE) _get_osfhandle (fd);
+  DWORD con_mode;
+
+  if (fh == INVALID_HANDLE_VALUE)
+    {
+      errno = EBADF;
+      return 0;
+    }
+  if (GetConsoleMode (fh, &con_mode))
+    return 1;
+
+  errno = ENOTTY;
+  return 0;
+}
+
+char *
+ttyname (int fd)
+{
+  /* This "knows" that Make only asks about stdout and stderr.  A more
+     sophisticated implementation should test whether FD is open for
+     input or output.  We can do that by looking at the mode returned
+     by GetConsoleMode.  */
+  return "CONOUT$";
+}

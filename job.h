@@ -1,5 +1,5 @@
 /* Definitions for managing subprocesses in GNU Make.
-Copyright (C) 1992-2013 Free Software Foundation, Inc.
+Copyright (C) 1992-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -39,8 +39,8 @@ this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #ifdef NO_OUTPUT_SYNC
 # define RECORD_SYNC_MUTEX(m) \
-    error (NILF, \
-           _("-O[TYPE] (--output-sync[=TYPE]) is not configured for this build."));
+    O (error, NILF,                                                    \
+       _("-O[TYPE] (--output-sync[=TYPE]) is not configured for this build."));
 #else
 # ifdef WINDOWS32
 /* For emulations in w32/compat/posixfcn.c.  */

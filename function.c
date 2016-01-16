@@ -1,5 +1,5 @@
 /* Builtin function expansion for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -519,8 +519,25 @@ func_notdir_suffix (char *o, char **argv, const char *funcname)
 
   int is_suffix = funcname[0] == 's';
   int is_notdir = !is_suffix;
-  int stop = MAP_PATHSEP | (is_suffix ? MAP_DOT : 0);
+  int stop = MAP_DIRSEP | (is_suffix ? MAP_DOT : 0);
+#ifdef VMS
+  /* For VMS list_iterator points to a comma separated list. To use the common
+     [find_]next_token, create a local copy and replace the commas with
+     spaces. Obviously, there is a problem if there is a ',' in the VMS filename
+     (can only happen on ODS5), the same problem as with spaces in filenames,
+     which seems to be present in make on all platforms. */
+  char *vms_list_iterator = alloca(strlen(list_iterator) + 1);
+  int i;
+  for (i = 0; list_iterator[i]; i++)
+    if (list_iterator[i] == ',')
+      vms_list_iterator[i] = ' ';
+    else
+      vms_list_iterator[i] = list_iterator[i];
+  vms_list_iterator[i] = list_iterator[i];
+  while ((p2 = find_next_token((const char**) &vms_list_iterator, &len)) != 0)
+#else
   while ((p2 = find_next_token (&list_iterator, &len)) != 0)
+#endif
     {
       const char *p = p2 + len - 1;
 
@@ -548,7 +565,11 @@ func_notdir_suffix (char *o, char **argv, const char *funcname)
 
       if (is_notdir || p >= p2)
         {
+#ifdef VMS
+          o = variable_buffer_output (o, ",", 1);
+#else
           o = variable_buffer_output (o, " ", 1);
+#endif
           doneany = 1;
         }
     }
@@ -572,8 +593,21 @@ func_basename_dir (char *o, char **argv, const char *funcname)
 
   int is_basename = funcname[0] == 'b';
   int is_dir = !is_basename;
-  int stop = MAP_PATHSEP | (is_basename ? MAP_DOT : 0) | MAP_NUL;
+  int stop = MAP_DIRSEP | (is_basename ? MAP_DOT : 0) | MAP_NUL;
+#ifdef VMS
+  /* As in func_notdir_suffix ... */
+  char *vms_p3 = alloca(strlen(p3) + 1);
+  int i;
+  for (i = 0; p3[i]; i++)
+    if (p3[i] == ',')
+      vms_p3[i] = ' ';
+    else
+      vms_p3[i] = p3[i];
+  vms_p3[i] = p3[i];
+  while ((p2 = find_next_token((const char**) &vms_p3, &len)) != 0)
+#else
   while ((p2 = find_next_token (&p3, &len)) != 0)
+#endif
     {
       const char *p = p2 + len - 1;
       while (p >= p2 && ! STOP_SET (*p, stop))
@@ -602,7 +636,11 @@ func_basename_dir (char *o, char **argv, const char *funcname)
         /* The entire name is the basename.  */
         o = variable_buffer_output (o, p2, len);
 
+#ifdef VMS
+      o = variable_buffer_output (o, ",", 1);
+#else
       o = variable_buffer_output (o, " ", 1);
+#endif
       doneany = 1;
     }
 
@@ -726,7 +764,7 @@ check_numeric (const char *s, const char *msg)
       break;
 
   if (s <= end || end - beg < 0)
-    fatal (*expanding_var, "%s: '%s'", msg, beg);
+    OSS (fatal, *expanding_var, "%s: '%s'", msg, beg);
 }
 
 
@@ -743,8 +781,8 @@ func_word (char *o, char **argv, const char *funcname UNUSED)
   i = atoi (argv[0]);
 
   if (i == 0)
-    fatal (*expanding_var,
-           _("first argument to 'word' function must be greater than 0"));
+    O (fatal, *expanding_var,
+       _("first argument to 'word' function must be greater than 0"));
 
   end_p = argv[1];
   while ((p = find_next_token (&end_p, 0)) != 0)
@@ -770,8 +808,8 @@ func_wordlist (char *o, char **argv, const char *funcname UNUSED)
 
   start = atoi (argv[0]);
   if (start < 1)
-    fatal (*expanding_var,
-           "invalid first argument to 'wordlist' function: '%d'", start);
+    ON (fatal, *expanding_var,
+        "invalid first argument to 'wordlist' function: '%d'", start);
 
   count = atoi (argv[1]) - start + 1;
 
@@ -1082,10 +1120,10 @@ func_error (char *o, char **argv, const char *funcname)
   switch (*funcname)
     {
     case 'e':
-      fatal (reading_file, "%s", msg);
+      OS (fatal, reading_file, "%s", msg);
 
     case 'w':
-      error (reading_file, "%s", msg);
+      OS (error, reading_file, "%s", msg);
       break;
 
     case 'i':
@@ -1094,7 +1132,7 @@ func_error (char *o, char **argv, const char *funcname)
       break;
 
     default:
-      fatal (*expanding_var, "Internal error: func_error: '%s'", funcname);
+      OS (fatal, *expanding_var, "Internal error: func_error: '%s'", funcname);
     }
 
   /* The warning function expands to the empty string.  */
@@ -1416,7 +1454,7 @@ int shell_function_pid = 0, shell_function_completed;
 
 
 int
-windows32_openpipe (int *pipedes, pid_t *pid_p, char **command_argv, char **envp)
+windows32_openpipe (int *pipedes, int errfd, pid_t *pid_p, char **command_argv, char **envp)
 {
   SECURITY_ATTRIBUTES saAttr;
   HANDLE hIn = INVALID_HANDLE_VALUE;
@@ -1457,11 +1495,12 @@ windows32_openpipe (int *pipedes, pid_t *pid_p, char **command_argv, char **envp
         }
       if (hIn == INVALID_HANDLE_VALUE)
         {
-          error (NILF, _("windows32_openpipe: DuplicateHandle(In) failed (e=%ld)\n"), e);
+          ON (error, NILF,
+              _("windows32_openpipe: DuplicateHandle(In) failed (e=%ld)\n"), e);
           return -1;
         }
     }
-  tmpErr = GetStdHandle (STD_ERROR_HANDLE);
+  tmpErr = (HANDLE)_get_osfhandle (errfd);
   if (DuplicateHandle (GetCurrentProcess (), tmpErr,
                        GetCurrentProcess (), &hErr,
                        0, TRUE, DUPLICATE_SAME_ACCESS) == FALSE)
@@ -1480,14 +1519,15 @@ windows32_openpipe (int *pipedes, pid_t *pid_p, char **command_argv, char **envp
         }
       if (hErr == INVALID_HANDLE_VALUE)
         {
-          error (NILF, _("windows32_openpipe: DuplicateHandle(Err) failed (e=%ld)\n"), e);
+          ON (error, NILF,
+              _("windows32_openpipe: DuplicateHandle(Err) failed (e=%ld)\n"), e);
           return -1;
         }
     }
 
   if (! CreatePipe (&hChildOutRd, &hChildOutWr, &saAttr, 0))
     {
-      error (NILF, _("CreatePipe() failed (e=%ld)\n"), GetLastError());
+      ON (error, NILF, _("CreatePipe() failed (e=%ld)\n"), GetLastError());
       return -1;
     }
 
@@ -1495,7 +1535,7 @@ windows32_openpipe (int *pipedes, pid_t *pid_p, char **command_argv, char **envp
 
   if (!hProcess)
     {
-      error (NILF, _("windows32_openpipe(): process_init_fd() failed\n"));
+      O (error, NILF, _("windows32_openpipe(): process_init_fd() failed\n"));
       return -1;
     }
 
@@ -1608,7 +1648,7 @@ char *
 func_shell_base (char *o, char **argv, int trim_newlines)
 {
   fprintf (stderr, "This platform does not support shell\n");
-  die (EXIT_FAILURE);
+  die (MAKE_TROUBLE);
   return NULL;
 }
 
@@ -1689,7 +1729,7 @@ func_shell_base (char *o, char **argv, int trim_newlines)
       return o;
     }
 #elif defined(WINDOWS32)
-  windows32_openpipe (pipedes, &pid, command_argv, envp);
+  windows32_openpipe (pipedes, errfd, &pid, command_argv, envp);
   /* Restore the value of just_print_flag.  */
   just_print_flag = j_p_f;
 
@@ -1950,7 +1990,7 @@ func_not (char *o, char **argv, char *funcname UNUSED)
 
 #ifdef HAVE_DOS_PATHS
 # ifdef __CYGWIN__
-#  define IS_ABSOLUTE(n) ((n[0] && n[1] == ':') || STOP_SET (n[0], MAP_PATHSEP))
+#  define IS_ABSOLUTE(n) ((n[0] && n[1] == ':') || STOP_SET (n[0], MAP_DIRSEP))
 # else
 #  define IS_ABSOLUTE(n) (n[0] && n[1] == ':')
 # endif
@@ -1984,9 +2024,9 @@ abspath (const char *name, char *apath)
       strcpy (apath, starting_directory);
 
 #ifdef HAVE_DOS_PATHS
-      if (STOP_SET (name[0], MAP_PATHSEP))
+      if (STOP_SET (name[0], MAP_DIRSEP))
         {
-          if (STOP_SET (name[1], MAP_PATHSEP))
+          if (STOP_SET (name[1], MAP_DIRSEP))
             {
               /* A UNC.  Don't prepend a drive letter.  */
               apath[0] = name[0];
@@ -2006,8 +2046,8 @@ abspath (const char *name, char *apath)
   else
     {
 #if defined(__CYGWIN__) && defined(HAVE_DOS_PATHS)
-      if (STOP_SET (name[0], MAP_PATHSEP))
-	root_len = 1;
+      if (STOP_SET (name[0], MAP_DIRSEP))
+        root_len = 1;
 #endif
       strncpy (apath, name, root_len);
       apath[root_len] = '\0';
@@ -2015,7 +2055,7 @@ abspath (const char *name, char *apath)
       /* Get past the root, since we already copied it.  */
       name += root_len;
 #ifdef HAVE_DOS_PATHS
-      if (! STOP_SET (apath[root_len - 1], MAP_PATHSEP))
+      if (! STOP_SET (apath[root_len - 1], MAP_DIRSEP))
         {
           /* Convert d:foo into d:./foo and increase root_len.  */
           apath[2] = '.';
@@ -2035,11 +2075,11 @@ abspath (const char *name, char *apath)
       unsigned long len;
 
       /* Skip sequence of multiple path-separators.  */
-      while (STOP_SET (*start, MAP_PATHSEP))
+      while (STOP_SET (*start, MAP_DIRSEP))
         ++start;
 
       /* Find end of path component.  */
-      for (end = start; ! STOP_SET (*end, MAP_PATHSEP|MAP_NUL); ++end)
+      for (end = start; ! STOP_SET (*end, MAP_DIRSEP|MAP_NUL); ++end)
         ;
 
       len = end - start;
@@ -2052,12 +2092,12 @@ abspath (const char *name, char *apath)
         {
           /* Back up to previous component, ignore if at root already.  */
           if (dest > apath + root_len)
-            for (--dest; ! STOP_SET (dest[-1], MAP_PATHSEP); --dest)
+            for (--dest; ! STOP_SET (dest[-1], MAP_DIRSEP); --dest)
               ;
         }
       else
         {
-          if (! STOP_SET (dest[-1], MAP_PATHSEP))
+          if (! STOP_SET (dest[-1], MAP_DIRSEP))
             *dest++ = '/';
 
           if (dest + len >= apath_limit)
@@ -2070,7 +2110,7 @@ abspath (const char *name, char *apath)
     }
 
   /* Unless it is root strip trailing separator.  */
-  if (dest > apath + root_len && STOP_SET (dest[-1], MAP_PATHSEP))
+  if (dest > apath + root_len && STOP_SET (dest[-1], MAP_DIRSEP))
     --dest;
 
   *dest = '\0';
@@ -2148,20 +2188,25 @@ func_file (char *o, char **argv, const char *funcname UNUSED)
 
       fp = fopen (fn, mode);
       if (fp == NULL)
-        fatal (reading_file, _("open: %s: %s"), fn, strerror (errno));
-      else
+        {
+          const char *err = strerror (errno);
+          OSS (fatal, reading_file, _("open: %s: %s"), fn, err);
+        }
+      if (argv[1])
         {
           int l = strlen (argv[1]);
-          int nl = (l == 0 || argv[1][l-1] != '\n');
+          int nl = l == 0 || argv[1][l-1] != '\n';
 
           if (fputs (argv[1], fp) == EOF || (nl && fputc ('\n', fp) == EOF))
-            fatal (reading_file, _("write: %s: %s"), fn, strerror (errno));
-
-          fclose (fp);
+            {
+              const char *err = strerror (errno);
+              OSS (fatal, reading_file, _("write: %s: %s"), fn, err);
+            }
         }
+      fclose (fp);
     }
   else
-    fatal (reading_file, _("Invalid file operation: %s"), fn);
+    OS (fatal, reading_file, _("Invalid file operation: %s"), fn);
 
   return o;
 }
@@ -2275,7 +2320,7 @@ expand_builtin_function (char *o, int argc, char **argv,
   char *p;
 
   if (argc < (int)entry_p->minimum_args)
-    fatal (*expanding_var,
+    fatal (*expanding_var, strlen (entry_p->name),
            _("insufficient number of arguments (%d) to function '%s'"),
            argc, entry_p->name);
 
@@ -2287,8 +2332,8 @@ expand_builtin_function (char *o, int argc, char **argv,
     return o;
 
   if (!entry_p->fptr.func_ptr)
-    fatal (*expanding_var,
-           _("unimplemented on this platform: function '%s'"), entry_p->name);
+    OS (fatal, *expanding_var,
+        _("unimplemented on this platform: function '%s'"), entry_p->name);
 
   if (!entry_p->alloc_fn)
     return entry_p->fptr.func_ptr (o, argv, entry_p->name);
@@ -2350,7 +2395,7 @@ handle_function (char **op, const char **stringp)
       break;
 
   if (count >= 0)
-    fatal (*expanding_var,
+    fatal (*expanding_var, strlen (entry_p->name),
            _("unterminated call to function '%s': missing '%c'"),
            entry_p->name, closeparen);
 
@@ -2418,7 +2463,7 @@ handle_function (char **op, const char **stringp)
   if (entry_p->expand_args)
     for (argvp=argv; *argvp != 0; ++argvp)
       free (*argvp);
-  else if (abeg)
+  else
     free (abeg);
 
   return 1;
@@ -2543,17 +2588,17 @@ define_new_function (const gmk_floc *flocp, const char *name,
   len = e - name;
 
   if (len == 0)
-    fatal (flocp, _("Empty function name\n"));
+    O (fatal, flocp, _("Empty function name"));
   if (*name == '.' || *e != '\0')
-    fatal (flocp, _("Invalid function name: %s\n"), name);
+    OS (fatal, flocp, _("Invalid function name: %s"), name);
   if (len > 255)
-    fatal (flocp, _("Function name too long: %s\n"), name);
+    OS (fatal, flocp, _("Function name too long: %s"), name);
   if (min > 255)
-    fatal (flocp, _("Invalid minimum argument count (%d) for function %s\n"),
-           min, name);
+    ONS (fatal, flocp,
+         _("Invalid minimum argument count (%d) for function %s"), min, name);
   if (max > 255 || (max && max < min))
-    fatal (flocp, _("Invalid maximum argument count (%d) for function %s\n"),
-           max, name);
+    ONS (fatal, flocp,
+         _("Invalid maximum argument count (%d) for function %s"), max, name);
 
   ent = xmalloc (sizeof (struct function_table_entry));
   ent->name = name;

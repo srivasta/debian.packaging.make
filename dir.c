@@ -1,5 +1,5 @@
 /* Directory hashing for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -674,7 +674,7 @@ dir_contents_file_exists_p (struct directory_contents *dir,
       if (d == 0)
         {
           if (errno)
-            fatal (NILF, "INTERNAL: readdir: %s\n", strerror (errno));
+            pfatal_with_name ("INTERNAL: readdir");
           break;
         }
 
@@ -1172,13 +1172,6 @@ read_dirstream (__ptr_t stream)
   return 0;
 }
 
-static void
-ansi_free (void *p)
-{
-  if (p)
-    free (p);
-}
-
 /* On 64 bit ReliantUNIX (5.44 and above) in LFS mode, stat() is actually a
  * macro for stat64().  If stat is a macro, make a local wrapper function to
  * invoke it.
@@ -1224,7 +1217,7 @@ dir_setup_glob (glob_t *gl)
 {
   gl->gl_opendir = open_dirstream;
   gl->gl_readdir = read_dirstream;
-  gl->gl_closedir = ansi_free;
+  gl->gl_closedir = free;
   gl->gl_stat = local_stat;
   /* We don't bother setting gl_lstat, since glob never calls it.
      The slot is only there for compatibility with 4.4 BSD.  */

@@ -1,5 +1,5 @@
 /* Miscellaneous global declarations and portability cruft for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -172,9 +172,6 @@ unsigned int get_path_max (void);
 #define INTEGER_TYPE_MINIMUM(t) \
   (! INTEGER_TYPE_SIGNED (t) ? (t) 0 : ~ (t) 0 << (sizeof (t) * CHAR_BIT - 1))
 #define INTEGER_TYPE_MAXIMUM(t) (~ (t) 0 - INTEGER_TYPE_MINIMUM (t))
-
-/* The maximum number of digits needed to represent the largest integer.  */
-#define INTEGER_LENGTH sizeof("18446744073709551616")
 
 #ifndef CHAR_MAX
 # define CHAR_MAX INTEGER_TYPE_MAXIMUM (char)
@@ -353,8 +350,8 @@ char *strsignal (int signum);
 # include <malloc.h>
 # define pipe(_p)        _pipe((_p), 512, O_BINARY)
 # define kill(_pid,_sig) w32_kill((_pid),(_sig))
-/* MSVC doesn't have ftruncate.  */
-# ifdef _MSC_VER
+/* MSVC and Watcom C don't have ftruncate.  */
+# if defined(_MSC_VER) || defined(__WATCOMC__)
 #  define ftruncate(_fd,_len) _chsize(_fd,_len)
 # endif
 /* MinGW64 doesn't have _S_ISDIR.  */
@@ -400,8 +397,8 @@ extern int unixy_shell;
 #define MAP_USERFUNC    0x2000
 /* This means not only a '$', but skip the variable reference.  */
 #define MAP_VARIABLE    0x4000
-/* The set of characters which are path separators is OS-specific.  */
-#define MAP_PATHSEP     0x8000
+/* The set of characters which are directory separators is OS-specific.  */
+#define MAP_DIRSEP      0x8000
 
 #ifdef VMS
 # define MAP_VMSCOMMA   MAP_COMMA
@@ -409,7 +406,7 @@ extern int unixy_shell;
 # define MAP_VMSCOMMA   0x0000
 #endif
 
-#define STOP_SET(_v,_m) ANY_SET (stopchar_map[(int)(_v)],(_m))
+#define STOP_SET(_v,_m) ANY_SET (stopchar_map[(unsigned char)(_v)],(_m))
 
 #if defined(HAVE_SYS_RESOURCE_H) && defined(HAVE_GETRLIMIT) && defined(HAVE_SETRLIMIT)
 # define SET_STACK_SIZE
@@ -421,17 +418,42 @@ extern struct rlimit stack_limit;
 
 #define NILF ((gmk_floc *)0)
 
-#define CSTRLEN(_s) (sizeof (_s)-1)
+#define CSTRLEN(_s)           (sizeof (_s)-1)
 #define STRING_SIZE_TUPLE(_s) (_s), CSTRLEN(_s)
+
+/* The number of bytes needed to represent the largest integer as a string.  */
+#define INTSTR_LENGTH         CSTRLEN ("18446744073709551616")
+
+#ifdef HAVE_TTYNAME
+# define TTYNAME(_f) ttyname (_f)
+#else
+# define TTYNAME(_f) "true"
+#endif
 
 
 const char *concat (unsigned int, ...);
-void message (int prefix, const char *fmt, ...)
-              __attribute__ ((__format__ (__printf__, 2, 3)));
-void error (const gmk_floc *flocp, const char *fmt, ...)
-            __attribute__ ((__format__ (__printf__, 2, 3)));
-void fatal (const gmk_floc *flocp, const char *fmt, ...)
-                   __attribute__ ((noreturn, __format__ (__printf__, 2, 3)));
+void message (int prefix, size_t length, const char *fmt, ...)
+              __attribute__ ((__format__ (__printf__, 3, 4)));
+void error (const gmk_floc *flocp, size_t length, const char *fmt, ...)
+            __attribute__ ((__format__ (__printf__, 3, 4)));
+void fatal (const gmk_floc *flocp, size_t length, const char *fmt, ...)
+                   __attribute__ ((noreturn, __format__ (__printf__, 3, 4)));
+
+#define O(_t,_a,_f)           _t((_a), 0, (_f))
+#define OS(_t,_a,_f,_s)       _t((_a), strlen (_s), (_f), (_s))
+#define OSS(_t,_a,_f,_s1,_s2) _t((_a), strlen (_s1) + strlen (_s2), \
+                                 (_f), (_s1), (_s2))
+#define OSSS(_t,_a,_f,_s1,_s2,_s3) _t((_a), strlen (_s1) + strlen (_s2) + strlen (_s3), \
+                                      (_f), (_s1), (_s2), (_s3))
+#define ON(_t,_a,_f,_n)       _t((_a), INTSTR_LENGTH, (_f), (_n))
+#define ONN(_t,_a,_f,_n1,_n2) _t((_a), INTSTR_LENGTH*2, (_f), (_n1), (_n2))
+
+#define OSN(_t,_a,_f,_s,_n)   _t((_a), strlen (_s) + INTSTR_LENGTH, \
+                                 (_f), (_s), (_n))
+#define ONS(_t,_a,_f,_n,_s)   _t((_a), INTSTR_LENGTH + strlen (_s), \
+                                 (_f), (_n), (_s))
+
+#define OUT_OF_MEM() O (fatal, NILF, _("virtual memory exhausted"))
 
 void die (int) __attribute__ ((noreturn));
 void pfatal_with_name (const char *) __attribute__ ((noreturn));
@@ -506,9 +528,7 @@ const char *strcache_add_len (const char *str, unsigned int len);
 int strcache_setbufsize (unsigned int size);
 
 /* Guile support  */
-#ifdef HAVE_GUILE
 int guile_gmake_setup (const gmk_floc *flocp);
-#endif
 
 /* Loadable object support.  Sets to the strcached name of the loaded file.  */
 typedef int (*load_func_t)(const gmk_floc *flocp);
@@ -595,7 +615,17 @@ extern double max_load_average;
 extern int max_load_average;
 #endif
 
+#ifdef WINDOWS32
 extern char *program;
+#else
+extern const char *program;
+#endif
+
+#ifdef VMS
+const char *vms_command(const char *argv0);
+const char *vms_progname(const char *argv0);
+#endif
+
 extern char *starting_directory;
 extern unsigned int makelevel;
 extern char *version_string, *remote_description, *make_host;
@@ -612,10 +642,14 @@ extern int handling_fatal_signal;
 #define MAX(_a,_b) ((_a)>(_b)?(_a):(_b))
 #endif
 
+
 #ifdef VMS
-#  define MAKE_SUCCESS 1
-#  define MAKE_TROUBLE 2
-#  define MAKE_FAILURE 3
+/* These are the VMS __posix_exit compliant exit codes, constructed out of
+   STS$M_INHIB_MSG, C facility code, a POSIX condition code mask, MAKE_NNN<<3 and
+   the coresponding VMS severity, here STS$K_SUCCESS and STS$K_ERROR. */
+#  define MAKE_SUCCESS 0x1035a001
+#  define MAKE_TROUBLE 0x1035a00a
+#  define MAKE_FAILURE 0x1035a012
 #else
 #  define MAKE_SUCCESS 0
 #  define MAKE_TROUBLE 1

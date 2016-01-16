@@ -1,5 +1,5 @@
 /* Definition of target file data structures for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -143,7 +143,7 @@ void print_file_data_base (void);
                                       & ((1 << FILE_TIMESTAMP_LO_BITS) - 1)))
 
 /* Upper bound on length of string "YYYY-MM-DD HH:MM:SS.NNNNNNNNN"
-   representing a file timestamp.  The upper bound is not necessarily 19,
+   representing a file timestamp.  The upper bound is not necessarily 29,
    since the year might be less than -999 or greater than 9999.
 
    Subtract one for the sign bit if in case file timestamps can be negative;
