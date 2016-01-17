@@ -17,8 +17,14 @@ make-dfsg (4.1-1) unstable; urgency=low
     Joey Hess (Closes: #762017).
   * Make make and make-guile be Multi-Arch: Allowed packages, since it
     might not be feasible to make make architecture agnostic.
+  * Bug fix: "Please add U flag in the default ARFLAGS", thanks to
+    Celelibi. I tend to agree, this was a backwards incompatible
+    change. Make needs the timestamps to knpow when to update archie
+    members, so nuking the timestamps changes behaviour, and remake things
+    that need not be remade. This fails the principle of least surprise. I
+    added a default -U to the flags make passes to arl (Closes: #798804).
 
- -- Manoj Srivastava <srivasta@debian.org>  Sat, 16 Jan 2016 01:47:13 -0800
+ -- Manoj Srivastava <srivasta@debian.org>  Sat, 16 Jan 2016 22:37:08 -0800
 
 make-dfsg (4.0-8) unstable; urgency=high
 
