@@ -10,6 +10,6 @@ $description = "Make sure make exits with an error if fopen fails.";
 run_make_test(q!
 include $(lastword $(MAKEFILE_LIST))
 !,
-              '', undef, 512);
+              '', undef, 512, 300);
 
 1;
