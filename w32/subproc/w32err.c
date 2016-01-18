@@ -1,5 +1,5 @@
 /* Error handling for Windows
-Copyright (C) 1996-2013 Free Software Foundation, Inc.
+Copyright (C) 1996-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -45,41 +45,41 @@ map_windows32_error_to_string (DWORD ercode) {
  * the corresponding GCC qualifier is '__thread'.)
  */
     static char szMessageBuffer[128];
-	/* Fill message buffer with a default message in
-	 * case FormatMessage fails
-	 */
+        /* Fill message buffer with a default message in
+         * case FormatMessage fails
+         */
     wsprintf (szMessageBuffer, "Error %ld\n", ercode);
 
-	/*
-	 *  Special code for winsock error handling.
-	 */
-	if (ercode > WSABASEERR) {
+        /*
+         *  Special code for winsock error handling.
+         */
+        if (ercode > WSABASEERR) {
 #if 0
-		HMODULE hModule = GetModuleHandle("wsock32");
-		if (hModule != NULL) {
-			FormatMessage(FORMAT_MESSAGE_FROM_HMODULE,
-				hModule,
-				ercode,
-				LANG_NEUTRAL,
-				szMessageBuffer,
-				sizeof(szMessageBuffer),
-				NULL);
-			FreeLibrary(hModule);
-		}
+                HMODULE hModule = GetModuleHandle("wsock32");
+                if (hModule != NULL) {
+                        FormatMessage(FORMAT_MESSAGE_FROM_HMODULE,
+                                hModule,
+                                ercode,
+                                LANG_NEUTRAL,
+                                szMessageBuffer,
+                                sizeof(szMessageBuffer),
+                                NULL);
+                        FreeLibrary(hModule);
+                }
 #else
-		fatal(NILF, szMessageBuffer);
+                O (fatal, NILF, szMessageBuffer);
 #endif
-	} else {
-		/*
-		 *  Default system message handling
-		 */
-    	FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,
-                  NULL,
-                  ercode,
-                  LANG_NEUTRAL,
-                  szMessageBuffer,
-                  sizeof(szMessageBuffer),
-                  NULL);
-	}
+        } else {
+                /*
+                 *  Default system message handling
+                 */
+                FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,
+                        NULL,
+                        ercode,
+                        LANG_NEUTRAL,
+                        szMessageBuffer,
+                        sizeof(szMessageBuffer),
+                        NULL);
+        }
     return szMessageBuffer;
 }

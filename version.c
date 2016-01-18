@@ -1,5 +1,5 @@
 /* Record version and build host architecture for GNU make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -23,8 +23,8 @@ this program.  If not, see <http://www.gnu.org/licenses/>.  */
 # define MAKE_HOST "unknown"
 #endif
 
-char *version_string = VERSION;
-char *make_host = MAKE_HOST;
+const char *version_string = VERSION;
+const char *make_host = MAKE_HOST;
 
 /*
   Local variables:

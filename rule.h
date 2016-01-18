@@ -1,5 +1,5 @@
 /* Definitions for using pattern rules in GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -33,7 +33,7 @@ struct rule
 /* For calling install_pattern_rule.  */
 struct pspec
   {
-    char *target, *dep, *commands;
+    const char *target, *dep, *commands;
   };
 
 

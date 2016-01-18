@@ -1,5 +1,5 @@
 /* Variable expansion functions for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -121,9 +121,9 @@ recursively_expand_for_file (struct variable *v, struct file *file)
     {
       if (!v->exp_count)
         /* Expanding V causes infinite recursion.  Lose.  */
-        fatal (*expanding_var,
-               _("Recursive variable '%s' references itself (eventually)"),
-               v->name);
+        OS (fatal, *expanding_var,
+            _("Recursive variable '%s' references itself (eventually)"),
+            v->name);
       --v->exp_count;
     }
 
@@ -266,7 +266,7 @@ variable_expand_string (char *line, const char *string, long length)
             end = strchr (beg, closeparen);
             if (end == 0)
               /* Unterminated variable reference.  */
-              fatal (*expanding_var, _("unterminated variable reference"));
+              O (fatal, *expanding_var, _("unterminated variable reference"));
             p1 = lindex (beg, end, '$');
             if (p1 != 0)
               {
@@ -377,7 +377,6 @@ variable_expand_string (char *line, const char *string, long length)
                  Look up the value of the variable.  */
                 o = reference_variable (o, beg, end - beg);
 
-          if (abeg)
             free (abeg);
           }
           break;
@@ -447,8 +446,7 @@ expand_argument (const char *str, const char *end)
 
   r = allocated_variable_expand (tmp);
 
-  if (alloc)
-    free (alloc);
+  free (alloc);
 
   return r;
 }

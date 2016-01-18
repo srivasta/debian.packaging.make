@@ -1,5 +1,5 @@
 /* Reading and parsing of makefiles for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -238,7 +238,7 @@ read_all_makefiles (const char **makefiles)
 
   if (num_makefiles == 0)
     {
-      static char *default_makefiles[] =
+      static const char *default_makefiles[] =
 #ifdef VMS
         /* all lower case since readdir() (the vms version) 'lowercasifies' */
         { "makefile.vms", "gnumakefile.", "makefile.", 0 };
@@ -246,10 +246,14 @@ read_all_makefiles (const char **makefiles)
 #ifdef _AMIGA
         { "GNUmakefile", "Makefile", "SMakefile", 0 };
 #else /* !Amiga && !VMS */
+#ifdef WINDOWS32
+        { "GNUmakefile", "makefile", "Makefile", "makefile.mak", 0 };
+#else /* !Amiga && !VMS && !WINDOWS32 */
         { "GNUmakefile", "makefile", "Makefile", 0 };
+#endif /* !Amiga && !VMS && !WINDOWS32 */
 #endif /* AMIGA */
 #endif /* VMS */
-      register char **p = default_makefiles;
+      const char **p = default_makefiles;
       while (*p != 0 && !file_exists_p (*p))
         ++p;
 
@@ -307,10 +311,8 @@ static void
 restore_conditionals (struct conditionals *saved)
 {
   /* Free any space allocated by conditional_line.  */
-  if (conditionals->ignoring)
-    free (conditionals->ignoring);
-  if (conditionals->seen_else)
-    free (conditionals->seen_else);
+  free (conditionals->ignoring);
+  free (conditionals->seen_else);
 
   /* Restore state.  */
   conditionals = saved;
@@ -368,7 +370,10 @@ eval_makefile (const char *filename, int flags)
     case ENFILE:
 #endif
     case ENOMEM:
-      fatal (reading_file, "%s", strerror (makefile_errno));
+      {
+        const char *err = strerror (makefile_errno);
+        OS (fatal, reading_file, "%s", err);
+      }
     }
 
   /* If the makefile wasn't found and it's either a makefile from
@@ -406,8 +411,7 @@ eval_makefile (const char *filename, int flags)
   if (flags & RM_DONTCARE)
     deps->dontcare = 1;
 
-  if (expanded)
-    free (expanded);
+  free (expanded);
 
   /* If the makefile can't be found at all, give up entirely.  */
 
@@ -704,8 +708,7 @@ eval (struct ebuffer *ebuf, int set_default)
       if (collapsed_length < linelen+1)
         {
           collapsed_length = linelen+1;
-          if (collapsed)
-            free (collapsed);
+          free (collapsed);
           /* Don't need xrealloc: we don't need to preserve the content.  */
           collapsed = xmalloc (collapsed_length);
         }
@@ -783,7 +786,7 @@ eval (struct ebuffer *ebuf, int set_default)
         if (i != -2)
           {
             if (i == -1)
-              fatal (fstart, _("invalid syntax in conditional"));
+              O (fatal, fstart, _("invalid syntax in conditional"));
 
             ignoring = i;
             continue;
@@ -853,8 +856,7 @@ eval (struct ebuffer *ebuf, int set_default)
             /* No pattern means remove all previous selective VPATH's.  */
             vpat = 0;
           construct_vpath_list (vpat, p);
-          if (vpat != 0)
-            free (vpat);
+          free (vpat);
 
           continue;
         }
@@ -912,7 +914,10 @@ eval (struct ebuffer *ebuf, int set_default)
                                   | (noerror ? RM_DONTCARE : 0)
                                   | (set_default ? 0 : RM_NO_DEFAULT_GOAL)));
               if (!r && !noerror)
-                error (fstart, "%s: %s", name, strerror (errno));
+                {
+                  const char *err = strerror (errno);
+                  OSS (error, fstart, "%s: %s", name, err);
+                }
             }
 
           /* Restore conditional state.  */
@@ -958,7 +963,7 @@ eval (struct ebuffer *ebuf, int set_default)
               /* Load the file.  0 means failure.  */
               r = load_file (&ebuf->floc, &name, noerror);
               if (! r && ! noerror)
-                fatal (&ebuf->floc, _("%s: failed to load"), name);
+                OS (fatal, &ebuf->floc, _("%s: failed to load"), name);
 
               free_ns (files);
               files = next;
@@ -984,7 +989,7 @@ eval (struct ebuffer *ebuf, int set_default)
          was no preceding target, and the line might have been usable as a
          variable definition.  But now we know it is definitely lossage.  */
       if (line[0] == cmd_prefix)
-        fatal (fstart, _("recipe commences before first target"));
+        O (fatal, fstart, _("recipe commences before first target"));
 
       /* This line describes some target files.  This is complicated by
          the existence of target-specific variables, because we can't
@@ -1033,7 +1038,7 @@ eval (struct ebuffer *ebuf, int set_default)
           {
           case w_eol:
             if (cmdleft != 0)
-              fatal (fstart, _("missing rule before recipe"));
+              O (fatal, fstart, _("missing rule before recipe"));
             /* This line contained something but turned out to be nothing
                but whitespace (a comment?).  */
             continue;
@@ -1117,13 +1122,15 @@ eval (struct ebuffer *ebuf, int set_default)
            it.  If so, we can't parse this line so punt.  */
         if (wtype == w_eol)
           {
-            if (*p2 != '\0')
-              /* There's no need to be ivory-tower about this: check for
-                 one of the most common bugs found in makefiles...  */
-              fatal (fstart, _("missing separator%s"),
-                     (cmd_prefix == '\t' && !strneq (line, "        ", 8))
-                     ? "" : _(" (did you mean TAB instead of 8 spaces?)"));
-            continue;
+            if (*p2 == '\0')
+              continue;
+
+            /* There's no need to be ivory-tower about this: check for
+               one of the most common bugs found in makefiles...  */
+            if (cmd_prefix == '\t' && strneq (line, "        ", 8))
+              O (fatal, fstart, _("missing separator (did you mean TAB instead of 8 spaces?)"));
+            else
+              O (fatal, fstart, _("missing separator"));
           }
 
         /* Make the colon the end-of-string so we know where to stop
@@ -1260,13 +1267,13 @@ eval (struct ebuffer *ebuf, int set_default)
                                      PARSEFS_NOGLOB);
             ++p2;
             if (target == 0)
-              fatal (fstart, _("missing target pattern"));
+              O (fatal, fstart, _("missing target pattern"));
             else if (target->next != 0)
-              fatal (fstart, _("multiple target patterns"));
+              O (fatal, fstart, _("multiple target patterns"));
             pattern_percent = find_percent_cached (&target->name);
             pattern = target->name;
             if (pattern_percent == 0)
-              fatal (fstart, _("target pattern contains no '%%'"));
+              O (fatal, fstart, _("target pattern contains no '%%'"));
             free_ns (target);
           }
         else
@@ -1388,13 +1395,12 @@ eval (struct ebuffer *ebuf, int set_default)
 #undef word1eq
 
   if (conditionals->if_cmds)
-    fatal (fstart, _("missing 'endif'"));
+    O (fatal, fstart, _("missing 'endif'"));
 
   /* At eof, record the last rule.  */
   record_waiting_files ();
 
-  if (collapsed)
-    free (collapsed);
+  free (collapsed);
   free (commands);
 }
 
@@ -1427,7 +1433,7 @@ do_undefine (char *name, enum variable_origin origin, struct ebuffer *ebuf)
   var = allocated_variable_expand (name);
   name = next_token (var);
   if (*name == '\0')
-    fatal (&ebuf->floc, _("empty variable name"));
+    O (fatal, &ebuf->floc, _("empty variable name"));
   p = name + strlen (name) - 1;
   while (p > name && isblank ((unsigned char)*p))
     --p;
@@ -1462,7 +1468,7 @@ do_define (char *name, enum variable_origin origin, struct ebuffer *ebuf)
   else
     {
       if (var.value[0] != '\0')
-        error (&defstart, _("extraneous text after 'define' directive"));
+        O (error, &defstart, _("extraneous text after 'define' directive"));
 
       /* Chop the string before the assignment token to get the name.  */
       var.name[var.length] = '\0';
@@ -1472,7 +1478,7 @@ do_define (char *name, enum variable_origin origin, struct ebuffer *ebuf)
   n = allocated_variable_expand (name);
   name = next_token (n);
   if (name[0] == '\0')
-    fatal (&defstart, _("empty variable name"));
+    O (fatal, &defstart, _("empty variable name"));
   p = name + strlen (name) - 1;
   while (p > name && isblank ((unsigned char)*p))
     --p;
@@ -1487,7 +1493,7 @@ do_define (char *name, enum variable_origin origin, struct ebuffer *ebuf)
 
       /* If there is nothing left to be eval'd, there's no 'endef'!!  */
       if (nlines < 0)
-        fatal (&defstart, _("missing 'endef', unterminated 'define'"));
+        O (fatal, &defstart, _("missing 'endef', unterminated 'define'"));
 
       ebuf->floc.lineno += nlines;
       line = ebuf->buffer;
@@ -1514,8 +1520,8 @@ do_define (char *name, enum variable_origin origin, struct ebuffer *ebuf)
               p += 5;
               remove_comments (p);
               if (*(next_token (p)) != '\0')
-                error (&ebuf->floc,
-                       _("extraneous text after 'endef' directive"));
+                O (error, &ebuf->floc,
+                   _("extraneous text after 'endef' directive"));
 
               if (--nlevels == 0)
                 break;
@@ -1564,7 +1570,7 @@ do_define (char *name, enum variable_origin origin, struct ebuffer *ebuf)
 static int
 conditional_line (char *line, int len, const gmk_floc *flocp)
 {
-  char *cmdname;
+  const char *cmdname;
   enum { c_ifdef, c_ifndef, c_ifeq, c_ifneq, c_else, c_endif } cmdtype;
   unsigned int i;
   unsigned int o;
@@ -1586,16 +1592,17 @@ conditional_line (char *line, int len, const gmk_floc *flocp)
   /* Found one: skip past it and any whitespace after it.  */
   line = next_token (line + len);
 
-#define EXTRANEOUS() error (flocp, _("extraneous text after '%s' directive"), cmdname)
+#define EXTRATEXT() OS (error, flocp, _("extraneous text after '%s' directive"), cmdname)
+#define EXTRACMD()  OS (fatal, flocp, _("extraneous '%s'"), cmdname)
 
   /* An 'endif' cannot contain extra text, and reduces the if-depth by 1  */
   if (cmdtype == c_endif)
     {
       if (*line != '\0')
-        EXTRANEOUS ();
+        EXTRATEXT ();
 
       if (!conditionals->if_cmds)
-        fatal (flocp, _("extraneous '%s'"), cmdname);
+        EXTRACMD ();
 
       --conditionals->if_cmds;
 
@@ -1609,12 +1616,12 @@ conditional_line (char *line, int len, const gmk_floc *flocp)
       const char *p;
 
       if (!conditionals->if_cmds)
-        fatal (flocp, _("extraneous '%s'"), cmdname);
+        EXTRACMD ();
 
       o = conditionals->if_cmds - 1;
 
       if (conditionals->seen_else[o])
-        fatal (flocp, _("only one 'else' per conditional"));
+        O (fatal, flocp, _("only one 'else' per conditional"));
 
       /* Change the state of ignorance.  */
       switch (conditionals->ignoring[o])
@@ -1647,7 +1654,7 @@ conditional_line (char *line, int len, const gmk_floc *flocp)
       /* If it's 'else' or 'endif' or an illegal conditional, fail.  */
       if (word1eq ("else") || word1eq ("endif")
           || conditional_line (line, len, flocp) < 0)
-        EXTRANEOUS ();
+        EXTRATEXT ();
       else
         {
           /* conditional_line() created a new level of conditional.
@@ -1804,7 +1811,7 @@ conditional_line (char *line, int len, const gmk_floc *flocp)
       *line = '\0';
       line = next_token (++line);
       if (*line != '\0')
-        EXTRANEOUS ();
+        EXTRATEXT ();
 
       s2 = variable_expand (s2);
       conditionals->ignoring[o] = (streq (s1, s2) == (cmdtype == c_ifneq));
@@ -1889,7 +1896,7 @@ record_target_var (struct nameseq *filenames, char *defn,
           current_variable_set_list = f->variables;
           v = try_variable_definition (flocp, defn, origin, 1);
           if (!v)
-            fatal (flocp, _("Malformed target-specific variable definition"));
+            O (fatal, flocp, _("Malformed target-specific variable definition"));
           current_variable_set_list = global;
         }
 
@@ -1909,8 +1916,7 @@ record_target_var (struct nameseq *filenames, char *defn,
           if (gv && v != gv
               && (gv->origin == o_env_override || gv->origin == o_command))
             {
-              if (v->value != 0)
-                free (v->value);
+              free (v->value);
               v->value = xstrdup (gv->value);
               v->origin = gv->origin;
               v->recursive = gv->recursive;
@@ -1948,7 +1954,7 @@ record_files (struct nameseq *filenames, const char *pattern,
      at this time, since they won't get snapped and we'll get core dumps.
      See Savannah bug # 12124.  */
   if (snapped_deps)
-    fatal (flocp, _("prerequisites cannot be defined in recipes"));
+    O (fatal, flocp, _("prerequisites cannot be defined in recipes"));
 
   /* Determine if this is a pattern rule or not.  */
   name = filenames->name;
@@ -2006,7 +2012,7 @@ record_files (struct nameseq *filenames, const char *pattern,
       unsigned int c;
 
       if (pattern != 0)
-        fatal (flocp, _("mixed implicit and static pattern rules"));
+        O (fatal, flocp, _("mixed implicit and static pattern rules"));
 
       /* Count the targets to create an array of target names.
          We already have the first one.  */
@@ -2029,7 +2035,7 @@ record_files (struct nameseq *filenames, const char *pattern,
           implicit_percent = find_percent_cached (&name);
 
           if (implicit_percent == 0)
-            fatal (flocp, _("mixed implicit and normal rules"));
+            O (fatal, flocp, _("mixed implicit and normal rules"));
 
           targets[c] = name;
           target_pats[c] = implicit_percent;
@@ -2081,7 +2087,8 @@ record_files (struct nameseq *filenames, const char *pattern,
          'targets: target%pattern: prereq%pattern; recipe',
          make sure the pattern matches this target name.  */
       if (pattern && !pattern_matches (pattern, pattern_percent, name))
-        error (flocp, _("target '%s' doesn't match the target pattern"), name);
+        OS (error, flocp,
+            _("target '%s' doesn't match the target pattern"), name);
       else if (deps)
         /* If there are multiple targets, copy the chain DEPS for all but the
            last one.  It is not safe for the same deps to go in more than one
@@ -2095,25 +2102,26 @@ record_files (struct nameseq *filenames, const char *pattern,
              if any.  */
           f = enter_file (strcache_add (name));
           if (f->double_colon)
-            fatal (flocp,
-                   _("target file '%s' has both : and :: entries"), f->name);
+            OS (fatal, flocp,
+                _("target file '%s' has both : and :: entries"), f->name);
 
           /* If CMDS == F->CMDS, this target was listed in this rule
              more than once.  Just give a warning since this is harmless.  */
           if (cmds != 0 && cmds == f->cmds)
-            error (flocp,
-                   _("target '%s' given more than once in the same rule"),
-                   f->name);
+            OS (error, flocp,
+                _("target '%s' given more than once in the same rule"),
+                f->name);
 
           /* Check for two single-colon entries both with commands.
              Check is_target so that we don't lose on files such as .c.o
              whose commands were preinitialized.  */
           else if (cmds != 0 && f->cmds != 0 && f->is_target)
             {
-              error (&cmds->fileinfo,
+              size_t l = strlen (f->name);
+              error (&cmds->fileinfo, l,
                      _("warning: overriding recipe for target '%s'"),
                      f->name);
-              error (&f->cmds->fileinfo,
+              error (&f->cmds->fileinfo, l,
                      _("warning: ignoring old recipe for target '%s'"),
                      f->name);
             }
@@ -2140,8 +2148,8 @@ record_files (struct nameseq *filenames, const char *pattern,
           /* Check for both : and :: rules.  Check is_target so we don't lose
              on default suffix rules or makefiles.  */
           if (f != 0 && f->is_target && !f->double_colon)
-            fatal (flocp,
-                   _("target file '%s' has both : and :: entries"), f->name);
+            OS (fatal, flocp,
+                _("target file '%s' has both : and :: entries"), f->name);
 
           f = enter_file (strcache_add (name));
           /* If there was an existing entry and it was a double-colon entry,
@@ -2217,7 +2225,8 @@ record_files (struct nameseq *filenames, const char *pattern,
       /* Reduce escaped percents.  If there are any unescaped it's an error  */
       name = filenames->name;
       if (find_percent_cached (&name))
-        fatal (flocp, _("mixed implicit and normal rules"));
+        O (error, flocp,
+           _("*** mixed implicit and normal rules: deprecated syntax"));
     }
 }
 
@@ -2331,14 +2340,14 @@ unescape_char (char *string, int c)
           if (*e != c || l%2 == 0)
             {
               /* It's not; just take it all without unescaping.  */
-              memcpy (p, s, l);
+              memmove (p, s, l);
               p += l;
             }
           else if (l > 1)
             {
               /* It is, and there's >1 backslash.  Take half of them.  */
               l /= 2;
-              memcpy (p, s, l);
+              memmove (p, s, l);
               p += l;
             }
           s = e;
@@ -2526,8 +2535,8 @@ readline (struct ebuffer *ebuf)
              lossage strikes again!  (xmkmf puts NULs in its makefiles.)
              There is nothing really to be done; we synthesize a newline so
              the following line doesn't appear to be part of this line.  */
-          error (&ebuf->floc,
-                 _("warning: NUL character seen; rest of line ignored"));
+          O (error, &ebuf->floc,
+             _("warning: NUL character seen; rest of line ignored"));
           p[0] = '\n';
           len = 1;
         }
@@ -2842,8 +2851,7 @@ construct_include_path (const char **arg_dirs)
             dirs[idx++] = strcache_add_len (dir, len);
           }
 
-        if (expanded)
-          free (expanded);
+        free (expanded);
       }
 
   /* Now add the standard default dirs at the end.  */
@@ -3269,7 +3277,7 @@ parse_file_seq (char **stringp, unsigned int size, int stopmap,
         switch (glob (name, GLOB_NOSORT|GLOB_ALTDIRFUNC, NULL, &gl))
           {
           case GLOB_NOSPACE:
-            fatal (NILF, _("virtual memory exhausted"));
+            OUT_OF_MEM();
 
           case 0:
             /* Success.  */
@@ -3335,12 +3343,10 @@ parse_file_seq (char **stringp, unsigned int size, int stopmap,
         globfree (&gl);
 
 #ifndef NO_ARCHIVES
-      if (arname)
-        free (arname);
+      free (arname);
 #endif
 
-      if (tildep)
-        free (tildep);
+      free (tildep);
     }
 
   *stringp = p;

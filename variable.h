@@ -1,5 +1,5 @@
 /* Definitions for using variables in GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -159,8 +159,8 @@ struct variable *do_variable_definition (const gmk_floc *flocp,
                                          int target_var);
 char *parse_variable_definition (const char *line,
                                  struct variable *v);
-struct variable *assign_variable_definition (struct variable *v, char *line);
-struct variable *try_variable_definition (const gmk_floc *flocp, char *line,
+struct variable *assign_variable_definition (struct variable *v, const char *line);
+struct variable *try_variable_definition (const gmk_floc *flocp, const char *line,
                                           enum variable_origin origin,
                                           int target_var);
 void init_hash_global_variable_set (void);
@@ -219,10 +219,10 @@ void undefine_variable_in_set (const char *name, unsigned int length,
 /* Warn that NAME is an undefined variable.  */
 
 #define warn_undefined(n,l) do{\
-                              if (warn_undefined_variables_flag) \
-                                error (reading_file, \
+                              if (warn_undefined_variables_flag)        \
+                                error (reading_file, (l),               \
                                        _("warning: undefined variable '%.*s'"), \
-                                (int)(l), (n)); \
+                                       (int)(l), (n));                  \
                               }while(0)
 
 char **target_environment (struct file *file);

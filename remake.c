@@ -1,5 +1,5 @@
 /* Basic dependency engine for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -58,10 +58,10 @@ unsigned int commands_started = 0;
 /* Current value for pruning the scan of the goal chain (toggle 0/1).  */
 static unsigned int considered;
 
-static int update_file (struct file *file, unsigned int depth);
-static int update_file_1 (struct file *file, unsigned int depth);
-static int check_dep (struct file *file, unsigned int depth,
-                      FILE_TIMESTAMP this_mtime, int *must_make_ptr);
+static enum update_status update_file (struct file *file, unsigned int depth);
+static enum update_status update_file_1 (struct file *file, unsigned int depth);
+static enum update_status check_dep (struct file *file, unsigned int depth,
+                                     FILE_TIMESTAMP this_mtime, int *must_make);
 static enum update_status touch_file (struct file *file);
 static void remake_file (struct file *file);
 static FILE_TIMESTAMP name_mtime (const char *name);
@@ -130,7 +130,7 @@ update_goal_chain (struct dep *goals)
                file = file->prev)
             {
               unsigned int ocommands_started;
-              int fail;
+              enum update_status fail;
 
               file->dontcare = g->dontcare;
 
@@ -161,14 +161,12 @@ update_goal_chain (struct dep *goals)
               if (commands_started > ocommands_started)
                 g->changed = 1;
 
-              /* If we updated a file and STATUS was not already 1, set it to
-                 1 if updating failed, or to 0 if updating succeeded.  Leave
-                 STATUS as it is if no updating was done.  */
-
               stop = 0;
               if ((fail || file->updated) && status < us_question)
                 {
-                  if (file->update_status != us_success)
+                  /* We updated this goal.  Update STATUS and decide whether
+                     to stop.  */
+                  if (file->update_status)
                     {
                       /* Updating failed, or -q triggered.  The STATUS value
                          tells our caller which.  */
@@ -228,10 +226,10 @@ update_goal_chain (struct dep *goals)
                   && file->update_status == us_success && !g->changed
                   /* Never give a message under -s or -q.  */
                   && !silent_flag && !question_flag)
-                message (1, ((file->phony || file->cmds == 0)
-                             ? _("Nothing to be done for '%s'.")
-                             : _("'%s' is up to date.")),
-                         file->name);
+                OS (message, 1, ((file->phony || file->cmds == 0)
+                                 ? _("Nothing to be done for '%s'.")
+                                 : _("'%s' is up to date.")),
+                    file->name);
 
               /* This goal is finished.  Remove it from the chain.  */
               if (lastgoal == 0)
@@ -282,11 +280,11 @@ update_goal_chain (struct dep *goals)
    If there are multiple double-colon entries for FILE,
    each is considered in turn.  */
 
-static int
+static enum update_status
 update_file (struct file *file, unsigned int depth)
 {
-  int status = 0;
-  register struct file *f;
+  enum update_status status = us_success;
+  struct file *f;
 
   f = file->double_colon ? file->double_colon : file;
 
@@ -311,26 +309,31 @@ update_file (struct file *file, unsigned int depth)
      the chain is exhausted. */
   for (; f != 0; f = f->prev)
     {
+      enum update_status new;
+
       f->considered = considered;
 
-      status |= update_file_1 (f, depth);
+      new = update_file_1 (f, depth);
       check_renamed (f);
 
       /* Clean up any alloca() used during the update.  */
       alloca (0);
 
       /* If we got an error, don't bother with double_colon etc.  */
-      if (status != 0 && !keep_going_flag)
-        return status;
+      if (new && !keep_going_flag)
+        return new;
 
       if (f->command_state == cs_running
           || f->command_state == cs_deps_running)
         {
           /* Don't run the other :: rules for this
              file until this rule is finished.  */
-          status = 0;
+          status = us_success;
           break;
         }
+
+      if (new > status)
+        status = new;
     }
 
   /* Process the remaining rules in the double colon chain so they're marked
@@ -343,7 +346,11 @@ update_file (struct file *file, unsigned int depth)
         f->considered = considered;
 
         for (d = f->deps; d != 0; d = d->next)
-          status |= update_file (d->file, depth + 1);
+          {
+            enum update_status new = update_file (d->file, depth + 1);
+            if (new > status)
+              new = status;
+          }
       }
 
   return status;
@@ -373,24 +380,30 @@ complain (struct file *file)
 
   if (d == 0)
     {
-      const char *msg_noparent
-        = _("%sNo rule to make target '%s'%s");
-      const char *msg_parent
-        = _("%sNo rule to make target '%s', needed by '%s'%s");
-
       /* Didn't find any dependencies to complain about. */
-      if (!keep_going_flag)
+      if (file->parent)
         {
-          if (file->parent == 0)
-            fatal (NILF, msg_noparent, "", file->name, "");
+          size_t l = strlen (file->name) + strlen (file->parent->name) + 4;
 
-          fatal (NILF, msg_parent, "", file->name, file->parent->name, "");
+          if (!keep_going_flag)
+            fatal (NILF, l,
+                   _("%sNo rule to make target '%s', needed by '%s'%s"),
+                   "", file->name, file->parent->name, "");
+
+          error (NILF, l, _("%sNo rule to make target '%s', needed by '%s'%s"),
+                 "*** ", file->name, file->parent->name, ".");
         }
-
-      if (file->parent == 0)
-        error (NILF, msg_noparent, "*** ", file->name, ".");
       else
-        error (NILF, msg_parent, "*** ", file->name, file->parent->name, ".");
+        {
+          size_t l = strlen (file->name) + 4;
+
+          if (!keep_going_flag)
+            fatal (NILF, l,
+                   _("%sNo rule to make target '%s'%s"), "", file->name, "");
+
+          error (NILF, l,
+                 _("%sNo rule to make target '%s'%s"), "*** ", file->name, ".");
+        }
 
       file->no_diag = 0;
     }
@@ -399,12 +412,12 @@ complain (struct file *file)
 /* Consider a single 'struct file' and update it as appropriate.
    Return 0 on success, or non-0 on failure.  */
 
-static int
+static enum update_status
 update_file_1 (struct file *file, unsigned int depth)
 {
+  enum update_status dep_status = us_success;
   FILE_TIMESTAMP this_mtime;
   int noexist, must_make, deps_changed;
-  int dep_status = 0;
   struct file *ofile;
   struct dep *d, *ad;
   struct dep amake;
@@ -478,8 +491,9 @@ update_file_1 (struct file *file, unsigned int depth)
       /* Avoid spurious rebuilds due to low resolution time stamps.  */
       int ns = FILE_TIMESTAMP_NS (this_mtime);
       if (ns != 0)
-        error (NILF, _("*** Warning: .LOW_RESOLUTION_TIME file '%s' has a high resolution time stamp"),
-               file->name);
+        OS (error, NILF,
+            _("*** Warning: .LOW_RESOLUTION_TIME file '%s' has a high resolution time stamp"),
+            file->name);
       this_mtime += FILE_TIMESTAMPS_PER_S - 1 - ns;
     }
 
@@ -521,6 +535,7 @@ update_file_1 (struct file *file, unsigned int depth)
 
       while (d)
         {
+          enum update_status new;
           FILE_TIMESTAMP mtime;
           int maybe_make;
           int dontcare = 0;
@@ -532,8 +547,8 @@ update_file_1 (struct file *file, unsigned int depth)
 
           if (is_updating (d->file))
             {
-              error (NILF, _("Circular %s <- %s dependency dropped."),
-                     file->name, d->file->name);
+              OSS (error, NILF, _("Circular %s <- %s dependency dropped."),
+                   file->name, d->file->name);
               /* We cannot free D here because our the caller will still have
                  a reference to it when we were called recursively via
                  check_dep below.  */
@@ -555,7 +570,9 @@ update_file_1 (struct file *file, unsigned int depth)
               d->file->dontcare = file->dontcare;
             }
 
-          dep_status |= check_dep (d->file, depth, this_mtime, &maybe_make);
+          new = check_dep (d->file, depth, this_mtime, &maybe_make);
+          if (new > dep_status)
+            dep_status = new;
 
           /* Restore original dontcare flag. */
           if (rebuilding_makefiles)
@@ -601,6 +618,7 @@ update_file_1 (struct file *file, unsigned int depth)
       for (d = file->deps; d != 0; d = d->next)
         if (d->file->intermediate)
           {
+            enum update_status new;
             int dontcare = 0;
 
             FILE_TIMESTAMP mtime = file_mtime (d->file);
@@ -619,7 +637,9 @@ update_file_1 (struct file *file, unsigned int depth)
                not prune it.  */
             d->file->considered = !considered;
 
-            dep_status |= update_file (d->file, depth);
+            new = update_file (d->file, depth);
+            if (new > dep_status)
+              dep_status = new;
 
             /* Restore original dontcare flag. */
             if (rebuilding_makefiles)
@@ -664,9 +684,10 @@ update_file_1 (struct file *file, unsigned int depth)
 
   /* If any dependency failed, give up now.  */
 
-  if (dep_status != 0)
+  if (dep_status)
     {
-      file->update_status = us_failed;
+      /* I'm not sure if we can't just assign dep_status...  */
+      file->update_status = dep_status == us_none ? us_failed : dep_status;
       notice_finished_file (file);
 
       --depth;
@@ -675,8 +696,8 @@ update_file_1 (struct file *file, unsigned int depth)
 
       if (depth == 0 && keep_going_flag
           && !just_print_flag && !question_flag)
-        error (NILF,
-               _("Target '%s' not remade because of errors."), file->name);
+        OS (error, NILF,
+            _("Target '%s' not remade because of errors."), file->name);
 
       return dep_status;
     }
@@ -981,13 +1002,13 @@ notice_finished_file (struct file *file)
    FILE depends on (including FILE itself).  Return nonzero if any updating
    failed.  */
 
-static int
+static enum update_status
 check_dep (struct file *file, unsigned int depth,
            FILE_TIMESTAMP this_mtime, int *must_make_ptr)
 {
   struct file *ofile;
   struct dep *d;
-  int dep_status = 0;
+  enum update_status dep_status = us_success;
 
   ++depth;
   start_updating (file);
@@ -1060,12 +1081,13 @@ check_dep (struct file *file, unsigned int depth,
           d = file->deps;
           while (d != 0)
             {
+              enum update_status new;
               int maybe_make;
 
               if (is_updating (d->file))
                 {
-                  error (NILF, _("Circular %s <- %s dependency dropped."),
-                         file->name, d->file->name);
+                  OSS (error, NILF, _("Circular %s <- %s dependency dropped."),
+                       file->name, d->file->name);
                   if (ld == 0)
                     {
                       file->deps = d->next;
@@ -1083,12 +1105,14 @@ check_dep (struct file *file, unsigned int depth,
 
               d->file->parent = file;
               maybe_make = *must_make_ptr;
-              dep_status |= check_dep (d->file, depth, this_mtime,
-                                       &maybe_make);
+              new = check_dep (d->file, depth, this_mtime, &maybe_make);
+              if (new > dep_status)
+                dep_status = new;
+
               if (! d->ignore_mtime)
                 *must_make_ptr = maybe_make;
               check_renamed (d->file);
-              if (dep_status != 0 && !keep_going_flag)
+              if (dep_status && !keep_going_flag)
                 break;
 
               if (d->file->command_state == cs_running
@@ -1122,7 +1146,7 @@ static enum update_status
 touch_file (struct file *file)
 {
   if (!silent_flag)
-    message (0, "touch %s", file->name);
+    OS (message, 0, "touch %s", file->name);
 
   /* Print-only (-n) takes precedence over touch (-t).  */
   if (just_print_flag)
@@ -1369,8 +1393,9 @@ f_mtime (struct file *file, int search)
           if (adjusted_now < adjusted_mtime)
             {
 #ifdef NO_FLOAT
-              error (NILF, _("Warning: File '%s' has modification time in the future"),
-                     file->name);
+              OS (error, NILF,
+                  _("Warning: File '%s' has modification time in the future"),
+                  file->name);
 #else
               double from_now =
                 (FILE_TIMESTAMP_S (mtime) - FILE_TIMESTAMP_S (now)
@@ -1382,8 +1407,9 @@ f_mtime (struct file *file, int search)
                 sprintf (from_now_string, "%lu", (unsigned long) from_now);
               else
                 sprintf (from_now_string, "%.2g", from_now);
-              error (NILF, _("Warning: File '%s' has modification time %s s in the future"),
-                     file->name, from_now_string);
+              OSS (error, NILF,
+                   _("Warning: File '%s' has modification time %s s in the future"),
+                   file->name, from_now_string);
 #endif
               clock_skew_detected = 1;
             }
@@ -1520,7 +1546,7 @@ name_mtime (const char *name)
 static const char *
 library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
 {
-  static char *dirs[] =
+  static const char *dirs[] =
     {
 #ifndef _AMIGA
       "/lib",
@@ -1550,7 +1576,7 @@ library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
   /* Information about the earliest (in the vpath sequence) match.  */
   unsigned int best_vpath = 0, best_path = 0;
 
-  char **dp;
+  const char **dp;
 
   libpatterns = xstrdup (variable_expand ("$(.LIBPATTERNS)"));
 
@@ -1580,7 +1606,8 @@ library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
         if (!p3)
           {
             /* Give a warning if there is no pattern.  */
-            error (NILF, _(".LIBPATTERNS element '%s' is not a pattern"), p);
+            OS (error, NILF,
+                _(".LIBPATTERNS element '%s' is not a pattern"), p);
             p[len] = c;
             continue;
           }

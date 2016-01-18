@@ -1,5 +1,5 @@
 /* Data base of default implicit rules for GNU Make.
-Copyright (C) 1988-2013 Free Software Foundation, Inc.
+Copyright (C) 1988-2014 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -38,9 +38,11 @@ this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 static char default_suffixes[]
 #ifdef VMS
-  = ".exe .olb .ln .obj .c .cxx .cc .pas .p .for .f .r .y .l .mar \
-.s .ss .i .ii .mod .sym .def .h .info .dvi .tex .texinfo .texi .txinfo \
-.w .ch .cweb .web .com .sh .elc .el";
+  /* VMS should include all UNIX/POSIX + some VMS extensions */
+  = ".out .exe .a .olb .hlb .tlb .mlb .ln .o .obj .c .cxx .cc .cpp .pas .p \
+.for .f .r .y .l .ym .yl .mar .s .ss .i .ii .mod .sym .def .h .info .dvi \
+.tex .texinfo .texi .txinfo .mem .hlp .brn .rnh .rno .rnt .rnx .w .ch .cweb \
+.web .com .sh .elc .el";
 #elif defined(__EMX__)
   = ".out .a .ln .o .c .cc .C .cpp .p .f .F .m .r .y .l .ym .yl .s .S \
 .mod .sym .def .h .info .dvi .tex .texinfo .texi .txinfo \
@@ -53,19 +55,35 @@ static char default_suffixes[]
 
 static struct pspec default_pattern_rules[] =
   {
+#ifdef VMS
     { "(%)", "%",
+        "@if f$$search(\"$@\") .eqs. \"\" then $(LIBRARY)/CREATE/"
+         "$(or "
+          "$(patsubst %,TEXT,$(filter %.tlb %.TLB,$@)),"
+          "$(patsubst %,HELP,$(filter %.hlb %.HLB,$@)),"
+          "$(patsubst %,MACRO,$(filter %.mlb %.MLB,$@)),"
+          "$(and "
+           "$(patsubst %,SHARE,$(filter %.olb %.OLB,$@)),"
+           "$(patsubst %,SHARE,$(filter %.exe %.EXE,$<))),"
+          "OBJECT)"
+         " $@\n"
         "$(AR) $(ARFLAGS) $@ $<" },
 
+#else
+    { "(%)", "%",
+        "$(AR) $(ARFLAGS) $@ $<" },
+#endif
     /* The X.out rules are only in BSD's default set because
        BSD Make has no null-suffix rules, so 'foo.out' and
        'foo' are the same thing.  */
 #ifdef VMS
     { "%.exe", "%",
-        "copy $< $@" },
-#else
+        "$(CP) $< $@" },
+
+#endif
     { "%.out", "%",
         "@rm -f $@ \n cp $< $@" },
-#endif
+
     /* Syntax is "ctangle foo.w foo.ch foo.c".  */
     { "%.c", "%.w %.ch",
         "$(CTANGLE) $^ $@" },
@@ -78,18 +96,20 @@ static struct pspec default_pattern_rules[] =
 static struct pspec default_terminal_rules[] =
   {
 #ifdef VMS
+
     /* RCS.  */
     { "%", "%$$5lv", /* Multinet style */
-        "if f$$search($@) .nes. \"\" then +$(CHECKOUT,v)" },
+        "if f$$search(\"$@\") .nes. \"\" then +$(CHECKOUT,v)" },
     { "%", "[.$$rcs]%$$5lv", /* Multinet style */
-        "if f$$search($@) .nes. \"\" then +$(CHECKOUT,v)" },
+        "if f$$search(\"$@\") .nes. \"\" then +$(CHECKOUT,v)" },
     { "%", "%_v", /* Normal style */
-        "if f$$search($@) .nes. \"\" then +$(CHECKOUT,v)" },
+        "if f$$search(\"$@\") .nes. \"\" then +$(CHECKOUT,v)" },
     { "%", "[.rcs]%_v", /* Normal style */
-        "if f$$search($@) .nes. \"\" then +$(CHECKOUT,v)" },
+        "if f$$search(\"$@\") .nes. \"\" then +$(CHECKOUT,v)" },
 
     /* SCCS.  */
         /* ain't no SCCS on vms */
+
 #else
     /* RCS.  */
     { "%", "%,v",
@@ -108,7 +128,7 @@ static struct pspec default_terminal_rules[] =
     { 0, 0, 0 }
   };
 
-static char *default_suffix_rules[] =
+static const char *default_suffix_rules[] =
   {
 #ifdef VMS
     ".obj.exe",
@@ -149,6 +169,8 @@ static char *default_suffix_rules[] =
     "$(COMPILE.c)/noprep/noobj/machine /list=$@ $<",
     ".c.obj",
     "$(COMPILE.c) /obj=$@ $<",
+    ".c.o",
+    "$(COMPILE.c) /obj=$@ $<",
     ".cc.ii",
     "$(COMPILE.cc)/prep /list=$@ $<",
     ".cc.ss",
@@ -157,11 +179,19 @@ static char *default_suffix_rules[] =
     "$(COMPILE.cc)/noprep/noobj/machine /list=$@ $<",
     ".cc.obj",
     "$(COMPILE.cc) /obj=$@ $<",
+    ".cc.o",
+    "$(COMPILE.cc) /obj=$@ $<",
     ".cxx.obj",
+    "$(COMPILE.cxx) /obj=$@ $<",
+    ".cxx.o",
     "$(COMPILE.cxx) /obj=$@ $<",
     ".for.obj",
     "$(COMPILE.for) /obj=$@ $<",
+    ".for.o",
+    "$(COMPILE.for) /obj=$@ $<",
     ".pas.obj",
+    "$(COMPILE.pas) /obj=$@ $<",
+    ".pas.o",
     "$(COMPILE.pas) /obj=$@ $<",
 
     ".y.c",
@@ -322,7 +352,8 @@ static const char *default_variables[] =
 #ifdef __VAX
     "ARCH", "VAX",
 #endif
-    "AR", "library/obj",
+    "AR", "library",
+    "LIBRARY", "library",
     "ARFLAGS", "/replace",
     "AS", "macro",
     "MACRO", "macro",
@@ -332,15 +363,21 @@ static const char *default_variables[] =
     "CC", "cc",
 #endif
     "CD", "builtin_cd",
-    "MAKE", "make",
-    "ECHO", "write sys$$output \"",
+    "ECHO", "builtin_echo",
 #ifdef GCC_IS_NATIVE
     "C++", "gcc/plus",
     "CXX", "gcc/plus",
 #else
     "C++", "cxx",
     "CXX", "cxx",
+#ifndef __ia64
     "CXXLD", "cxxlink",
+    "CXXLINK", "cxxlink",
+#else
+    /* CXXLINK is not used on VMS/IA64 */
+    "CXXLD", "link",
+    "CXXLINK", "link",
+#endif
 #endif
     "CO", "co",
     "CPP", "$(CC) /preprocess_only",
@@ -393,6 +430,7 @@ static const char *default_variables[] =
 
     "MV", "rename/new_version",
     "CP", "copy",
+    ".LIBPATTERNS", "%.olb lib%.a",
 
 #else /* !VMS */
 
@@ -523,6 +561,8 @@ static const char *default_variables[] =
     ".LIBPATTERNS", "lib%.a $(DJDIR)/lib/lib%.a",
 #elif defined(__APPLE__)
     ".LIBPATTERNS", "lib%.dylib lib%.a",
+#elif defined(__CYGWIN__) || defined(WINDOWS32)
+    ".LIBPATTERNS", "lib%.dll.a %.dll.a lib%.a %.lib lib%.dll %.dll",
 #else
     ".LIBPATTERNS", "lib%.so lib%.a",
 #endif
@@ -546,8 +586,8 @@ set_default_suffixes (void)
   else
     {
       struct dep *d;
-      char *p = default_suffixes;
-      suffix_file->deps = enter_prereqs (PARSE_SIMPLE_SEQ (&p, struct dep),
+      const char *p = default_suffixes;
+      suffix_file->deps = enter_prereqs (PARSE_SIMPLE_SEQ ((char **)&p, struct dep),
                                          NULL);
       for (d = suffix_file->deps; d; d = d->next)
         d->file->builtin = 1;
@@ -564,7 +604,7 @@ set_default_suffixes (void)
 void
 install_default_suffix_rules (void)
 {
-  char **s;
+  const char **s;
 
   if (no_builtin_rules_flag)
     return;
@@ -576,7 +616,7 @@ install_default_suffix_rules (void)
       assert (f->cmds == 0);
       f->cmds = xmalloc (sizeof (struct commands));
       f->cmds->fileinfo.filenm = 0;
-      f->cmds->commands = s[1];
+      f->cmds->commands = xstrdup (s[1]);
       f->cmds->command_lines = 0;
       f->cmds->recipe_prefix = RECIPEPREFIX_DEFAULT;
       f->builtin = 1;

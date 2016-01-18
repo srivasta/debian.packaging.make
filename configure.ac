@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 #
-# Copyright (C) 1993-2013 Free Software Foundation, Inc.
+# Copyright (C) 1993-2014 Free Software Foundation, Inc.
 # This file is part of GNU Make.
 #
 # GNU Make is free software; you can redistribute it and/or modify it under
@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([GNU make],[4.0],[bug-make@gnu.org])
+AC_INIT([GNU make],[4.1],[bug-make@gnu.org])
 
 AC_PREREQ([2.62])
 
@@ -26,9 +26,13 @@ AC_CONFIG_SRCDIR([vpath.c])
 AC_CONFIG_HEADERS([config.h])
 
 # Automake setup
-AM_INIT_AUTOMAKE([1.11.1 silent-rules])
+# We have to enable "foreign" because ChangeLog is auto-generated
+# We cannot enable -Werror because gettext 0.18.1 has invalid content
+# When we update gettext to 0.18.3 or better we can add it again.
+AM_INIT_AUTOMAKE([1.11.1 silent-rules foreign -Wall])
 
 # Checks for programs.
+AC_USE_SYSTEM_EXTENSIONS
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_RANLIB
@@ -37,6 +41,9 @@ AC_CHECK_PROG([AR], [ar], [ar], [ar])
 # Perl is needed for the test suite (only)
 AC_CHECK_PROG([PERL], [perl], [perl], [perl])
 
+# Needed for w32/Makefile.am
+AM_PROG_AR
+
 # Specialized system macros
 AC_CANONICAL_HOST
 AC_AIX
@@ -44,7 +51,6 @@ AC_ISC_POSIX
 AC_MINIX
 
 # Enable gettext, in "external" mode.
-
 AM_GNU_GETTEXT_VERSION([0.18.1])
 AM_GNU_GETTEXT([external])
 
@@ -134,7 +140,7 @@ AC_CHECK_FUNCS([strdup strndup mkstemp mktemp fdopen fileno \
                 dup dup2 getcwd realpath sigsetmask sigaction \
                 getgroups seteuid setegid setlinebuf setreuid setregid \
                 getrlimit setrlimit setvbuf pipe strerror strsignal \
-                lstat readlink atexit])
+                lstat readlink atexit isatty ttyname])
 
 # We need to check declarations, not just existence, because on Tru64 this
 # function is not declared without special flags, which themselves cause
@@ -243,8 +249,8 @@ AS_IF([test "$PATH_SEPARATOR" = ';'],
 AC_SUBST([REMOTE]) REMOTE=stub
 use_customs=false
 AC_ARG_WITH([customs],
-[ AC_HELP_STRING([--with-customs=DIR],
-                 [enable remote jobs via Customs--see README.customs])],
+[AC_HELP_STRING([--with-customs=DIR],
+                [enable remote jobs via Customs--see README.customs])],
 [ AS_CASE([$withval], [n|no], [:],
     [make_cppflags="$CPPFLAGS"
      AS_CASE([$withval],
@@ -317,18 +323,18 @@ AC_ARG_ENABLE([load],
   [make_cv_load="$enableval" user_load="$enableval"],
   [make_cv_load="yes"])
 
-AS_CASE([/$ac_cv_func_dlopen/$ac_cv_func_dlsym/$ac_cv_func_dlerror/],
+AS_CASE([/$ac_cv_have_decl_dlopen/$ac_cv_have_decl_dlsym/$ac_cv_have_decl_dlerror/],
   [*/no/*], [make_cv_load=no])
+
+# We might need -ldl
+AS_IF([test "$make_cv_load" = yes], [
+  AC_SEARCH_LIBS([dlopen], [dl], [], [make_cv_load=])
+  ])
 
 AS_CASE([/$make_cv_load/$user_load/],
   [*/no/*], [make_cv_load=no],
   [AC_DEFINE(MAKE_LOAD, 1,
              [Define to 1 to enable 'load' support in GNU make.])
-  ])
-
-# We might need -ldl
-AS_IF([test "$make_cv_load" = yes], [
-  AC_SEARCH_LIBS([dlopen], [dl], [], [make_cv_load=])
   ])
 
 # If we want load support, we might need to link with export-dynamic.
@@ -498,7 +504,7 @@ AS_IF([test "x$make_cv_load" = xno && test "x$user_load" = xyes],
 
 # Specify what files are to be created.
 AC_CONFIG_FILES([Makefile glob/Makefile po/Makefile.in config/Makefile \
-                 w32/Makefile])
+                 w32/Makefile tests/config-flags.pm])
 
 # OK, do it!
 
