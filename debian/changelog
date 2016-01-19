@@ -1,3 +1,16 @@
+make-dfsg (4.1-2) unstable; urgency=low
+
+  * Update the handling of the changed behaviour of ar. The fix in the
+    previous version has been rolled back. The new strategy is to narrowly
+    change running the test suite to pass in the U modifier to ar, and
+    change make to detect and warn the user of they are using the archive
+    rule like libxx(*.o) to generate archives, and the archives do not
+    contain time stamps. The warning advises the user to explicitly pass
+    in the modifier U in the environment variable ARFLAGS, which is
+    essentially what we did for the test suite.
+
+ -- Manoj Srivastava <srivasta@debian.org>  Mon, 18 Jan 2016 15:57:45 -0800
+
 make-dfsg (4.1-1) unstable; urgency=low
 
   * New upstream release
