@@ -1,3 +1,15 @@
+make-dfsg (4.1-4) unstable; urgency=low
+
+  * Try to fix this bug. The problem is due to the fopen fail test, where
+    we fopen as many files as we can recursively before we run out of file
+    descriptors, and ensure that we exit with a failure message. The tests
+    times out on some machines. On abel, doubling the timeout was not
+    enough, but increasing it to 1200 seconds worked.
+  * Bug fix: "make 4.1 ftbfs on armel, armhf, mips, mipsel, powerpc, s390x
+    (test regressions)", thanks to Matthias Klose (Closes: #811408).
+
+ -- Manoj Srivastava <srivasta@debian.org>  Fri, 22 Jan 2016 01:55:04 -0800
+
 make-dfsg (4.1-3) unstable; urgency=low
 
   * Handle NULL return from ttyname

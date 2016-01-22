@@ -8,7 +8,7 @@ Standards-Version: 3.9.6
 Homepage: http://www.gnu.org/software/make/
 Build-Depends: gettext, po-debconf, debhelper (>= 9.0.0), dh-autoreconf,
                autoconf, automake | automaken, autopoint, file, pkg-config,
-               guile-2.0-dev
+               guile-2.0-dev, procps
 
 Package: make
 Suggests: make-doc
