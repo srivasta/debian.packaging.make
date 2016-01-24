@@ -1,3 +1,12 @@
+make-dfsg (4.1-5) unstable; urgency=low
+
+  * While increasing the timeout is a solution, it still did not work for
+    the slower architectures. Reducing the maximum open file descriptor
+    limits (only while testing) to try and get the the time under
+    control.
+
+ -- Manoj Srivastava <srivasta@debian.org>  Sat, 23 Jan 2016 16:10:23 -0800
+
 make-dfsg (4.1-4) unstable; urgency=low
 
   * Try to fix this bug. The problem is due to the fopen fail test, where
