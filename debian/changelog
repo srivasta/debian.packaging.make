@@ -1,3 +1,11 @@
+make-dfsg (4.1-7) unstable; urgency=low
+
+  * Updated standards version to 3.9.7. No changes needed.
+  * Bug fix: "-q fails for recursive makes", thanks to David Bremner
+    (Closes: #766140).
+
+ -- Manoj Srivastava <srivasta@debian.org>  Wed, 09 Mar 2016 16:10:46 -0800
+
 make-dfsg (4.1-6) unstable; urgency=low
 
   * Satsifiable cross build dependencies: libbsd-resource-perl is only needed
