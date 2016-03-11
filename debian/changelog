@@ -1,3 +1,11 @@
+make-dfsg (4.1-8) unstable; urgency=low
+
+  * Bug fix: "manpage should document --jobserver-fds and the jobserver
+    pipe", thanks to Josh Triplett. Updated the manual page, and forwarded
+    this bug to upstream bug reporting system.(Closes: #781416).
+
+ -- Manoj Srivastava <srivasta@debian.org>  Fri, 11 Mar 2016 14:16:58 -0800
+
 make-dfsg (4.1-7) unstable; urgency=low
 
   * Updated standards version to 3.9.7. No changes needed.
