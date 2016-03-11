@@ -192,7 +192,24 @@ If the
 .B \-j
 option is given without an argument,
 .BR make
-will not limit the number of jobs that can run simultaneously.
+will not limit the number of jobs that can run simultaneously. When
+.BR make
+invokes a
+.BR sub-make,
+all instances of make will coordinate to run the specified number of
+jobs at a time; see the section
+.B PARALLEL MAKE AND THE JOBSERVER
+for details.
+.TP 0.5i
+\fB\--jobserver-fds\fR [\fIR,W\fR]
+Internal option
+.BR make
+uses to pass the jobserver pipe read and write file descriptor numbers
+to
+.BR sub-makes;
+see the section
+.B PARALLEL MAKE AND THE JOBSERVER
+for details
 .TP 0.5i
 \fB\-k\fR, \fB\-\-keep\-going\fR
 Continue as much as possible after an error.
@@ -355,6 +372,68 @@ programs are properly installed at your site, the command
 .B info make
 .PP
 should give you access to the complete manual.
+.SH "PARALLEL MAKE AND THE JOBSERVER"
+GNU make can invoke multiple commands, or
+.I jobs,
+in parallel.
+.BR make
+may be told to run at most
+.B N
+jobs in parallel, where it will invoke between
+1 and
+.B N
+jobs, but never more than
+.B N.
+.PP
+In a recursive build environment, no one instance of
+.BR make
+has enough information, enough
+.I global vision,
+to be able to know how many jobs are being run at any given moment across all the
+other instances of
+.BR make.
+.PP
+Rather than using complex schemes such as a central server, shared
+memory, sockets, etc. for synchronizing the various instances of make,
+.BR make
+uses a simple  pipe. The initial, top-level
+.BR make
+creates a pipe and writes
+.B N-1
+one-byte tokens into the pipe (The top level
+.BR make
+is assumed to reserve one token for iitself). That pipe is shared
+between that
+.BR make
+and all
+.BR submakes,
+and any time any
+.BR make
+wants to run
+a job it first has to read a token from the pipe. Once the job is
+complete, it writes the token back to the pipe. Since there are only
+.B N-1
+tokens, you know that you will never invoke more than
+.B N
+jobs.
+.PP
+If the job to be run is not a
+.BR sub-make
+(determined the same way GNU
+make has always done so: by the absence of both the
+.B MAKE
+variable in the command script and the special prefix
+.B +
+before a line in the
+command script), then
+.BR make
+will close the jobserver pipe file
+descriptors before invoking the commands. This ensures that no other
+commands will interrupt the jobserver processing, and it also ensures
+that commands that expect certain file
+descriptors to be available will not be disappointed. More details are
+available at
+.IR http://make.mad-scientist.net/papers/jobserver-implementation/
 .SH BUGS
 See the chapter ``Problems and Bugs'' in
 .IR "The GNU Make Manual" .
