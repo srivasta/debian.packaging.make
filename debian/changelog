@@ -1,3 +1,12 @@
+make-dfsg (4.1-9) unstable; urgency=low
+
+  * Reword the manual page. While the wording included in the manual page
+    was not verbatim copying from the source material, it was perhaps not
+    distinct enough. The manual page is not a copy/edit of the source
+    material anymore, being rewritten using different words and flow.
+
+ -- Manoj Srivastava <srivasta@debian.org>  Fri, 11 Mar 2016 17:31:03 -0800
+
 make-dfsg (4.1-8) unstable; urgency=low
 
   * Bug fix: "manpage should document --jobserver-fds and the jobserver
