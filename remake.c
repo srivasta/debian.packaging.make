@@ -1259,6 +1259,7 @@ f_mtime (struct file *file, int search)
 
       char *arname, *memname;
       struct file *arfile;
+      int found;
       time_t member_date;
 
       /* Find the archive's name.  */
@@ -1306,10 +1307,15 @@ f_mtime (struct file *file, int search)
         /* The archive doesn't exist, so its members don't exist either.  */
         return NONEXISTENT_MTIME;
 
-      member_date = ar_member_date (file->hname);
-      mtime = (member_date == (time_t) -1
-               ? NONEXISTENT_MTIME
-               : file_timestamp_cons (file->hname, member_date, 0));
+      found = ar_member_date (file->hname, &member_date);
+      if (found && member_date == (time_t) 0)
+        {
+              OSS (error, NILF,
+                   _("Warning: Archive '%s' seems to have been created in deterministic mode. '%s' will always be updated. Please consider passing the U flag to ar to avoid the problem."),
+                   arfile->name, memname);
+
+        }
+      mtime = found ? file_timestamp_cons (file->hname, member_date, 0) : NONEXISTENT_MTIME;
     }
   else
 #endif
@@ -1548,9 +1554,11 @@ library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
 {
   static const char *dirs[] =
     {
+#ifdef MULTIARCH_DIRS
+      MULTIARCH_DIRS
+#endif
 #ifndef _AMIGA
       "/lib",
-      "/usr/lib",
 #endif
 #if defined(WINDOWS32) && !defined(LIBDIR)
 /*
@@ -1559,7 +1567,19 @@ library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
  */
 #define LIBDIR "."
 #endif
-      LIBDIR,                   /* Defined by configuration.  */
+      LIBDIR,			/* Defined by configuration.  */
+#ifndef _AMIGA
+/*
+ * In the Debian binaries, PREFIX is /usr and thus this searches /lib,
+ * /usr/lib and /usr/lib again and therefore misses any libraries that
+ * are not packaged and were installed by the site admin.  The ideal
+ * behaviour would be to have the search path set by a Makefile
+ * variable (other than the VPATH blunt object) but even absent that,
+ * it would be more useful if it looked in /usr/local/lib even though
+ * make itself hasn't been installed in the /usr/local tree -- manoj
+ */
+      "/usr/local/lib",
+#endif
       0
     };
 

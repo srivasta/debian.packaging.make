@@ -27,6 +27,14 @@ this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <string.h>
 
+#if defined (HAVE_LINUX_BINFMTS_H) && defined (HAVE_SYS_USER_H)
+#include <sys/user.h>
+#include <linux/binfmts.h>
+#endif
+#ifndef PAGE_SIZE
+# define PAGE_SIZE (sysconf(_SC_PAGESIZE))
+#endif
+
 /* Default shell to use.  */
 #ifdef WINDOWS32
 #include <windows.h>
@@ -824,8 +832,6 @@ reap_children (int block, int err)
           break;
         }
 
-      child_failed = exit_sig != 0 || exit_code != 0;
-
       /* Search for a child matching the deceased one.  */
       lastc = 0;
       for (c = children; c != 0; lastc = c, c = c->next)
@@ -836,6 +842,15 @@ reap_children (int block, int err)
         /* An unknown child died.
            Ignore it; it was inherited from our invoker.  */
         continue;
+
+      /* Determine the failure status: 0 for success, 1 for updating target in
+         question mode, 2 for anything else.  */
+      if (exit_sig == 0 && exit_code == 0)
+        child_failed = MAKE_SUCCESS;
+      else if (exit_sig == 0 && exit_code == 1 && question_flag && c->recursive)
+        child_failed = MAKE_TROUBLE;
+      else
+        child_failed = MAKE_FAILURE;
 
       DB (DB_JOBS, (child_failed
                     ? _("Reaping losing child %p PID %s %s\n")
@@ -872,10 +887,10 @@ reap_children (int block, int err)
              delete non-precious targets, and abort.  */
           static int delete_on_error = -1;
 
-          if (!dontcare)
+          if (!dontcare && child_failed == MAKE_FAILURE)
             child_error (c, exit_code, exit_sig, coredump, 0);
 
-          c->file->update_status = us_failed;
+          c->file->update_status = child_failed == MAKE_FAILURE ? us_failed : us_question;
           if (delete_on_error == -1)
             {
               struct file *f = lookup_file (".DELETE_ON_ERROR");
@@ -987,7 +1002,7 @@ reap_children (int block, int err)
       if (!err && child_failed && !dontcare && !keep_going_flag &&
           /* fatal_error_signal will die with the right signal.  */
           !handling_fatal_signal)
-        die (MAKE_FAILURE);
+        die (child_failed);
 
       /* Only block for one child.  */
       block = 0;
@@ -1189,14 +1204,15 @@ start_job_command (struct child *child)
       ++p;
     }
 
+  child->recursive = ((flags & COMMANDS_RECURSE) != 0);
+
   /* Update the file's command flags with any new ones we found.  We only
      keep the COMMANDS_RECURSE setting.  Even this isn't 100% correct; we are
      now marking more commands recursive than should be in the case of
      multiline define/endef scripts where only one line is marked "+".  In
      order to really fix this, we'll have to keep a lines_flags for every
      actual line, after expansion.  */
-  child->file->cmds->lines_flags[child->command_line - 1]
-    |= flags & COMMANDS_RECURSE;
+  child->file->cmds->lines_flags[child->command_line - 1] |= flags & COMMANDS_RECURSE;
 
   /* POSIX requires that a recipe prefix after a backslash-newline should
      be ignored.  Remove it now so the output is correct.  */
@@ -3115,6 +3131,7 @@ construct_command_argv_internal (char *line, char **restp, const char *shell,
 #ifdef WINDOWS32
     char *command_ptr = NULL; /* used for batch_mode_shell mode */
 #endif
+    char *args_ptr;
 
 # ifdef __EMX__ /* is this necessary? */
     if (!unixy_shell && shellflags)
@@ -3280,8 +3297,17 @@ construct_command_argv_internal (char *line, char **restp, const char *shell,
         return new_argv;
       }
 
+#ifdef MAX_ARG_STRLEN
+    static char eval_line[] = "eval\\ \\\"set\\ x\\;\\ shift\\;\\ ";
+#define ARG_NUMBER_DIGITS 5
+#define EVAL_LEN (sizeof(eval_line)-1 + shell_len + 4                   \
+                  + (7 + ARG_NUMBER_DIGITS) * 2 * line_len / (MAX_ARG_STRLEN - 2))
+#else
+#define EVAL_LEN 0
+#endif
+
     new_line = xmalloc ((shell_len*2) + 1 + sflags_len + 1
-                        + (line_len*2) + 1);
+                        + (line_len*2) + 1 + EVAL_LEN);
     ap = new_line;
     /* Copy SHELL, escaping any characters special to the shell.  If
        we don't escape them, construct_command_argv_internal will
@@ -3301,6 +3327,30 @@ construct_command_argv_internal (char *line, char **restp, const char *shell,
 #ifdef WINDOWS32
     command_ptr = ap;
 #endif
+
+#if !defined (WINDOWS32) && defined (MAX_ARG_STRLEN)
+    if (unixy_shell && line_len > MAX_ARG_STRLEN)
+      {
+       unsigned j;
+       memcpy (ap, eval_line, sizeof (eval_line) - 1);
+       ap += sizeof (eval_line) - 1;
+       for (j = 1; j <= 2 * line_len / (MAX_ARG_STRLEN - 2); j++)
+         ap += sprintf (ap, "\\$\\{%u\\}", j);
+       *ap++ = '\\';
+       *ap++ = '"';
+       *ap++ = ' ';
+       /* Copy only the first word of SHELL to $0.  */
+       for (p = shell; *p != '\0'; ++p)
+         {
+           if (isspace ((unsigned char)*p))
+             break;
+           *ap++ = *p;
+         }
+       *ap++ = ' ';
+      }
+#endif
+    args_ptr = ap;
+
     for (p = line; *p != '\0'; ++p)
       {
         if (restp != NULL && *p == '\n')
@@ -3348,6 +3398,13 @@ construct_command_argv_internal (char *line, char **restp, const char *shell,
           }
 #endif
         *ap++ = *p;
+#if !defined (WINDOWS32) && defined (MAX_ARG_STRLEN)
+       if (unixy_shell && line_len > MAX_ARG_STRLEN && (ap - args_ptr > MAX_ARG_STRLEN - 2))
+         {
+           *ap++ = ' ';
+           args_ptr = ap;
+         }
+#endif
       }
     if (ap == new_line + shell_len + sflags_len + 2)
       {

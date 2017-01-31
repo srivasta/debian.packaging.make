@@ -192,7 +192,24 @@ If the
 .B \-j
 option is given without an argument,
 .BR make
-will not limit the number of jobs that can run simultaneously.
+will not limit the number of jobs that can run simultaneously. When
+.BR make
+invokes a
+.BR sub-make,
+all instances of make will coordinate to run the specified number of
+jobs at a time; see the section
+.B PARALLEL MAKE AND THE JOBSERVER
+for details.
+.TP 0.5i
+\fB\--jobserver-fds\fR [\fIR,W\fR]
+Internal option
+.BR make
+uses to pass the jobserver pipe read and write file descriptor numbers
+to
+.BR sub-makes;
+see the section
+.B PARALLEL MAKE AND THE JOBSERVER
+for details
 .TP 0.5i
 \fB\-k\fR, \fB\-\-keep\-going\fR
 Continue as much as possible after an error.
@@ -355,6 +372,68 @@ programs are properly installed at your site, the command
 .B info make
 .PP
 should give you access to the complete manual.
+.SH "PARALLEL MAKE AND THE JOBSERVER"
+Using the
+.I -j
+option, the user can instruct
+.BR make
+to execute tasks in parallel. By specifying a numeric argument to
+.I -j
+the user may specify an upper limit of the number of parallel tasks to
+be run.
+.PP
+When the build environment is such that a top level
+.BR make
+invokes
+.BR sub-makes
+(for instance, a style in which each sub-directory contains its own
+.I Makefile
+), no individual instance of
+.BR make
+knows how many tasks are running in parallel, so keeping the number of
+tasks under the upper limit would be impossible without communication
+between all the
+.BR make
+instances running. While solutions like having the top level
+.BR make
+serve as a central controller are feasible, or using other
+synchronization mechanisms like shared memory or sockets can be
+created, the current implementation uses a simple shared pipe.
+.PP
+This pipe is created by the top-level
+.BR make
+process, and passed on to all the
+.BR sub-makes.
+The top level
+.BR make process writes
+.B N-1
+one-byte tokens into the pipe (The top level
+.BR make
+is assumed to reserve one token for itself). Whenever any of the
+.BR make
+processes (including the top-level
+.BR make
+) needs to run a new task, it reads a byte from the shared pipe. If
+there are no tokens left, it must wait for a token to be written back
+to the pipe. Once the task is completed, the
+.BR make
+process writes a token back to the pipe (and thus, if the tokens had
+been exhausted, unblocking the first
+.BR make
+process that was waiting to read a token).  Since only
+.B N-1
+tokens were written into the pipe, no more than
+.B N
+tasks can be running at any given time.
+.PP
+If the job to be run is not a
+.BR sub-make
+then
+.BR make
+will close the jobserver pipe file descriptors before invoking the
+commands, so that the command can not interfere with the
+.I jobserver,
+and the command does not find any unusual file descriptors.
 .SH BUGS
 See the chapter ``Problems and Bugs'' in
 .IR "The GNU Make Manual" .

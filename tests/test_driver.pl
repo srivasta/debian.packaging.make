@@ -30,6 +30,7 @@
 
 # $Id$
 
+use BSD::Resource;
 
 # The number of test categories we've run
 $categories_run = 0;
@@ -150,6 +151,11 @@ sub toplevel
   # Make sure our compares are not foiled by locale differences
 
   $makeENV{LC_ALL} = 'C';
+
+  # HACK. On Debian, ar is now compiled with determinism, which makes
+  # make tests fail. Pass in the U modifier to revert that behaviour change
+  # If ar has not been changed, this should be a no-op.
+  $makeENV{ARFLAGS} = 'rvU';
 
   # Replace the environment with the new one
   #
@@ -542,9 +548,19 @@ sub run_all_tests
 
         $tests_run = 0;
         $tests_passed = 0;
-
+	($nowsoft, $nowhard) = getrlimit(RLIMIT_NOFILE);
+	if ( $testname =~ m{misc/fopen-fail}msx ) {
+	    $test_timeout = 300;
+	    # do a best effort bit to redice the number of fds
+	    $success = setrlimit( RLIMIT_NOFILE, 1024, 2048 );
+	}
         # Run the test!
         $code = do $perl_testname;
+	if ( $testname =~ m{misc/fopen-fail}msx ) {
+	    $test_timeout = $save_timeout;
+	    # do a best effort bit to redice the number of fds
+	    $success = setrlimit( RLIMIT_NOFILE, $nowsoft, $nowhard );
+	}
 
         ++$categories_run;
         $total_tests_run += $tests_run;
