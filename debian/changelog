@@ -1,3 +1,11 @@
+make-dfsg (4.1-9.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Ensure the stack limit is reset when make re-execs itself.
+    (Closes: #853213)
+
+ -- James Cowgill <jcowgill@debian.org>  Tue, 31 Jan 2017 16:31:57 +0000
+
 make-dfsg (4.1-9) unstable; urgency=low
 
   * Reword the manual page. While the wording included in the manual page
