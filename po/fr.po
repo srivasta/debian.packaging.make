@@ -6,15 +6,15 @@
 # Marc Baudoin <babafou@ensta.fr>, Frédéric Liné <line@MicroNet.fr>, 1996.
 # Michel Robitaille <robitail@IRO.UMontreal.CA>, 1996-2006
 # Christophe Combelles <ccomb@free.fr>, 2009, 2010
-# Kevin Raymond <shaiton@fedoraproject.org>, 2012, 2013
+# Kévin Raymond <shaiton@fedoraproject.org>, 2012, 2013, 2015
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GNU make 4.0\n"
+"Project-Id-Version: GNU make 4.1\n"
 "Report-Msgid-Bugs-To: bug-make@gnu.org\n"
-"POT-Creation-Date: 2014-10-05 12:25-0400\n"
-"PO-Revision-Date: 2013-11-01 16:15+0100\n"
-"Last-Translator: Kevin Raymond <shaiton@fedoraproject.org>\n"
+"POT-Creation-Date: 2016-06-10 19:03-0400\n"
+"PO-Revision-Date: 2015-03-11 22:20+0100\n"
+"Last-Translator: Kévin Raymond <shaiton@fedoraproject.org>\n"
 "Language-Team: French <traduc@traduc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -52,88 +52,89 @@ msgstr "touch : le membre « %s » n'existe pas dans « %s »"
 msgid "touch: Bad return code from ar_member_touch on '%s'"
 msgstr "touch : mauvais code de retour de ar_member_touch pour « %s »"
 
-#: arscan.c:124
+#: arscan.c:130
 #, c-format
 msgid "lbr$set_module() failed to extract module info, status = %d"
 msgstr "lbr$set_module() n'a pas pu extraire les infos du module. Code = %d"
 
-#: arscan.c:230
+#: arscan.c:236
 #, c-format
 msgid "lbr$ini_control() failed with status = %d"
 msgstr "lbr$ini_control() a échoué avec un code = %d"
 
-#: arscan.c:255
-#, fuzzy, c-format
+#: arscan.c:261
+#, c-format
 msgid "unable to open library '%s' to lookup member status %d"
 msgstr ""
-"impossible d'ouvrir la bibliothèque « %s » pour récupérer le membre « %s »"
+"impossible d'ouvrir la bibliothèque « %s » pour récupérer le statut du "
+"membre « %d »"
 
-#: arscan.c:944
+#: arscan.c:965
 #, c-format
 msgid "Member '%s'%s: %ld bytes at %ld (%ld).\n"
 msgstr "Membre `%s'%s : %ld octets à %ld (%ld).\n"
 
-#: arscan.c:945
+#: arscan.c:966
 msgid " (name might be truncated)"
 msgstr " (le nom peut être tronqué)"
 
-#: arscan.c:947
+#: arscan.c:968
 #, c-format
 msgid "  Date %s"
 msgstr "  Date %s"
 
-#: arscan.c:948
+#: arscan.c:969
 #, c-format
 msgid "  uid = %d, gid = %d, mode = 0%o.\n"
 msgstr "  uid = %d, gid = %d, mode = 0%o.\n"
 
-#: commands.c:404
+#: commands.c:402
 #, c-format
 msgid "Recipe has too many lines (%ud)"
 msgstr "La recette contient trop de lignes (%ud)"
 
-#: commands.c:505
+#: commands.c:503
 msgid "*** Break.\n"
 msgstr "*** Break.\n"
 
-#: commands.c:629
+#: commands.c:627
 #, c-format
 msgid "*** [%s] Archive member '%s' may be bogus; not deleted"
 msgstr ""
 "*** [%s] le membre « %s » de l'archive peut avoir un problème ; il n'a pas "
 "été supprimé"
 
-#: commands.c:633
+#: commands.c:631
 #, c-format
 msgid "*** Archive member '%s' may be bogus; not deleted"
 msgstr ""
 "*** Le membre « %s » de l'archive peut avoir un problème ; il n'a pas été "
 "supprimé"
 
-#: commands.c:647
+#: commands.c:645
 #, c-format
 msgid "*** [%s] Deleting file '%s'"
 msgstr "*** [%s] Suppression du fichier « %s »"
 
-#: commands.c:649
+#: commands.c:647
 #, c-format
 msgid "*** Deleting file '%s'"
 msgstr "*** Suppression du fichier « %s »"
 
-#: commands.c:685
+#: commands.c:683
 msgid "#  recipe to execute"
 msgstr "#  recette à exécuter"
 
-#: commands.c:688
+#: commands.c:686
 msgid " (built-in):"
 msgstr " (commande interne) :"
 
-#: commands.c:690
+#: commands.c:688
 #, c-format
 msgid " (from '%s', line %lu):\n"
 msgstr " (de « %s », ligne %lu) : \n"
 
-#: dir.c:989
+#: dir.c:1069
 msgid ""
 "\n"
 "# Directories\n"
@@ -141,62 +142,62 @@ msgstr ""
 "\n"
 "# Répertoires\n"
 
-#: dir.c:1001
+#: dir.c:1081
 #, c-format
 msgid "# %s: could not be stat'd.\n"
 msgstr "# %s: « stat » impossible.\n"
 
-#: dir.c:1005
-#, c-format
-msgid "# %s (key %s, mtime %d): could not be opened.\n"
+#: dir.c:1085
+#, fuzzy
+msgid "# %s (key %s, mtime %I64u): could not be opened.\n"
 msgstr "# %s (clé %s, mtime %d) : ouverture impossible.\n"
 
-#: dir.c:1009
+#: dir.c:1090
 #, c-format
 msgid "# %s (device %d, inode [%d,%d,%d]): could not be opened.\n"
 msgstr "# %s (périphérique %d, inode [%d,%d,%d]) : ouverture impossible.\n"
 
-#: dir.c:1014
+#: dir.c:1095
 #, c-format
 msgid "# %s (device %ld, inode %ld): could not be opened.\n"
 msgstr "# %s (périphérique %ld, inode %ld) : ouverture impossible.\n"
 
-#: dir.c:1041
-#, c-format
-msgid "# %s (key %s, mtime %d): "
+#: dir.c:1122
+#, fuzzy
+msgid "# %s (key %s, mtime %I64u): "
 msgstr "# %s (périphérique %s, mtime %d) : "
 
-#: dir.c:1045
+#: dir.c:1127
 #, c-format
 msgid "# %s (device %d, inode [%d,%d,%d]): "
 msgstr "# %s (périphérique %d, inode [%d,%d,%d]) : "
 
-#: dir.c:1050
+#: dir.c:1132
 #, c-format
 msgid "# %s (device %ld, inode %ld): "
 msgstr "# %s (périphérique %ld, inode %ld) : "
 
-#: dir.c:1056 dir.c:1077
+#: dir.c:1138 dir.c:1159
 msgid "No"
 msgstr "Aucun"
 
-#: dir.c:1059 dir.c:1080
+#: dir.c:1141 dir.c:1162
 msgid " files, "
 msgstr " fichier(s), "
 
-#: dir.c:1061 dir.c:1082
+#: dir.c:1143 dir.c:1164
 msgid "no"
 msgstr "aucune"
 
-#: dir.c:1064
+#: dir.c:1146
 msgid " impossibilities"
 msgstr " impossibilité(s)"
 
-#: dir.c:1068
+#: dir.c:1150
 msgid " so far."
 msgstr " jusqu'ici."
 
-#: dir.c:1085
+#: dir.c:1167
 #, c-format
 msgid " impossibilities in %lu directories.\n"
 msgstr " impossibilités dans %lu répertoires.\n"
@@ -206,161 +207,161 @@ msgstr " impossibilités dans %lu répertoires.\n"
 msgid "Recursive variable '%s' references itself (eventually)"
 msgstr "La variable récursive « %s » se référence elle-même (à la fin)"
 
-#: expand.c:269
+#: expand.c:271
 msgid "unterminated variable reference"
 msgstr "référence incomplète à une variable"
 
-#: file.c:271
+#: file.c:278
 #, c-format
 msgid "Recipe was specified for file '%s' at %s:%lu,"
 msgstr "Une recette a été spécifiée pour le fichier « %s » dans %s : %lu,"
 
-#: file.c:276
+#: file.c:283
 #, c-format
 msgid "Recipe for file '%s' was found by implicit rule search,"
 msgstr ""
 "La recette pour le fichier « %s » a été trouvée par une recherche de règle "
 "implicite,"
 
-#: file.c:280
+#: file.c:287
 #, c-format
 msgid "but '%s' is now considered the same file as '%s'."
 msgstr ""
 "mais « %s » est maintenant considéré comme étant le même fichier que « %s »."
 
-#: file.c:283
+#: file.c:290
 #, c-format
 msgid "Recipe for '%s' will be ignored in favor of the one for '%s'."
 msgstr "La recette pour « %s » sera ignorée en faveur de celle pour « %s »."
 
-#: file.c:303
+#: file.c:310
 #, c-format
 msgid "can't rename single-colon '%s' to double-colon '%s'"
 msgstr ""
 "impossible de renommer le deux-points simple « %s » en deux-points double "
 "« %s »"
 
-#: file.c:309
+#: file.c:316
 #, c-format
 msgid "can't rename double-colon '%s' to single-colon '%s'"
 msgstr ""
 "impossible de renommer le deux-points double « %s » en deux-points simple "
 "« %s »"
 
-#: file.c:401
+#: file.c:408
 #, c-format
 msgid "*** Deleting intermediate file '%s'"
 msgstr "*** Suppression du fichier intermédiaire « %s »"
 
-#: file.c:405
+#: file.c:412
 msgid "Removing intermediate files...\n"
 msgstr "Suppression des fichiers intermédiaires...\n"
 
-#: file.c:811
+#: file.c:818
 msgid "Current time"
 msgstr "Heure actuelle"
 
-#: file.c:815
+#: file.c:822
 #, c-format
 msgid "%s: Timestamp out of range; substituting %s"
 msgstr "%s : horodatage hors limite ; remplacement par %s"
 
-#: file.c:955
+#: file.c:962
 msgid "# Not a target:"
 msgstr "# Pas une cible :"
 
-#: file.c:960
+#: file.c:967
 msgid "#  Precious file (prerequisite of .PRECIOUS)."
 msgstr "#  Fichier précieux (dépendance de .PRECIOUS)."
 
-#: file.c:962
+#: file.c:969
 msgid "#  Phony target (prerequisite of .PHONY)."
 msgstr "#  Cible factice (dépendance de .PHONY)."
 
-#: file.c:964
+#: file.c:971
 msgid "#  Command line target."
 msgstr "#  Cible de la ligne de commande."
 
-#: file.c:966
+#: file.c:973
 msgid "#  A default, MAKEFILES, or -include/sinclude makefile."
 msgstr "#  Une valeur par défaut, MAKEFILES ou -include/sinclude makefile."
 
-#: file.c:968
+#: file.c:975
 msgid "#  Builtin rule"
 msgstr "# Pas de règle interne"
 
-#: file.c:970
+#: file.c:977
 msgid "#  Implicit rule search has been done."
 msgstr "#  La recherche de règle implicite a été effectuée."
 
-#: file.c:971
+#: file.c:978
 msgid "#  Implicit rule search has not been done."
 msgstr "#  La recherche de règle implicite n'a pas été effectuée."
 
-#: file.c:973
+#: file.c:980
 #, c-format
 msgid "#  Implicit/static pattern stem: '%s'\n"
 msgstr "#  Préfixe de motif implicite ou statique : « %s »\n"
 
-#: file.c:975
+#: file.c:982
 msgid "#  File is an intermediate prerequisite."
 msgstr "#  Le fichier est une dépendance intermédiaire."
 
-#: file.c:979
+#: file.c:986
 msgid "#  Also makes:"
 msgstr "#  Fabrique également :"
 
-#: file.c:985
+#: file.c:992
 msgid "#  Modification time never checked."
 msgstr "#  Heure de modification jamais vérifiée."
 
-#: file.c:987
+#: file.c:994
 msgid "#  File does not exist."
 msgstr "# Le fichier n'existe pas."
 
-#: file.c:989
+#: file.c:996
 msgid "#  File is very old."
 msgstr "#  Le fichier est très ancien."
 
-#: file.c:994
+#: file.c:1001
 #, c-format
 msgid "#  Last modified %s\n"
 msgstr "#  Dernière modification %s\n"
 
-#: file.c:997
+#: file.c:1004
 msgid "#  File has been updated."
 msgstr "#  Le fichier a été mis à jour."
 
-#: file.c:997
+#: file.c:1004
 msgid "#  File has not been updated."
 msgstr "#  Le fichier n'a pas été mis à jour."
 
-#: file.c:1001
+#: file.c:1008
 msgid "#  Recipe currently running (THIS IS A BUG)."
 msgstr "#  Recette en cours d'exécution (CECI EST UNE ANOMALIE)."
 
-#: file.c:1004
+#: file.c:1011
 msgid "#  Dependencies recipe running (THIS IS A BUG)."
 msgstr ""
 "#  Recette de dépendances en cours d'exécution (CECI EST UNE ANOMALIE)."
 
-#: file.c:1013
+#: file.c:1020
 msgid "#  Successfully updated."
 msgstr "#  Mise à jour réussie."
 
-#: file.c:1017
+#: file.c:1024
 msgid "#  Needs to be updated (-q is set)."
 msgstr "#  À besoin d'être mis à jour (l'option -q est activée)."
 
-#: file.c:1020
+#: file.c:1027
 msgid "#  Failed to be updated."
 msgstr "#  N'a pas pu être mis à jour."
 
-#: file.c:1025
+#: file.c:1032
 msgid "#  Invalid value in 'command_state' member!"
 msgstr "#  Valeur non valable dans le membre « command_state » !"
 
-#: file.c:1044
+#: file.c:1051
 msgid ""
 "\n"
 "# Files"
@@ -368,7 +369,7 @@ msgstr ""
 "\n"
 "# Fichiers"
 
-#: file.c:1048
+#: file.c:1055
 msgid ""
 "\n"
 "# files hash-table stats:\n"
@@ -378,105 +379,122 @@ msgstr ""
 "# stats des tables de hachage des fichiers :\n"
 "# "
 
-#: file.c:1058
+#: file.c:1065
 #, c-format
 msgid "%s: Field '%s' not cached: %s"
 msgstr "%s : le champ « %s » n'est pas en cache : %s"
 
-#: function.c:780
+#: function.c:790
 msgid "non-numeric first argument to 'word' function"
 msgstr "le premier argument de la fonction « word » doit être numérique"
 
-#: function.c:785
+#: function.c:795
 msgid "first argument to 'word' function must be greater than 0"
 msgstr "le premier argument de la fonction « word » doit être supérieur à 0"
 
-#: function.c:805
+#: function.c:815
 msgid "non-numeric first argument to 'wordlist' function"
 msgstr "le premier argument de la fonction « wordlist » doit être numérique"
 
-#: function.c:807
+#: function.c:817
 msgid "non-numeric second argument to 'wordlist' function"
 msgstr "le deuxième argument de la fonction « wordlist » doit être numérique"
 
-#: function.c:1499
+#: function.c:1525
 #, c-format
 msgid "windows32_openpipe: DuplicateHandle(In) failed (e=%ld)\n"
 msgstr "windows32_openpipe : DuplicateHandle(In) a échoué (e=%ld)\n"
 
-#: function.c:1523
+#: function.c:1549
 #, c-format
 msgid "windows32_openpipe: DuplicateHandle(Err) failed (e=%ld)\n"
 msgstr "windows32_openpipe : DuplicateHandle(Err) a échoué (e=%ld)\n"
 
-#: function.c:1530
+#: function.c:1556
 #, c-format
 msgid "CreatePipe() failed (e=%ld)\n"
 msgstr "CreatePipe() a échoué (e=%ld)\n"
 
-#: function.c:1538
+#: function.c:1564
 msgid "windows32_openpipe(): process_init_fd() failed\n"
 msgstr "windows32_openpipe() : process_init_fd() a échoué\n"
 
-#: function.c:1832
+#: function.c:1858
 #, c-format
 msgid "Cleaning up temporary batch file %s\n"
 msgstr "Nettoyage du fichier de commandes temporaire %s\n"
 
-#: function.c:2193
+#: function.c:2215 function.c:2240
+msgid "file: missing filename"
+msgstr ""
+
+#: function.c:2219 function.c:2250
 #, c-format
 msgid "open: %s: %s"
 msgstr "open : %s : %s"
 
-#: function.c:2203
+#: function.c:2227
 #, c-format
 msgid "write: %s: %s"
 msgstr "write : %s : %s"
 
-#: function.c:2209
-#, c-format
-msgid "Invalid file operation: %s"
+#: function.c:2230 function.c:2267
+#, fuzzy, c-format
+msgid "close: %s: %s"
+msgstr "open : %s : %s"
+
+#: function.c:2243
+msgid "file: too many arguments"
+msgstr ""
+
+#: function.c:2262
+#, fuzzy, c-format
+msgid "read: %s: %s"
+msgstr "write : %s : %s"
+
+#: function.c:2275
+#, fuzzy, c-format
+msgid "file: invalid file operation: %s"
 msgstr "Fichier d'opérations invalide : %s"
 
-#: function.c:2324
+#: function.c:2390
 #, c-format
 msgid "insufficient number of arguments (%d) to function '%s'"
 msgstr "nombre d'arguments insuffisant (%d) pour la fonction « %s »"
 
-#: function.c:2336
+#: function.c:2402
 #, c-format
 msgid "unimplemented on this platform: function '%s'"
 msgstr "non implémenté sur cette plateforme : fonction « %s »"
 
-#: function.c:2399
+#: function.c:2466
 #, c-format
 msgid "unterminated call to function '%s': missing '%c'"
 msgstr "appel à la fonction « %s » non terminé : « %c » manquant"
 
-#: function.c:2591
-#, fuzzy
+#: function.c:2650
 msgid "Empty function name"
-msgstr "Nom de fonction absent\n"
+msgstr "Nom de fonction absent"
 
-#: function.c:2593
-#, fuzzy, c-format
+#: function.c:2652
+#, c-format
 msgid "Invalid function name: %s"
-msgstr "Nom de fonction invalide : %s\n"
+msgstr "Nom de fonction invalide : %s"
 
-#: function.c:2595
-#, fuzzy, c-format
+#: function.c:2654
+#, c-format
 msgid "Function name too long: %s"
-msgstr "Nom de fonction trop long : %s\n"
+msgstr "Nom de fonction trop long : %s"
 
-#: function.c:2598
+#: function.c:2657
 #, fuzzy, c-format
-msgid "Invalid minimum argument count (%d) for function %s"
-msgstr "nombre d'arguments insuffisant (%d) pour la fonction « %s »\n"
+msgid "Invalid minimum argument count (%u) for function %s"
+msgstr "nombre d'arguments insuffisant (%d) pour la fonction « %s »"
 
-#: function.c:2601
+#: function.c:2660
 #, fuzzy, c-format
-msgid "Invalid maximum argument count (%d) for function %s"
-msgstr "nombre d'arguments insuffisant (%d) pour la fonction « %s »\n"
+msgid "Invalid maximum argument count (%u) for function %s"
+msgstr "nombre d'arguments insuffisant (%d) pour la fonction « %s »"
 
 #: getopt.c:659
 #, c-format
@@ -574,7 +592,7 @@ msgstr "Recherche d'une règle implicite pour « %s ».\n"
 msgid "Looking for archive-member implicit rule for '%s'.\n"
 msgstr "Recherche d'une règle implicite de membre d'archive pour « %s ».\n"
 
-#: implicit.c:310
+#: implicit.c:311
 msgid "Avoiding implicit rule recursion.\n"
 msgstr "Évitement de récursion dans une règle implicite.\n"
 
@@ -618,100 +636,76 @@ msgstr "Dépendance trouvée « %s » comme VPATH « %s »\n"
 msgid "Looking for a rule with intermediate file '%s'.\n"
 msgstr "Recherche d'une règle contenant le fichier intermédaire « %s ».\n"
 
-#: job.c:361
+#: job.c:363
 msgid "Cannot create a temporary file\n"
 msgstr "Impossible de créer un fichier temporaire\n"
 
-#: job.c:483
+#: job.c:485
 msgid " (core dumped)"
 msgstr " (core dump créé)"
 
-#: job.c:488
+#: job.c:490
 msgid " (ignored)"
 msgstr " (ignorée)"
 
-#: job.c:492 job.c:2046
+#: job.c:494 job.c:1828
 msgid "<builtin>"
 msgstr "<commande interne>"
 
-#: job.c:503
-#, c-format
-msgid "%s: recipe for target '%s' failed"
-msgstr "%s : la recette pour la cible « %s » a échouée"
-
-#: job.c:516 job.c:524
-#, c-format
-msgid "%s[%s] Error %d%s"
+#: job.c:510
+#, fuzzy, c-format
+msgid "%s[%s: %s] Error %d%s"
 msgstr "%s[%s] Erreur %d%s"
 
-#: job.c:519
-#, c-format
-msgid "%s[%s] Error 0x%x%s"
-msgstr "%s[%s] Erreur 0x%x%s"
-
-#: job.c:529
-#, c-format
-msgid "%s[%s] %s%s%s"
-msgstr "%s[%s] %s%s%s"
-
-#: job.c:621
+#: job.c:599
 msgid "*** Waiting for unfinished jobs...."
 msgstr "*** Attente des tâches non terminées...."
 
-#: job.c:651
+#: job.c:629
 #, c-format
 msgid "Live child %p (%s) PID %s %s\n"
 msgstr "Processus fils actif %p (%s) PID %s %s\n"
 
-#: job.c:653 job.c:843 job.c:962 job.c:1737
+#: job.c:631 job.c:833 job.c:952 job.c:1583
 msgid " (remote)"
 msgstr " (distant)"
 
-#: job.c:841
+#: job.c:831
 #, c-format
 msgid "Reaping losing child %p PID %s %s\n"
 msgstr "Récolte du processus fils perdant %p PID %s %s\n"
 
-#: job.c:842
+#: job.c:832
 #, c-format
 msgid "Reaping winning child %p PID %s %s\n"
 msgstr "Récolte du processus fils gagnant %p PID %s %s\n"
 
-#: job.c:849
+#: job.c:839
 #, c-format
 msgid "Cleaning up temp batch file %s\n"
 msgstr "Nettoyage du fichier de commande temporaire %s\n"
 
-#: job.c:855
+#: job.c:845
 #, c-format
 msgid "Cleaning up temp batch file %s failed (%d)\n"
 msgstr "Le nettoyage du fichier de commandes temporaire %s a échoué (%d)\n"
 
-#: job.c:961
+#: job.c:951
 #, c-format
 msgid "Removing child %p PID %s%s from chain.\n"
 msgstr "Retrait du processus fils %p PID %s%s de la chaîne.\n"
 
-#: job.c:1021
-#, c-format
-msgid "release jobserver semaphore: (Error %ld: %s)"
-msgstr "libération de la sémaphore jobserver : erreur (%ld : %s)"
-
-#: job.c:1024 job.c:1038
+#: job.c:1006
 #, c-format
 msgid "Released token for child %p (%s).\n"
 msgstr "Jeton relâché pour le processus fils %p (%s).\n"
 
-#: job.c:1036
-msgid "write jobserver"
-msgstr "écriture vers le serveur de tâches"
-
-#: job.c:1662 job.c:2387
+#: job.c:1508 job.c:2201
 #, c-format
 msgid "process_easy() failed to launch process (e=%ld)\n"
 msgstr "process_easy() n'a pas pu lancer de processus (e=%ld)\n"
 
-#: job.c:1666 job.c:2391
+#: job.c:1512 job.c:2205
 #, c-format
 msgid ""
 "\n"
@@ -720,104 +714,100 @@ msgstr ""
 "\n"
 "%d arguments comptés lors du lancement échoué\n"
 
-#: job.c:1735
+#: job.c:1581
 #, c-format
 msgid "Putting child %p (%s) PID %s%s on the chain.\n"
 msgstr "Ajout du processus fils %p (%s) PID %s%s à la chaîne.\n"
 
-#: job.c:2005
-#, c-format
-msgid "semaphore or child process wait: (Error %ld: %s)"
-msgstr "attente de la sémaphore ou du processus fils : (erreur %ld : %s)"
-
-#: job.c:2019
+#: job.c:1811
 #, c-format
 msgid "Obtained token for child %p (%s).\n"
 msgstr "Jeton obtenu pour le processus fils %p (%s).\n"
 
-#: job.c:2029
-msgid "read jobs pipe"
-msgstr "lecture du tube des processus"
-
-#: job.c:2056
+#: job.c:1838
 #, c-format
 msgid "%s: target '%s' does not exist"
 msgstr "%s : la cible « %s » n'existe pas"
 
-#: job.c:2059
+#: job.c:1841
 #, c-format
 msgid "%s: update target '%s' due to: %s"
 msgstr "%s : mise à jour de la cible « %s » nécessaire pour : %s"
 
-#: job.c:2171
+#: job.c:1956
 msgid "cannot enforce load limits on this operating system"
 msgstr ""
 "impossible d'imposer des limites de charge sur ce système d'exploitation"
 
-#: job.c:2173
+#: job.c:1958
 msgid "cannot enforce load limit: "
 msgstr "impossible d'imposer des limites de charge : "
 
-#: job.c:2252
+#: job.c:2048
 msgid "no more file handles: could not duplicate stdin\n"
 msgstr ""
 "plus d'identificateur de fichier disponible : impossible de dupliquer stdin\n"
 
-#: job.c:2264
+#: job.c:2060
 msgid "no more file handles: could not duplicate stdout\n"
 msgstr ""
 "plus d'identificateur de fichier disponible : impossible de dupliquer "
 "stdout\n"
 
-#: job.c:2278
+#: job.c:2074
 msgid "no more file handles: could not duplicate stderr\n"
 msgstr ""
 "plus d'identificateurs de fichier disponible : impossible de dupliquer "
 "stderr\n"
 
-#: job.c:2293
+#: job.c:2089
 msgid "Could not restore stdin\n"
 msgstr "Impossible de restaurer stdin\n"
 
-#: job.c:2301
+#: job.c:2097
 msgid "Could not restore stdout\n"
 msgstr "Impossible de restaurer stdout\n"
 
-#: job.c:2309
+#: job.c:2105
 msgid "Could not restore stderr\n"
 msgstr "Impossible de restaurer stderr\n"
 
-#: job.c:2420
+#: job.c:2234
 #, c-format
 msgid "make reaped child pid %s, still waiting for pid %s\n"
 msgstr ""
 "make a récolté le processus fils pid %s, toujours en attente du pid %s\n"
 
-#: job.c:2458
-#, c-format
-msgid "%s: Command not found"
+#: job.c:2275
+#, fuzzy, c-format
+msgid "%s: %s: Command not found\n"
 msgstr "%s : commande introuvable"
 
-#: job.c:2518
+#: job.c:2277
+#, fuzzy, c-format
+msgid "%s[%u]: %s: Command not found\n"
+msgstr "%s : commande introuvable"
+
+#: job.c:2337
 #, c-format
 msgid "%s: Shell program not found"
 msgstr "%s : programme Shell introuvable"
 
-#: job.c:2527
+#: job.c:2346
 msgid "spawnvpe: environment space might be exhausted"
 msgstr "spawnvpe : l'espace d'environnement est peut-être épuisé"
 
-#: job.c:2765
+#: job.c:2584
 #, c-format
 msgid "$SHELL changed (was '%s', now '%s')\n"
 msgstr "$SHELL a été modifié (de « %s » à « %s »)\n"
 
-#: job.c:3198 job.c:3383
+#: job.c:3022 job.c:3207
 #, c-format
 msgid "Creating temporary batch file %s\n"
 msgstr "Création d'un fichier de commande temporaire %s\n"
 
-#: job.c:3206
+#: job.c:3030
 msgid ""
 "Batch file contents:\n"
 "\t@echo off\n"
@@ -825,7 +815,7 @@ msgstr ""
 "Contenu du fichier de commande :\n"
 "\t@echo off\n"
 
-#: job.c:3395
+#: job.c:3219
 #, c-format
 msgid ""
 "Batch file contents:%s\n"
@@ -834,7 +824,7 @@ msgstr ""
 "Contenu du fichier Batch :%s\n"
 "\t%s\n"
 
-#: job.c:3503
+#: job.c:3327
 #, c-format
 msgid "%s (line %d) Bad shell context (!unixy && !batch_mode_shell)\n"
 msgstr ""
@@ -865,30 +855,30 @@ msgstr "Echec du chargement du symbole %s à partir de %s : %s"
 msgid "Empty symbol name for load: %s"
 msgstr "Nom du symbole absent pour l'opération « load » : %s"
 
-#: load.c:205
+#: load.c:204
 #, c-format
 msgid "Loading symbol %s from %s\n"
 msgstr "Chargement du symbole %s à partir de %s\n"
 
-#: load.c:244
+#: load.c:256
 msgid "The 'load' operation is not supported on this platform."
 msgstr ""
 "Les opérations « load » ne sont pas prises en charge sur cette plateforme."
 
-#: main.c:313
+#: main.c:338
 msgid "Options:\n"
 msgstr "Options :\n"
 
-#: main.c:314
+#: main.c:339
 msgid "  -b, -m                      Ignored for compatibility.\n"
 msgstr "  -b, -m                      Ignoré pour compatibilité.\n"
 
-#: main.c:316
+#: main.c:341
 msgid "  -B, --always-make           Unconditionally make all targets.\n"
 msgstr ""
 "  -B, --always-make           Fabriquer toutes les cibles sans condition.\n"
 
-#: main.c:318
+#: main.c:343
 msgid ""
 "  -C DIRECTORY, --directory=DIRECTORY\n"
 "                              Change to DIRECTORY before doing anything.\n"
@@ -897,19 +887,19 @@ msgstr ""
 "                              Se placer dans le RÉPERTOIRE avant toute "
 "action.\n"
 
-#: main.c:321
+#: main.c:346
 msgid "  -d                          Print lots of debugging information.\n"
 msgstr ""
 "  -d                          Afficher beaucoup d'informations de débogage.\n"
 
-#: main.c:323
+#: main.c:348
 msgid ""
 "  --debug[=FLAGS]             Print various types of debugging information.\n"
 msgstr ""
 "  --debug[=FLAGS]             Afficher divers types d'informations de "
 "débogage.\n"
 
-#: main.c:325
+#: main.c:350
 msgid ""
 "  -e, --environment-overrides\n"
 "                              Environment variables override makefiles.\n"
@@ -918,14 +908,14 @@ msgstr ""
 "                              Les variables d'environment sont prioritaires "
 "sur les makefiles.\n"
 
-#: main.c:328
+#: main.c:353
 msgid ""
 "  --eval=STRING               Evaluate STRING as a makefile statement.\n"
 msgstr ""
 "  --eval=CHAINE               Evaluer la CHAINE comme une instruction de "
 "makefile.\n"
 
-#: main.c:330
+#: main.c:355
 msgid ""
 "  -f FILE, --file=FILE, --makefile=FILE\n"
 "                              Read FILE as a makefile.\n"
@@ -933,16 +923,16 @@ msgstr ""
 "  -f FICHIER, --file=FICHIER, --makefile=FICHIER\n"
 "                              Lire le FICHIER comme un makefile.\n"
 
-#: main.c:333
+#: main.c:358
 msgid "  -h, --help                  Print this message and exit.\n"
 msgstr "  -h, --help                  Afficher ce message et quitter.\n"
 
-#: main.c:335
+#: main.c:360
 msgid "  -i, --ignore-errors         Ignore errors from recipes.\n"
 msgstr ""
 "  -i, --ignore-errors         Ignorer les erreurs venant des recettes.\n"
 
-#: main.c:337
+#: main.c:362
 msgid ""
 "  -I DIRECTORY, --include-dir=DIRECTORY\n"
 "                              Search DIRECTORY for included makefiles.\n"
@@ -951,7 +941,7 @@ msgstr ""
 "                              Chercher dans le RÉPERTOIRE les makefiles "
 "traités par inclusion.\n"
 
-#: main.c:340
+#: main.c:365
 msgid ""
 "  -j [N], --jobs[=N]          Allow N jobs at once; infinite jobs with no "
 "arg.\n"
@@ -959,14 +949,14 @@ msgstr ""
 "  -j [N], --jobs[=N]          Autoriser N tâches simultanées ; nombre infini "
 "si utilisé sans argument.\n"
 
-#: main.c:342
+#: main.c:367
 msgid ""
 "  -k, --keep-going            Keep going when some targets can't be made.\n"
 msgstr ""
 "  -k, --keep-going            Poursuivre même si certaines cibles n'ont pas "
 "pu être fabriquées.\n"
 
-#: main.c:344
+#: main.c:369
 msgid ""
 "  -l [N], --load-average[=N], --max-load[=N]\n"
 "                              Don't start multiple jobs unless load is below "
@@ -976,7 +966,7 @@ msgstr ""
 "                              Ne pas lancer de tâches multiples à moins que "
 "la charge soit inférieure à N.\n"
 
-#: main.c:347
+#: main.c:372
 msgid ""
 "  -L, --check-symlink-times   Use the latest mtime between symlinks and "
 "target.\n"
@@ -984,7 +974,7 @@ msgstr ""
 "  -L, --check-symlink-times   Utiliser le « mtime » le plus récent entre les "
 "liens symboliques et la cible.\n"
 
-#: main.c:349
+#: main.c:374
 msgid ""
 "  -n, --just-print, --dry-run, --recon\n"
 "                              Don't actually run any recipe; just print "
@@ -994,7 +984,7 @@ msgstr ""
 "                              N'exécuter aucune recette ; seulement les "
 "afficher.\n"
 
-#: main.c:352
+#: main.c:377
 msgid ""
 "  -o FILE, --old-file=FILE, --assume-old=FILE\n"
 "                              Consider FILE to be very old and don't remake "
@@ -1004,7 +994,7 @@ msgstr ""
 "                              Considérer le FICHIER comme étant très ancien "
 "et ne pas le refabriquer.\n"
 
-#: main.c:355
+#: main.c:380
 msgid ""
 "  -O[TYPE], --output-sync[=TYPE]\n"
 "                              Synchronize output of parallel jobs by TYPE.\n"
@@ -1013,12 +1003,12 @@ msgstr ""
 "                              Synchronise la sortie des tâches parallèles "
 "par TYPE.\n"
 
-#: main.c:358
+#: main.c:383
 msgid "  -p, --print-data-base       Print make's internal database.\n"
 msgstr ""
 "  -p, --print-data-base       Afficher la base de données interne de make.\n"
 
-#: main.c:360
+#: main.c:385
 msgid ""
 "  -q, --question              Run no recipe; exit status says if up to "
 "date.\n"
@@ -1026,22 +1016,22 @@ msgstr ""
 "  -q, --question              Ne pas exécuter de recette ; le code de sortie "
 "indique si la cible est à jour.\n"
 
-#: main.c:362
+#: main.c:387
 msgid "  -r, --no-builtin-rules      Disable the built-in implicit rules.\n"
 msgstr ""
 "  -r, --no-builtin-rules      Désactiver les règles implicites internes.\n"
 
-#: main.c:364
+#: main.c:389
 msgid "  -R, --no-builtin-variables  Disable the built-in variable settings.\n"
 msgstr ""
 "  -R, --no-builtin-variables  Désactiver les réglages des variables "
 "internes.\n"
 
-#: main.c:366
+#: main.c:391
 msgid "  -s, --silent, --quiet       Don't echo recipes.\n"
 msgstr "  -s, --silent, --quiet       Ne pas répéter les recettes.\n"
 
-#: main.c:368
+#: main.c:393
 msgid ""
 "  -S, --no-keep-going, --stop\n"
 "                              Turns off -k.\n"
@@ -1049,28 +1039,28 @@ msgstr ""
 "  -S, --no-keep-going, --stop\n"
 "                              Désactiver -k.\n"
 
-#: main.c:371
+#: main.c:396
 msgid "  -t, --touch                 Touch targets instead of remaking them.\n"
 msgstr ""
 "  -t, --touch                 Assigner l'heure actuelle aux cibles au lieu "
 "de les refabriquer.\n"
 
-#: main.c:373
+#: main.c:398
 msgid "  --trace                     Print tracing information.\n"
 msgstr "  --trace                     Afficher les traces mémoire.\n"
 
-#: main.c:375
+#: main.c:400
 msgid ""
 "  -v, --version               Print the version number of make and exit.\n"
 msgstr ""
 "  -v, --version               Afficher le numéro de version de make et "
 "quitter.\n"
 
-#: main.c:377
+#: main.c:402
 msgid "  -w, --print-directory       Print the current directory.\n"
 msgstr "  -w, --print-directory       Afficher le répertoire courant.\n"
 
-#: main.c:379
+#: main.c:404
 msgid ""
 "  --no-print-directory        Turn off -w, even if it was turned on "
 "implicitly.\n"
@@ -1078,7 +1068,7 @@ msgstr ""
 "  --no-print-directory        Désactiver l'option -w, même si elle a été "
 "activée implicitement.\n"
 
-#: main.c:381
+#: main.c:406
 msgid ""
 "  -W FILE, --what-if=FILE, --new-file=FILE, --assume-new=FILE\n"
 "                              Consider FILE to be infinitely new.\n"
@@ -1087,7 +1077,7 @@ msgstr ""
 "                              Considérer le FICHIER comme étant toujours "
 "nouveau.\n"
 
-#: main.c:384
+#: main.c:409
 msgid ""
 "  --warn-undefined-variables  Warn when an undefined variable is "
 "referenced.\n"
@@ -1095,27 +1085,27 @@ msgstr ""
 "  --warn-undefined-variables  Prévenir lorsqu'une variable non définie est "
 "référencée.\n"
 
-#: main.c:654
+#: main.c:683
 msgid "empty string invalid as file name"
 msgstr "une chaîne vide n'est pas un nom de fichier valable"
 
-#: main.c:737
+#: main.c:766
 #, c-format
 msgid "unknown debug level specification '%s'"
 msgstr "niveau de débogage inconnu « %s »"
 
-#: main.c:774
+#: main.c:806
 #, c-format
 msgid "unknown output-sync type '%s'"
 msgstr "type de output-sync « %s » inconnu"
 
-#: main.c:828
+#: main.c:861
 #, c-format
 msgid "%s: Interrupt/Exception caught (code = 0x%lx, addr = 0x%p)\n"
 msgstr ""
 "%s: interception de l'interruption/exception (code = 0x%lx, addr = 0x%p)\n"
 
-#: main.c:835
+#: main.c:868
 #, c-format
 msgid ""
 "\n"
@@ -1130,187 +1120,142 @@ msgstr ""
 "ExceptionFlags = %lx\n"
 "ExceptionAddress = 0x%p\n"
 
-#: main.c:843
+#: main.c:876
 #, c-format
 msgid "Access violation: write operation at address 0x%p\n"
 msgstr "Violation d'accès : opération d'écriture à l'adresse 0x%p\n"
 
-#: main.c:844
+#: main.c:877
 #, c-format
 msgid "Access violation: read operation at address 0x%p\n"
 msgstr "Violation d'accès : opération de lecture à l'adresse 0x%p\n"
 
-#: main.c:920 main.c:935
+#: main.c:953 main.c:968
 #, c-format
 msgid "find_and_set_shell() setting default_shell = %s\n"
 msgstr "find_and_set_shell() définit default_shell = %s\n"
 
-#: main.c:988
+#: main.c:1021
 #, c-format
 msgid "find_and_set_shell() path search set default_shell = %s\n"
 msgstr ""
 "La recherche de chemin de find_and_set_shell() a définit default_shell = %s\n"
 
-#: main.c:1436
+#: main.c:1538
 #, c-format
 msgid "%s is suspending for 30 seconds..."
 msgstr "%s s'arrête pendant 30 secondes..."
 
-#: main.c:1438
+#: main.c:1540
 #, c-format
 msgid "done sleep(30). Continuing.\n"
 msgstr "sleep(30) terminé. On continue.\n"
 
-#: main.c:1527
-#, c-format
-msgid ""
-"internal error: unable to open jobserver semaphore '%s': (Error %ld: %s)"
-msgstr ""
-"erreur interne : impossible d'ouvrir la sémaphore « %s » du jobserver : "
-"(erreur %ld : %s) "
-
-#: main.c:1530
-#, c-format
-msgid "Jobserver client (semaphore %s)\n"
-msgstr "client Jobserver (semaphore %s)\n"
-
-#: main.c:1534
-#, c-format
-msgid "internal error: invalid --jobserver-fds string '%s'"
-msgstr "erreur interne : chaîne --jobserver-fds incorrecte « %s »"
-
-#: main.c:1537
-#, c-format
-msgid "Jobserver client (fds %d,%d)\n"
-msgstr "client Jobserver (fds %d,%d)\n"
-
-#: main.c:1551
-msgid "warning: -jN forced in submake: disabling jobserver mode."
-msgstr ""
-"AVERTISSEMENT : -jN forcé dans un submake : désactivation du mode serveur de "
-"tâches."
-
-#: main.c:1567
-msgid "dup jobserver"
-msgstr "duplication du serveur de tâches"
-
-#: main.c:1570
+#: main.c:1627
 msgid ""
 "warning: jobserver unavailable: using -j1.  Add '+' to parent make rule."
 msgstr ""
 "avertissement : jobserver n'est pas disponible : utilisation de -j1. Ajouter "
 "« + » à la règle parent du make."
 
-#: main.c:1742
+#: main.c:1635
+msgid "warning: -jN forced in submake: disabling jobserver mode."
+msgstr ""
+"AVERTISSEMENT : -jN forcé dans un submake : désactivation du mode serveur de "
+"tâches."
+
+#: main.c:1805
 msgid "Makefile from standard input specified twice."
 msgstr "Makefile depuis l'entrée standard spécifié deux fois."
 
-#: main.c:1780 vmsjobs.c:653
+#: main.c:1843 vmsjobs.c:1252
 msgid "fopen (temporary file)"
 msgstr "fopen (fichier temporaire)"
 
-#: main.c:1786
+#: main.c:1849
 msgid "fwrite (temporary file)"
 msgstr "fwrite (fichier temporaire)"
 
-#: main.c:1974
+#: main.c:2048
 msgid "Parallel jobs (-j) are not supported on this platform."
 msgstr ""
 "Les tâches en parallèle (-j) ne sont pas prises en charge sur cette "
 "plateforme."
 
-#: main.c:1975
+#: main.c:2049
 msgid "Resetting to single job (-j1) mode."
 msgstr "On revient en mode monotâche (-j1)."
 
-#: main.c:1994
-#, c-format
-msgid "Jobserver slots limited to %d\n"
-msgstr "Nombre de clients jobserver limités à %d\n"
-
-#: main.c:2002
-#, c-format
-msgid "creating jobserver semaphore: (Error %ld: %s)"
-msgstr "création de la sémaphore du jobserver : (erreur %ld : %s)"
-
-#: main.c:2008
-msgid "creating jobs pipe"
-msgstr "création d'un tube pour les tâches"
-
-#: main.c:2028
-msgid "init jobserver pipe"
-msgstr "initialisation du tube du serveur de tâches"
-
-#: main.c:2047
+#: main.c:2088
 msgid "Symbolic links not supported: disabling -L."
 msgstr ""
 "Les liens symboliques ne sont pas pris en charge : désactivation de -L."
 
-#: main.c:2133
+#: main.c:2170
 msgid "Updating makefiles....\n"
 msgstr "Mise à jour des makefiles....\n"
 
-#: main.c:2158
+#: main.c:2195
 #, c-format
 msgid "Makefile '%s' might loop; not remaking it.\n"
 msgstr "Le makefile « %s » pourrait boucler ; on ne recommence pas.\n"
 
-#: main.c:2237
+#: main.c:2279
 #, c-format
 msgid "Failed to remake makefile '%s'."
 msgstr "Échec de refabrication du makefile « %s »."
 
-#: main.c:2257
+#: main.c:2299
 #, c-format
 msgid "Included makefile '%s' was not found."
 msgstr "Le makefile inclus « %s » est introuvable."
 
-#: main.c:2262
+#: main.c:2304
 #, c-format
 msgid "Makefile '%s' was not found"
 msgstr "Le makefile « %s » est introuvable"
 
-#: main.c:2330
+#: main.c:2372
 msgid "Couldn't change back to original directory."
 msgstr "Impossible de revenir dans le répertoire d'origine."
 
-#: main.c:2343
+#: main.c:2380
 #, c-format
 msgid "Re-executing[%u]:"
 msgstr "Réexécution[%u] :"
 
-#: main.c:2453
+#: main.c:2492
 msgid "unlink (temporary file): "
 msgstr "unlink (fichier temporaire) :"
 
-#: main.c:2486
+#: main.c:2525
 msgid ".DEFAULT_GOAL contains more than one target"
 msgstr ".DEFAULT_GOAL contient plus d'une cible"
 
-#: main.c:2509
+#: main.c:2548
 msgid "No targets specified and no makefile found"
 msgstr "Pas de cible spécifiée et aucun makefile n'a été trouvé"
 
-#: main.c:2511
+#: main.c:2550
 msgid "No targets"
 msgstr "Pas de cible"
 
-#: main.c:2516
+#: main.c:2555
 msgid "Updating goal targets....\n"
 msgstr "Mise à jour des objectifs cibles....\n"
 
-#: main.c:2541
+#: main.c:2579
 msgid "warning:  Clock skew detected.  Your build may be incomplete."
 msgstr ""
 "AVERTISSEMENT : décalage d'horloge détecté. La construction peut être "
 "incomplète."
 
-#: main.c:2710
+#: main.c:2773
 #, c-format
 msgid "Usage: %s [options] [target] ...\n"
 msgstr "Utilisation : %s [options] [cible] ...\n"
 
-#: main.c:2716
+#: main.c:2779
 #, c-format
 msgid ""
 "\n"
@@ -1319,7 +1264,7 @@ msgstr ""
 "\n"
 "Ce programme est construit pour %s\n"
 
-#: main.c:2718
+#: main.c:2781
 #, c-format
 msgid ""
 "\n"
@@ -1328,32 +1273,32 @@ msgstr ""
 "\n"
 "Ce programme est construit pour %s (%s)\n"
 
-#: main.c:2721
+#: main.c:2784
 #, c-format
 msgid "Report bugs to <bug-make@gnu.org>\n"
 msgstr "Signaler les anomalies à <bug-make@gnu.org>.\n"
 
-#: main.c:2807
+#: main.c:2870
 #, c-format
 msgid "the '%s%s' option requires a non-empty string argument"
 msgstr "l'option « %s%s » a besoin d'une chaîne non vide comme argument"
 
-#: main.c:2871
+#: main.c:2934
 #, c-format
 msgid "the '-%c' option requires a positive integer argument"
 msgstr "l'option « -%c » prend en argument un entier positif"
 
-#: main.c:3269
+#: main.c:3332
 #, c-format
 msgid "%sBuilt for %s\n"
 msgstr "%sConstruit pour %s\n"
 
-#: main.c:3271
+#: main.c:3334
 #, c-format
 msgid "%sBuilt for %s (%s)\n"
 msgstr "%sConstruit pour %s (%s)\n"
 
-#: main.c:3282
+#: main.c:3345
 #, c-format
 msgid ""
 "%sLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl."
@@ -1367,7 +1312,7 @@ msgstr ""
 "redistribuer.\n"
 "%sIl ne comporte AUCUNE GARANTIE, dans la mesure de ce que permet la loi.\n"
 
-#: main.c:3303
+#: main.c:3366
 #, c-format
 msgid ""
 "\n"
@@ -1376,7 +1321,7 @@ msgstr ""
 "\n"
 "# Base de données de Make, imprimée le %s"
 
-#: main.c:3313
+#: main.c:3376
 #, c-format
 msgid ""
 "\n"
@@ -1385,29 +1330,29 @@ msgstr ""
 "\n"
 "# Base de données de Make terminée le %s\n"
 
-#: misc.c:201
+#: misc.c:202
 #, c-format
 msgid "Unknown error %d"
 msgstr "Erreur inconnue %d"
 
-#: misc.c:522
+#: misc.c:508
 #, c-format
 msgid "%s: user %lu (real %lu), group %lu (real %lu)\n"
 msgstr "%s : utilisateur %lu (reél %lu), groupe %lu (réel %lu)\n"
 
-#: misc.c:543
+#: misc.c:529
 msgid "Initialized access"
 msgstr "Accès initialisé"
 
-#: misc.c:622
+#: misc.c:608
 msgid "User access"
 msgstr "Accès utilisateur"
 
-#: misc.c:670
+#: misc.c:656
 msgid "Make access"
 msgstr "Accès de Make"
 
-#: misc.c:704
+#: misc.c:690
 msgid "Child access"
 msgstr "Accès des fils"
 
@@ -1452,9 +1397,8 @@ msgid "%s[%u]: Leaving directory '%s'\n"
 msgstr "%s[%u] : on quitte le répertoire « %s »\n"
 
 #: output.c:495 output.c:497
-#, fuzzy
 msgid "write error: stdout"
-msgstr "erreur d'écriture : %s"
+msgstr "erreur d'écriture : stdout"
 
 #: output.c:677
 msgid ".  Stop.\n"
@@ -1470,227 +1414,265 @@ msgstr "%s%s : %s"
 msgid "%s: %s"
 msgstr "%s : %s"
 
-#: read.c:180
+#: posixos.c:69
+msgid "creating jobs pipe"
+msgstr "création d'un tube pour les tâches"
+
+#: posixos.c:72 posixos.c:227
+#, fuzzy
+msgid "duping jobs pipe"
+msgstr "création d'un tube pour les tâches"
+
+#: posixos.c:78
+msgid "init jobserver pipe"
+msgstr "initialisation du tube du serveur de tâches"
+
+#: posixos.c:90
+#, fuzzy, c-format
+msgid "internal error: invalid --jobserver-auth string '%s'"
+msgstr "erreur interne : chaîne --jobserver-fds incorrecte « %s »"
+
+#: posixos.c:93
+#, c-format
+msgid "Jobserver client (fds %d,%d)\n"
+msgstr "client Jobserver (fds %d,%d)\n"
+
+#: posixos.c:109
+#, fuzzy
+msgid "jobserver pipeline"
+msgstr "initialisation du tube du serveur de tâches"
+
+#: posixos.c:154
+msgid "write jobserver"
+msgstr "écriture vers le serveur de tâches"
+
+#: posixos.c:268
+#, fuzzy
+msgid "pselect jobs pipe"
+msgstr "lecture du tube des processus"
+
+#: posixos.c:279 posixos.c:391
+msgid "read jobs pipe"
+msgstr "lecture du tube des processus"
+
+#: read.c:178
 msgid "Reading makefiles...\n"
 msgstr "Lecture des makefiles...\n"
 
-#: read.c:335
+#: read.c:329
 #, c-format
 msgid "Reading makefile '%s'"
 msgstr "Lecture du makefile « %s »"
 
-#: read.c:337
+#: read.c:331
 #, c-format
 msgid " (no default goal)"
 msgstr " (pas d'objectif par défaut)"
 
-#: read.c:339
+#: read.c:333
 #, c-format
 msgid " (search path)"
 msgstr " (chemin de recherche)"
 
-#: read.c:341
+#: read.c:335
 #, c-format
 msgid " (don't care)"
 msgstr " (peu importe)"
 
-#: read.c:343
+#: read.c:337
 #, c-format
 msgid " (no ~ expansion)"
 msgstr " (pas de remplacement du ~)"
 
-#: read.c:656
+#: read.c:651
 #, c-format
 msgid "Skipping UTF-8 BOM in makefile '%s'\n"
 msgstr "On saute les BOM UTF-8 du makefile « %s »\n"
 
-#: read.c:659
+#: read.c:654
 #, c-format
 msgid "Skipping UTF-8 BOM in makefile buffer\n"
 msgstr "On saute les BOM UTF-8 du tampon makefile\n"
 
-#: read.c:789
+#: read.c:783
 msgid "invalid syntax in conditional"
 msgstr "syntaxe incorrecte dans la condition"
 
-#: read.c:966
+#: read.c:959
 #, c-format
 msgid "%s: failed to load"
 msgstr "%s : echec du chargement"
 
-#: read.c:992
+#: read.c:985
 msgid "recipe commences before first target"
 msgstr "La recette commence avant la première cible"
 
-#: read.c:1041
+#: read.c:1034
 msgid "missing rule before recipe"
 msgstr "règle manquante avant la recette"
 
-#: read.c:1131
-#, fuzzy
+#: read.c:1124
 msgid "missing separator (did you mean TAB instead of 8 spaces?)"
-msgstr " (vouliez-vous dire TAB au lieu des 8 espaces ?)"
+msgstr "séparateur manquant (vouliez-vous dire TAB au lieu des 8 espaces ?)"
 
-#: read.c:1133
-#, fuzzy
+#: read.c:1126
 msgid "missing separator"
-msgstr "séparateur manquant %s"
+msgstr "séparateur manquant"
 
-#: read.c:1270
+#: read.c:1262
 msgid "missing target pattern"
 msgstr "motif de cible manquant"
 
-#: read.c:1272
+#: read.c:1264
 msgid "multiple target patterns"
 msgstr "motifs de cible multiples"
 
-#: read.c:1276
+#: read.c:1268
 #, c-format
 msgid "target pattern contains no '%%'"
 msgstr "le motif de cible ne contient pas « %% »"
 
-#: read.c:1398
+#: read.c:1390
 msgid "missing 'endif'"
 msgstr "« endif » manquant"
 
-#: read.c:1436 read.c:1481 variable.c:1546
+#: read.c:1428 read.c:1473 variable.c:1576
 msgid "empty variable name"
 msgstr "nom de variable vide"
 
-#: read.c:1471
+#: read.c:1463
 msgid "extraneous text after 'define' directive"
 msgstr "texte superflu après la directive « define »"
 
-#: read.c:1496
+#: read.c:1488
 msgid "missing 'endef', unterminated 'define'"
 msgstr "« endef » manquant, « define » non terminé"
 
-#: read.c:1524
+#: read.c:1516
 msgid "extraneous text after 'endef' directive"
 msgstr "texte superflu après la directive « endef »"
 
-#: read.c:1595
+#: read.c:1588
 #, c-format
 msgid "extraneous text after '%s' directive"
 msgstr "texte superflu après la directive « %s »"
 
-#: read.c:1596
+#: read.c:1589
 #, c-format
 msgid "extraneous '%s'"
 msgstr "« %s » superflu"
 
-#: read.c:1624
+#: read.c:1617
 msgid "only one 'else' per conditional"
 msgstr "un seul « else » par condition"
 
-#: read.c:1899
+#: read.c:1892
 msgid "Malformed target-specific variable definition"
 msgstr "Définition malformée de variable spécifique à une cible"
 
-#: read.c:1957
+#: read.c:1950
 msgid "prerequisites cannot be defined in recipes"
 msgstr "les prérequis ne peuvent être définis dans des recettes"
 
-#: read.c:2015
+#: read.c:2009
 msgid "mixed implicit and static pattern rules"
 msgstr "mélange de règles implicites et statiques pour le motif"
 
-#: read.c:2038
+#: read.c:2032
 msgid "mixed implicit and normal rules"
 msgstr "mélange de règles implicites et normales"
 
-#: read.c:2091
+#: read.c:2085
 #, c-format
 msgid "target '%s' doesn't match the target pattern"
 msgstr "la cible « %s » ne correspond pas au motif de cible"
 
-#: read.c:2106 read.c:2152
+#: read.c:2100 read.c:2146
 #, c-format
 msgid "target file '%s' has both : and :: entries"
 msgstr "le fichier cible « %s » possède à la fois des entrées : et ::"
 
-#: read.c:2112
+#: read.c:2106
 #, c-format
 msgid "target '%s' given more than once in the same rule"
 msgstr "la cible « %s » apparaît plus d'une fois dans la même règle."
 
-#: read.c:2122
+#: read.c:2116
 #, c-format
 msgid "warning: overriding recipe for target '%s'"
 msgstr "avertissement : surchargement de la recette pour la cible « %s »"
 
-#: read.c:2125
+#: read.c:2119
 #, c-format
 msgid "warning: ignoring old recipe for target '%s'"
 msgstr "avertissement : ancienne recette ignorée pour la cible « %s »"
 
-#: read.c:2229
-#, fuzzy
+#: read.c:2223
 msgid "*** mixed implicit and normal rules: deprecated syntax"
-msgstr "mélange de règles implicites et normales"
+msgstr "*** mélange de règles implicites et normales : syntaxe obsolète"
 
-#: read.c:2539
+#: read.c:2542
 msgid "warning: NUL character seen; rest of line ignored"
 msgstr ""
 "AVERTISSEMENT : caractère NUL détecté ; le reste de la ligne est ignoré"
 
-#: remake.c:230
+#: remake.c:226
 #, c-format
 msgid "Nothing to be done for '%s'."
 msgstr "rien à faire pour « %s »."
 
-#: remake.c:231
+#: remake.c:227
 #, c-format
 msgid "'%s' is up to date."
 msgstr "« %s » est à jour."
 
-#: remake.c:303
+#: remake.c:323
 #, c-format
 msgid "Pruning file '%s'.\n"
 msgstr "Élagage du fichier « %s ».\n"
 
-#: remake.c:390 remake.c:393
+#: remake.c:406
 #, c-format
 msgid "%sNo rule to make target '%s', needed by '%s'%s"
 msgstr ""
 "%s Aucune règle pour fabriquer la cible « %s », nécessaire pour « %s »%s"
 
-#: remake.c:402 remake.c:405
+#: remake.c:416
 #, c-format
 msgid "%sNo rule to make target '%s'%s"
 msgstr "%sAucune règle pour fabriquer la cible « %s »%s"
 
-#: remake.c:426
+#: remake.c:442
 #, c-format
 msgid "Considering target file '%s'.\n"
 msgstr "Étude du fichier cible « %s ».\n"
 
-#: remake.c:433
+#: remake.c:449
 #, c-format
 msgid "Recently tried and failed to update file '%s'.\n"
 msgstr "Tentative récente échouée de mettre à jour le fichier « %s ».\n"
 
-#: remake.c:445
+#: remake.c:461
 #, c-format
 msgid "File '%s' was considered already.\n"
 msgstr "Le fichier « %s » a déjà été étudié.\n"
 
-#: remake.c:455
+#: remake.c:471
 #, c-format
 msgid "Still updating file '%s'.\n"
 msgstr "Mise à jour du fichier « %s » en cours.\n"
 
-#: remake.c:458
+#: remake.c:474
 #, c-format
 msgid "Finished updating file '%s'.\n"
 msgstr "Fin de la mise à jour du fichier « %s ».\n"
 
-#: remake.c:487
+#: remake.c:503
 #, c-format
 msgid "File '%s' does not exist.\n"
 msgstr "Le fichier « %s » n'existe pas.\n"
 
-#: remake.c:495
+#: remake.c:511
 #, c-format
 msgid ""
 "*** Warning: .LOW_RESOLUTION_TIME file '%s' has a high resolution time stamp"
@@ -1698,140 +1680,140 @@ msgstr ""
 "*** Avertissement : le fichier .LOW_RESOLUTION_TIME « %s » a un horodatage à "
 "haute résolution"
 
-#: remake.c:508 remake.c:1040
+#: remake.c:524 remake.c:1056
 #, c-format
 msgid "Found an implicit rule for '%s'.\n"
 msgstr "Règle implicite trouvée pour « %s ».\n"
 
-#: remake.c:510 remake.c:1042
+#: remake.c:526 remake.c:1058
 #, c-format
 msgid "No implicit rule found for '%s'.\n"
 msgstr "Pas de règle implicite trouvée pour « %s ».\n"
 
-#: remake.c:516
+#: remake.c:532
 #, c-format
 msgid "Using default recipe for '%s'.\n"
 msgstr "Utilisation de la recette par défaut pour « %s ».\n"
 
-#: remake.c:550 remake.c:1089
+#: remake.c:566 remake.c:1105
 #, c-format
 msgid "Circular %s <- %s dependency dropped."
 msgstr "Dépendance circulaire %s <- %s abandonnée."
 
-#: remake.c:675
+#: remake.c:691
 #, c-format
 msgid "Finished prerequisites of target file '%s'.\n"
 msgstr "Fin des dépendances du fichier cible « %s ».\n"
 
-#: remake.c:681
+#: remake.c:697
 #, c-format
 msgid "The prerequisites of '%s' are being made.\n"
 msgstr "Les dépendances de « %s » sont en cours de fabrication.\n"
 
-#: remake.c:695
+#: remake.c:711
 #, c-format
 msgid "Giving up on target file '%s'.\n"
 msgstr "Abandon du fichier cible « %s ».\n"
 
-#: remake.c:700
+#: remake.c:716
 #, c-format
 msgid "Target '%s' not remade because of errors."
 msgstr "La cible « %s » n'a pas été refabriquée à cause d'erreurs."
 
-#: remake.c:752
+#: remake.c:768
 #, c-format
 msgid "Prerequisite '%s' is order-only for target '%s'.\n"
 msgstr "La dépendance « %s » ne commande que la cible « %s ».\n"
 
-#: remake.c:757
+#: remake.c:773
 #, c-format
 msgid "Prerequisite '%s' of target '%s' does not exist.\n"
 msgstr "La dépendance « %s » de la cible « %s » n'existe pas.\n"
 
-#: remake.c:762
+#: remake.c:778
 #, c-format
 msgid "Prerequisite '%s' is newer than target '%s'.\n"
 msgstr "La dépendance « %s » est plus récente que la cible « %s ».\n"
 
-#: remake.c:765
+#: remake.c:781
 #, c-format
 msgid "Prerequisite '%s' is older than target '%s'.\n"
 msgstr "uLa dépendance « %s » est plus ancienne que la cible « %s ».\n"
 
-#: remake.c:783
+#: remake.c:799
 #, c-format
 msgid "Target '%s' is double-colon and has no prerequisites.\n"
 msgstr "La cible « %s » a un deux-points double et n'a pas de dépendance.\n"
 
-#: remake.c:790
+#: remake.c:806
 #, c-format
 msgid "No recipe for '%s' and no prerequisites actually changed.\n"
 msgstr "Pas de recette pour « %s » et aucune dépendance n'a changé.\n"
 
-#: remake.c:795
+#: remake.c:811
 #, c-format
 msgid "Making '%s' due to always-make flag.\n"
 msgstr "Fabrication de « %s » à cause de l'indicateur « always-make ».\n"
 
-#: remake.c:803
+#: remake.c:819
 #, c-format
 msgid "No need to remake target '%s'"
 msgstr "Inutile de refabriquer la cible « %s »"
 
-#: remake.c:805
+#: remake.c:821
 #, c-format
 msgid "; using VPATH name '%s'"
 msgstr " ; utilisation du nom VPATH « %s »"
 
-#: remake.c:825
+#: remake.c:841
 #, c-format
 msgid "Must remake target '%s'.\n"
 msgstr "Il faut refabriquer la cible « %s ».\n"
 
-#: remake.c:831
+#: remake.c:847
 #, c-format
 msgid "  Ignoring VPATH name '%s'.\n"
 msgstr "  On ignore le nom VPATH « %s ».\n"
 
-#: remake.c:840
+#: remake.c:856
 #, c-format
 msgid "Recipe of '%s' is being run.\n"
 msgstr "La recette de « %s » est en cours d'exécution.\n"
 
-#: remake.c:847
+#: remake.c:863
 #, c-format
 msgid "Failed to remake target file '%s'.\n"
 msgstr "Échec de refabrication du fichier cible « %s ».\n"
 
-#: remake.c:850
+#: remake.c:866
 #, c-format
 msgid "Successfully remade target file '%s'.\n"
 msgstr "Refabrication réussie du fichier cible « %s ».\n"
 
-#: remake.c:853
+#: remake.c:869
 #, c-format
 msgid "Target file '%s' needs to be remade under -q.\n"
 msgstr "Le fichier cible « %s » a besoin d'être refabriqué avec l'option -q.\n"
 
-#: remake.c:1048
+#: remake.c:1064
 #, c-format
 msgid "Using default commands for '%s'.\n"
 msgstr "Utilisation des commandes par défaut pour « %s ».\n"
 
-#: remake.c:1397
+#: remake.c:1430
 #, c-format
 msgid "Warning: File '%s' has modification time in the future"
 msgstr ""
 "Avertissement : le fichier « %s » a une date de modification dans le futur"
 
-#: remake.c:1411
+#: remake.c:1444
 #, c-format
 msgid "Warning: File '%s' has modification time %s s in the future"
 msgstr ""
 "Avertissement : le fichier « %s » a une date de modification %s s dans le "
 "futur"
 
-#: remake.c:1610
+#: remake.c:1647
 #, c-format
 msgid ".LIBPATTERNS element '%s' is not a pattern"
 msgstr "l'élément « %s » de .LIBPATTERNS n'est pas un motif"
@@ -1841,7 +1823,7 @@ msgstr "l'élément « %s » de .LIBPATTERNS n'est pas un motif"
 msgid "Customs won't export: %s\n"
 msgstr "« customs » n'exportera pas : %s\n"
 
-#: rule.c:495
+#: rule.c:496
 msgid ""
 "\n"
 "# Implicit Rules"
@@ -1849,7 +1831,7 @@ msgstr ""
 "\n"
 "# Règles implicites"
 
-#: rule.c:510
+#: rule.c:511
 msgid ""
 "\n"
 "# No implicit rules."
@@ -1857,7 +1839,7 @@ msgstr ""
 "\n"
 "# Pas de règle implicite."
 
-#: rule.c:513
+#: rule.c:514
 #, c-format
 msgid ""
 "\n"
@@ -1866,11 +1848,11 @@ msgstr ""
 "\n"
 "# %u règles implicites, %u"
 
-#: rule.c:522
+#: rule.c:523
 msgid " terminal."
 msgstr " terminal."
 
-#: rule.c:530
+#: rule.c:531
 #, c-format
 msgid "BUG: num_pattern_rules is wrong!  %u != %u"
 msgstr "ANOMALIE : num_pattern_rules est faux !  %u != %u"
@@ -2031,7 +2013,7 @@ msgstr "Demande d'informations"
 msgid "Floating point co-processor not available"
 msgstr "Coprocesseur en virgule flottante non disponible"
 
-#: strcache.c:236
+#: strcache.c:274
 #, c-format
 msgid ""
 "\n"
@@ -2040,7 +2022,7 @@ msgstr ""
 "\n"
 "%s pas de tampons strcache\n"
 
-#: strcache.c:266
+#: strcache.c:304
 #, c-format
 msgid ""
 "\n"
@@ -2051,7 +2033,7 @@ msgstr ""
 "%s strcache utilisé : %lu (%lu) / chaînes = %lu / espace = %lu o / moy = %lu "
 "o\n"
 
-#: strcache.c:270
+#: strcache.c:308
 #, c-format
 msgid ""
 "%s current buf: size = %hu B / used = %hu B / count = %hu / avg = %hu B\n"
@@ -2059,19 +2041,19 @@ msgstr ""
 "%s tampon courant : taille = %hu o / utilisé = %hu o / nombre = %hu / moy = "
 "%hu o\n"
 
-#: strcache.c:280
+#: strcache.c:319
 #, c-format
 msgid "%s other used: total = %lu B / count = %lu / avg = %lu B\n"
 msgstr "%s autre utilisé : total = %lu o / nombre = %lu / moy = %lu o\n"
 
-#: strcache.c:283
+#: strcache.c:322
 #, c-format
 msgid ""
 "%s other free: total = %lu B / max = %lu B / min = %lu B / avg = %hu B\n"
 msgstr ""
 "%s autre libre : total = %lu o / max = %lu o / min = %lu o / moy = %hu o\n"
 
-#: strcache.c:287
+#: strcache.c:326
 #, c-format
 msgid ""
 "\n"
@@ -2080,7 +2062,7 @@ msgstr ""
 "\n"
 "%s performance strcache : lookups = %lu / accès = %lu%%\n"
 
-#: strcache.c:289
+#: strcache.c:328
 msgid ""
 "# hash-table stats:\n"
 "# "
@@ -2088,44 +2070,44 @@ msgstr ""
 "# stats des tables de hachage :\n"
 "# "
 
-#: variable.c:1599
+#: variable.c:1629
 msgid "automatic"
 msgstr "automatique"
 
-#: variable.c:1602
+#: variable.c:1632
 msgid "default"
 msgstr "défaut"
 
-#: variable.c:1605
+#: variable.c:1635
 msgid "environment"
 msgstr "environnement"
 
-#: variable.c:1608
+#: variable.c:1638
 msgid "makefile"
 msgstr "makefile"
 
-#: variable.c:1611
+#: variable.c:1641
 msgid "environment under -e"
 msgstr "environnement avec l'option -e"
 
-#: variable.c:1614
+#: variable.c:1644
 msgid "command line"
 msgstr "ligne de commande"
 
-#: variable.c:1617
+#: variable.c:1647
 msgid "'override' directive"
 msgstr "directive « override »"
 
-#: variable.c:1628
+#: variable.c:1658
 #, c-format
 msgid " (from '%s', line %lu)"
 msgstr " (depuis « %s », ligne %lu)"
 
-#: variable.c:1691
+#: variable.c:1721
 msgid "# variable set hash-table stats:\n"
 msgstr "# stats des tables de hachage de la variable « set » :\n"
 
-#: variable.c:1702
+#: variable.c:1732
 msgid ""
 "\n"
 "# Variables\n"
@@ -2133,7 +2115,7 @@ msgstr ""
 "\n"
 "# Variables\n"
 
-#: variable.c:1706
+#: variable.c:1736
 msgid ""
 "\n"
 "# Pattern-specific Variable Values"
@@ -2141,7 +2123,7 @@ msgstr ""
 "\n"
 "# Valeurs de variable spécifiques au motif"
 
-#: variable.c:1720
+#: variable.c:1750
 msgid ""
 "\n"
 "# No pattern-specific variable values."
@@ -2149,7 +2131,7 @@ msgstr ""
 "\n"
 "# pas de valeurs de variable spécifiques au motif"
 
-#: variable.c:1722
+#: variable.c:1752
 #, c-format
 msgid ""
 "\n"
@@ -2168,89 +2150,39 @@ msgstr "avertissement : variable « %.*s » indéfinie"
 msgid "sys$search() failed with %d\n"
 msgstr "sys$search() a échoué avec %d\n"
 
-#: vmsjobs.c:72
-#, c-format
-msgid "Warning: Empty redirection\n"
-msgstr "AVERTISSEMENT : redirection vide\n"
-
-#: vmsjobs.c:183
-#, c-format
-msgid "internal error: '%s' command_state"
-msgstr "erreur interne : « %s » command_state"
-
-#: vmsjobs.c:290
+#: vmsjobs.c:242
 #, c-format
 msgid "-warning, you may have to re-enable CTRL-Y handling from DCL.\n"
 msgstr ""
 "-warning, vous pourriez avoir besoin de réactiver le traitement de CTRL-Y "
 "par DCL.\n"
 
-#: vmsjobs.c:455 vmsjobs.c:559
-#, c-format
-msgid "BUILTIN [%s][%s]\n"
-msgstr "COMMANDE INTERNE [%s][%s]\n"
-
-#: vmsjobs.c:465
+#: vmsjobs.c:679
 #, c-format
 msgid "BUILTIN CD %s\n"
 msgstr "COMMANDE CD INTERNE %s\n"
 
-#: vmsjobs.c:501
-#, fuzzy, c-format
-msgid "BUILTIN ECHO %s->%s\n"
-msgstr "COMMANDE CD INTERNE %s\n"
-
-#: vmsjobs.c:505
+#: vmsjobs.c:1228
 #, c-format
-msgid "Unknown builtin command '%s'\n"
-msgstr "Commande interne inconnue « %s »\n"
-
-#: vmsjobs.c:592
-#, c-format
-msgid "Builtin command is unknown or unsupported in .ONESHELL: '%s'\n"
+msgid "DCL: %s\n"
 msgstr ""
 
-#: vmsjobs.c:643
-#, c-format
-msgid "Error, empty command\n"
-msgstr "Erreur, commande vide\n"
-
-#: vmsjobs.c:674
-#, c-format
-msgid "Redirected input from %s\n"
-msgstr "Entrée redirigée depuis %s\n"
-
-#: vmsjobs.c:681
-#, c-format
-msgid "Redirected error to %s\n"
-msgstr "Erreur redirigée vers %s\n"
-
-#: vmsjobs.c:690
+#: vmsjobs.c:1288
 #, c-format
 msgid "Append output to %s\n"
 msgstr "Sortie ajoutée à %s\n"
 
-#: vmsjobs.c:696
-#, c-format
-msgid "Redirected output to %s\n"
-msgstr "Sortie redirigée vers %s\n"
-
-#: vmsjobs.c:802
+#: vmsjobs.c:1313
 #, c-format
 msgid "Append %.*s and cleanup\n"
 msgstr "Ajoute %.*s et nettoie\n"
 
-#: vmsjobs.c:809
+#: vmsjobs.c:1326
 #, c-format
 msgid "Executing %s instead\n"
 msgstr "Exécution de %s à la place\n"
 
-#: vmsjobs.c:915
-#, c-format
-msgid "Error spawning, %d\n"
-msgstr "Erreur de lancement, %d\n"
-
-#: vpath.c:583
+#: vpath.c:603
 msgid ""
 "\n"
 "# VPATH Search Paths\n"
@@ -2258,11 +2190,11 @@ msgstr ""
 "\n"
 "# Chemins de recherche VPATH\n"
 
-#: vpath.c:600
+#: vpath.c:620
 msgid "# No 'vpath' search paths."
 msgstr "# Aucun chemin de recherche « vpath »."
 
-#: vpath.c:602
+#: vpath.c:622
 #, c-format
 msgid ""
 "\n"
@@ -2271,7 +2203,7 @@ msgstr ""
 "\n"
 "# %u chemins de recherche « vpath ».\n"
 
-#: vpath.c:605
+#: vpath.c:625
 msgid ""
 "\n"
 "# No general ('VPATH' variable) search path."
@@ -2279,7 +2211,7 @@ msgstr ""
 "\n"
 "# Aucun chemin de recherche général (variable « VPATH »)."
 
-#: vpath.c:611
+#: vpath.c:631
 msgid ""
 "\n"
 "# General ('VPATH' variable) search path:\n"
@@ -2288,6 +2220,85 @@ msgstr ""
 "\n"
 "# Chemin de recherche général (variable « VPATH ») :\n"
 "# "
+
+#: w32/w32os.c:46
+#, c-format
+msgid "Jobserver slots limited to %d\n"
+msgstr "Nombre de clients jobserver limités à %d\n"
+
+#: w32/w32os.c:62
+#, c-format
+msgid "creating jobserver semaphore: (Error %ld: %s)"
+msgstr "création de la sémaphore du jobserver : (erreur %ld : %s)"
+
+#: w32/w32os.c:81
+#, c-format
+msgid ""
+"internal error: unable to open jobserver semaphore '%s': (Error %ld: %s)"
+msgstr ""
+"erreur interne : impossible d'ouvrir la sémaphore « %s » du jobserver : "
+"(erreur %ld : %s) "
+
+#: w32/w32os.c:84
+#, c-format
+msgid "Jobserver client (semaphore %s)\n"
+msgstr "client Jobserver (semaphore %s)\n"
+
+#: w32/w32os.c:125
+#, c-format
+msgid "release jobserver semaphore: (Error %ld: %s)"
+msgstr "libération de la sémaphore jobserver : erreur (%ld : %s)"
+
+#: w32/w32os.c:192
+#, c-format
+msgid "semaphore or child process wait: (Error %ld: %s)"
+msgstr "attente de la sémaphore ou du processus fils : (erreur %ld : %s)"
+
+#~ msgid "%s: recipe for target '%s' failed"
+#~ msgstr "%s : la recette pour la cible « %s » a échoué"
+
+#~ msgid "%s[%s] Error 0x%x%s"
+#~ msgstr "%s[%s] Erreur 0x%x%s"
+
+#~ msgid "%s[%s] %s%s%s"
+#~ msgstr "%s[%s] %s%s%s"
+
+#~ msgid "dup jobserver"
+#~ msgstr "duplication du serveur de tâches"
+
+#~ msgid "Warning: Empty redirection\n"
+#~ msgstr "AVERTISSEMENT : redirection vide\n"
+
+#~ msgid "internal error: '%s' command_state"
+#~ msgstr "erreur interne : « %s » command_state"
+
+#~ msgid "BUILTIN [%s][%s]\n"
+#~ msgstr "COMMANDE INTERNE [%s][%s]\n"
+
+#~ msgid "BUILTIN ECHO %s->%s\n"
+#~ msgstr "COMMANDE ECHO INTERNE  %s->%s\n"
+
+#~ msgid "Unknown builtin command '%s'\n"
+#~ msgstr "Commande interne inconnue « %s »\n"
+
+#~ msgid "Builtin command is unknown or unsupported in .ONESHELL: '%s'\n"
+#~ msgstr ""
+#~ "Commande interne inconnue ou non prise en charge par .ONESHELL : « %s »\n"
+
+#~ msgid "Error, empty command\n"
+#~ msgstr "Erreur, commande vide\n"
+
+#~ msgid "Redirected input from %s\n"
+#~ msgstr "Entrée redirigée depuis %s\n"
+
+#~ msgid "Redirected error to %s\n"
+#~ msgstr "Erreur redirigée vers %s\n"
+
+#~ msgid "Redirected output to %s\n"
+#~ msgstr "Sortie redirigée vers %s\n"
+
+#~ msgid "Error spawning, %d\n"
+#~ msgstr "Erreur de lancement, %d\n"
 
 #~ msgid "internal error: multiple --sync-mutex options"
 #~ msgstr "erreur interne : options --sync-mutex multiples"

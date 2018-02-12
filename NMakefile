@@ -3,7 +3,7 @@
 # NOTE: If you have no 'make' program at all to process this makefile,
 # run 'build_w32.bat' instead.
 #
-# Copyright (C) 1996-2014 Free Software Foundation, Inc.
+# Copyright (C) 1996-2016 Free Software Foundation, Inc.
 # This file is part of GNU Make.
 #
 # GNU Make is free software; you can redistribute it and/or modify it under
@@ -107,6 +107,7 @@ OBJS = \
 	$(OUTDIR)/dirent.obj \
 	$(OUTDIR)/pathstuff.obj \
 	$(OUTDIR)/posixfcn.obj \
+	$(OUTDIR)/w32os.obj \
 	$(guile)
 
 $(OUTDIR)/make.exe: $(OUTDIR) $(OBJS)
@@ -127,6 +128,8 @@ $(OUTDIR)/posixfcn.obj : w32/compat/posixfcn.c
 	$(CC) $(CFLAGS) /c $?
 $(OUTDIR)/pathstuff.obj : w32/pathstuff.c
 	$(CC) $(CFLAGS) /c $?
+$(OUTDIR)/w32os.obj : w32/w32os.c
+	$(CC) $(CFLAGS) /c $?
 
 # --------------- DEPENDENCIES
 #
@@ -139,7 +142,7 @@ $(OUTDIR)/ar.obj: ar.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h dep.h \
+ filedef.h hash.h dep.h
 
 # .deps/arscan.Po
 $(OUTDIR)/arscan.obj: arscan.c makeint.h config.h \
@@ -152,8 +155,7 @@ $(OUTDIR)/commands.obj: commands.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h dep.h \
- variable.h job.h output.h \
+ filedef.h hash.h dep.h variable.h job.h output.h \
  commands.h
 
 # .deps/default.Po
@@ -161,7 +163,8 @@ $(OUTDIR)/default.obj: default.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h variable.h rule.h dep.h job.h output.h \
+ filedef.h hash.h variable.h rule.h dep.h job.h \
+ output.h \
  commands.h
 
 # .deps/dir.Po
@@ -169,7 +172,8 @@ $(OUTDIR)/dir.obj: dir.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- hash.h filedef.h dep.h \
+ hash.h \
+ filedef.h dep.h \
 
 # .deps/expand.Po
 $(OUTDIR)/expand.obj: expand.c makeint.h config.h \
@@ -193,8 +197,7 @@ $(OUTDIR)/function.obj: function.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h \
- variable.h dep.h job.h output.h \
+ filedef.h hash.h variable.h dep.h job.h output.h \
  commands.h debug.h
 
 # .deps/getloadavg.Po
@@ -211,8 +214,7 @@ $(OUTDIR)/guile.obj: guile.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- debug.h filedef.h hash.h \
- dep.h variable.h \
+ debug.h filedef.h hash.h dep.h variable.h \
  gmk-default.h
 
 # .deps/hash.Po
@@ -227,8 +229,7 @@ $(OUTDIR)/implicit.obj: implicit.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h rule.h \
- dep.h debug.h variable.h job.h output.h \
+ filedef.h hash.h rule.h dep.h debug.h variable.h job.h output.h \
  commands.h
 
 # .deps/job.Po
@@ -238,23 +239,22 @@ $(OUTDIR)/job.obj: job.c makeint.h config.h \
  gettext.h \
  job.h output.h \
  debug.h filedef.h hash.h \
- commands.h variable.h
+ commands.h variable.h os.h
 
 # .deps/load.Po
 $(OUTDIR)/load.obj: load.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- debug.h filedef.h hash.h \
- variable.h
+ debug.h \
+ filedef.h hash.h variable.h
 
 # .deps/loadapi.Po
 $(OUTDIR)/loadapi.obj: loadapi.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h \
- variable.h dep.h
+ filedef.h hash.h variable.h dep.h
 
 # .deps/loadavg-getloadavg.Po
 # dummy
@@ -264,8 +264,8 @@ $(OUTDIR)/main.obj: main.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h dep.h \
- variable.h job.h output.h \
+ os.h \
+ filedef.h hash.h dep.h variable.h job.h output.h \
  commands.h rule.h debug.h \
  getopt.h
 
@@ -274,15 +274,22 @@ $(OUTDIR)/misc.obj: misc.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h dep.h \
- debug.h \
+ filedef.h hash.h dep.h debug.h \
 
 # .deps/output.Po
 $(OUTDIR)/output.obj: output.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- job.h output.h \
+ job.h \
+ output.h \
+
+# .deps/posixos.Po
+$(OUTDIR)/posixos.obj: posixos.c makeint.h config.h \
+ gnumake.h \
+ getopt.h \
+ gettext.h \
+ debug.h job.h output.h os.h
 
 # .deps/read.Po
 $(OUTDIR)/read.obj: read.c makeint.h config.h \
@@ -298,8 +305,7 @@ $(OUTDIR)/remake.obj: remake.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h job.h \
- output.h \
+ filedef.h hash.h job.h output.h \
  commands.h dep.h variable.h \
  debug.h
 
@@ -312,8 +318,7 @@ $(OUTDIR)/remote-stub.obj: remote-stub.c makeint.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h job.h \
- output.h \
+ filedef.h hash.h job.h output.h \
  commands.h
 
 # .deps/rule.Po
@@ -356,5 +361,4 @@ $(OUTDIR)/vpath.obj: vpath.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h \
- variable.h
+ filedef.h hash.h variable.h
