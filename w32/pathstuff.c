@@ -1,5 +1,5 @@
 /* Path conversion for Windows pathnames.
-Copyright (C) 1996-2014 Free Software Foundation, Inc.
+Copyright (C) 1996-2016 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -32,7 +32,7 @@ convert_vpath_to_windows32(char *Path, char to_delim)
          * contain blanks get trounced here. Use 8.3 format as a workaround.
          */
         for (etok = Path; etok && *etok; etok++)
-                if (isblank ((unsigned char) *etok))
+                if (ISBLANK ((unsigned char) *etok))
                         *etok = to_delim;
 
         return (convert_Path_to_windows32(Path, to_delim));
