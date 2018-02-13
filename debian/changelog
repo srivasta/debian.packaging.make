@@ -1,3 +1,28 @@
+make-dfsg (4.2.1-1) unstable; urgency=medium
+
+  * New Upsrteam release.
+  * New variable: $(.SHELLSTATUS) is set to the exit status of the last != or
+    $(shell ...) function invoked in this instance of make.  This will be "0" if
+    successful or not "0" if not successful.  The variable value is unset if no
+    != or $(shell ...) function has been invoked.
+  * The $(file ...) function can now read from a file with $(file <FILE).
+    The function is expanded to the contents of the file.  The contents are
+    expanded verbatim except that the final newline, if any, is stripped.
+  * The makefile line numbers shown by GNU make now point directly to the
+    specific line in the recipe where the failure or warning occurred.
+    Sample changes suggested by Brian Vandenberg <phantall@gmail.com>
+  * The interface to GNU make's "jobserver" is stable as documented in the
+    manual, for tools which may want to access it.
+    WARNING: Backward-incompatibility! The internal-only command line option
+    --jobserver-fds has been renamed for publishing, to --jobserver-auth.
+  * The amount of parallelism can be determined by querying MAKEFLAGS, even when
+    the job server is enabled (previously MAKEFLAGS would always contain only
+    "-j", with no number, when job server was enabled).
+  * Bug fix: "SIGSEGVs on long parameter", thanks to Marcos Dione (Closes:
+    #858647).
+
+ -- Manoj Srivastava <srivasta@debian.org>  Mon, 12 Feb 2018 16:36:45 -0800
+
 make-dfsg (4.1-9.1) unstable; urgency=medium
 
   * Non-maintainer upload.
