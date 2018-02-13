@@ -31,7 +31,7 @@ all: ; \@$script
               '', $out);
 
 # Test the default value of various POSIX-specific variables
-my %POSIX = (AR => 'ar', ARFLAGS => 'rvU',
+my %POSIX = (AR => 'ar', ARFLAGS => '-rv',
              YACC => 'yacc', YFLAGS => '',
              LEX => 'lex', LFLAGS => '',
              LDFLAGS => '',

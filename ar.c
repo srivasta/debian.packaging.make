@@ -68,12 +68,6 @@ ar_parse_name (const char *name, char **arname_p, char **memname_p)
 
 /* This function is called by 'ar_scan' to find which member to look at.  */
 
-struct member_date_lookup
-{
-  const char *name;
-  time_t *member_date;
-};
-
 /* ARGSUSED */
 static long int
 ar_member_date_1 (int desc UNUSED, const char *mem, int truncated,
@@ -82,25 +76,17 @@ ar_member_date_1 (int desc UNUSED, const char *mem, int truncated,
                   int uid UNUSED, int gid UNUSED, int mode UNUSED,
                   const void *data)
 {
-  const struct member_date_lookup *lookup_data = data;
-  if (ar_name_equal (lookup_data->name, mem, truncated))
-    {
-      *lookup_data->member_date = date;
-      return 1;
-    }
-  return 0;
+  return ar_name_equal (name, mem, truncated) ? date : 0;
 }
 
-/* Read the modtime of NAME in MEMBER_DATE.
-   Returns 1 if NAME exists, 0 otherwise.  */
+/* Return the modtime of NAME.  */
 
-int
-ar_member_date (const char *name, time_t *member_date)
+time_t
+ar_member_date (const char *name)
 {
   char *arname;
   char *memname;
-  int found;
-  struct member_date_lookup lookup_data;
+  long int val;
 
   ar_parse_name (name, &arname, &memname);
 
@@ -121,14 +107,11 @@ ar_member_date (const char *name, time_t *member_date)
       (void) f_mtime (arfile, 0);
   }
 
-  lookup_data.name = memname;
-  lookup_data.member_date = member_date;
-  found = ar_scan (arname, ar_member_date_1, &lookup_data);
+  val = ar_scan (arname, ar_member_date_1, memname);
 
   free (arname);
 
-  /* return 0 (not found) if the archive does not exist or has invalid format. */
-  return (found == 1) ? 1 : 0;
+  return (val <= 0 ? (time_t) -1 : (time_t) val);
 }
 
 /* Set the archive-member NAME's modtime to now.  */
