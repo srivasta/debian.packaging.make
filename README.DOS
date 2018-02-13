@@ -62,7 +62,7 @@ To build from sources:
       [Enter].  Otherwise, you need to supply the path to the source
       directory as an argument to the batch file, like this:
 
-        c:\djgpp\gnu\make-4.1\configure.bat c:/djgpp/gnu/make-4.1
+        c:\djgpp\gnu\make-4.2.1\configure.bat c:/djgpp/gnu/make-4.2.1
 
       Note the forward slashes in the source path argument: you MUST
       use them here.
@@ -84,7 +84,7 @@ To build from sources:
       If you are building from outside of the source directory, you
       need to tell Make where the sources are, like this:
 
-                make srcdir=c:/djgpp/gnu/make-4.1
+                make srcdir=c:/djgpp/gnu/make-4.2.1
 
       (configure.bat will tell you this when it finishes).  You MUST
       use a full, not relative, name of the source directory here, or
@@ -324,7 +324,7 @@ Bug reports:
 
 
 -------------------------------------------------------------------------------
-Copyright (C) 1996-2014 Free Software Foundation, Inc.
+Copyright (C) 1996-2016 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the

@@ -1,5 +1,5 @@
 /* config.h -- hand-massaged for Amiga                                  -*-C-*-
-Copyright (C) 1995-2014 Free Software Foundation, Inc.
+Copyright (C) 1995-2016 Free Software Foundation, Inc.
 This file is part of GNU Make.
 
 GNU Make is free software; you can redistribute it and/or modify it under the
@@ -177,7 +177,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.  */
 #define PACKAGE "make"
 
 /* Version of this package (needed by automake) */
-#define VERSION "4.1"
+#define VERSION "4.2.1"
 
 /* Define to the name of the SCCS 'get' command.  */
 #define SCCS_GET "get"

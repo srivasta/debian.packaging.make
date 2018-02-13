@@ -1,7 +1,7 @@
 # -*-Makefile-*- template for DJGPP
 # Makefile.in generated automatically by automake 1.2 from Makefile.am
 #
-# Copyright (C) 1994-2014 Free Software Foundation, Inc.
+# Copyright (C) 1994-2016 Free Software Foundation, Inc.
 # This file is part of GNU Make.
 #
 # GNU Make is free software; you can redistribute it and/or modify it under
@@ -71,13 +71,13 @@ PACKAGE = make
 PERL = perl
 RANLIB = ranlib
 REMOTE = stub
-VERSION = 4.1
+VERSION = 4.2.1
 
 AUTOMAKE_OPTIONS = 1.2
 
 bin_PROGRAMS =	make$(EXEEXT)
 
-make_SOURCES =	ar.c arscan.c commands.c default.c dir.c expand.c file.c function.c getopt.c getopt1.c guile.c implicit.c job.c load.c loadapi.c main.c misc.c output.c read.c remake.c rule.c signame.c strcache.c variable.c version.c vpath.c hash.c remote-$(REMOTE).c
+make_SOURCES =	ar.c arscan.c commands.c default.c dir.c expand.c file.c function.c getopt.c getopt1.c guile.c implicit.c job.c load.c loadapi.c main.c misc.c posixos.c output.c read.c remake.c rule.c signame.c strcache.c variable.c version.c vpath.c hash.c remote-$(REMOTE).c
 # This should include the glob/ prefix
 libglob_a_SOURCES =	glob/fnmatch.c glob/glob.c glob/fnmatch.h glob/glob.h
 make_LDADD =	  glob/libglob.a
@@ -103,7 +103,7 @@ DEFS =  -I. -I$(srcdir) -I.
 CPPFLAGS = -DHAVE_CONFIG_H
 LDFLAGS =
 LIBS =
-make_OBJECTS =  ar.o arscan.o commands.o default.o dir.o expand.o file.o function.o getopt.o getopt1.o guile.o implicit.o job.o load.o loadapi.o main.o misc.o output.o read.o remake.o rule.o signame.o strcache.o variable.o version.o vpath.o hash.o remote-$(REMOTE).o
+make_OBJECTS =  ar.o arscan.o commands.o default.o dir.o expand.o file.o function.o getopt.o getopt1.o guile.o implicit.o job.o load.o loadapi.o main.o misc.o posixos.o output.o read.o remake.o rule.o signame.o strcache.o variable.o version.o vpath.o hash.o remote-$(REMOTE).o
 make_DEPENDENCIES =    glob/libglob.a
 make_LDFLAGS =
 libglob_a_LIBADD =
@@ -597,7 +597,7 @@ ar.o: ar.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h dep.h \
+ filedef.h hash.h dep.h
 
 # .deps/arscan.Po
 arscan.o: arscan.c makeint.h config.h \
@@ -610,8 +610,7 @@ commands.o: commands.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h dep.h \
- variable.h job.h output.h \
+ filedef.h hash.h dep.h variable.h job.h output.h \
  commands.h
 
 # .deps/default.Po
@@ -619,7 +618,8 @@ default.o: default.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h variable.h rule.h dep.h job.h output.h \
+ filedef.h hash.h variable.h rule.h dep.h job.h \
+ output.h \
  commands.h
 
 # .deps/dir.Po
@@ -627,7 +627,8 @@ dir.o: dir.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- hash.h filedef.h dep.h \
+ hash.h \
+ filedef.h dep.h \
 
 # .deps/expand.Po
 expand.o: expand.c makeint.h config.h \
@@ -651,8 +652,7 @@ function.o: function.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h \
- variable.h dep.h job.h output.h \
+ filedef.h hash.h variable.h dep.h job.h output.h \
  commands.h debug.h
 
 # .deps/getloadavg.Po
@@ -669,8 +669,7 @@ guile.o: guile.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- debug.h filedef.h hash.h \
- dep.h variable.h \
+ debug.h filedef.h hash.h dep.h variable.h \
  gmk-default.h
 
 # .deps/hash.Po
@@ -685,8 +684,7 @@ implicit.o: implicit.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h rule.h \
- dep.h debug.h variable.h job.h output.h \
+ filedef.h hash.h rule.h dep.h debug.h variable.h job.h output.h \
  commands.h
 
 # .deps/job.Po
@@ -696,23 +694,22 @@ job.o: job.c makeint.h config.h \
  gettext.h \
  job.h output.h \
  debug.h filedef.h hash.h \
- commands.h variable.h
+ commands.h variable.h os.h
 
 # .deps/load.Po
 load.o: load.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- debug.h filedef.h hash.h \
- variable.h
+ debug.h \
+ filedef.h hash.h variable.h
 
 # .deps/loadapi.Po
 loadapi.o: loadapi.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h \
- variable.h dep.h
+ filedef.h hash.h variable.h dep.h
 
 # .deps/loadavg-getloadavg.Po
 # dummy
@@ -722,8 +719,8 @@ main.o: main.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h dep.h \
- variable.h job.h output.h \
+ os.h \
+ filedef.h hash.h dep.h variable.h job.h output.h \
  commands.h rule.h debug.h \
  getopt.h
 
@@ -732,15 +729,22 @@ misc.o: misc.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h dep.h \
- debug.h \
+ filedef.h hash.h dep.h debug.h \
 
 # .deps/output.Po
 output.o: output.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- job.h output.h \
+ job.h \
+ output.h \
+
+# .deps/posixos.Po
+posixos.o: posixos.c makeint.h config.h \
+ gnumake.h \
+ getopt.h \
+ gettext.h \
+ debug.h job.h output.h os.h
 
 # .deps/read.Po
 read.o: read.c makeint.h config.h \
@@ -756,8 +760,7 @@ remake.o: remake.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h job.h \
- output.h \
+ filedef.h hash.h job.h output.h \
  commands.h dep.h variable.h \
  debug.h
 
@@ -770,8 +773,7 @@ remote-stub.o: remote-stub.c makeint.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h job.h \
- output.h \
+ filedef.h hash.h job.h output.h \
  commands.h
 
 # .deps/rule.Po
@@ -814,5 +816,4 @@ vpath.o: vpath.c makeint.h config.h \
  gnumake.h \
  getopt.h \
  gettext.h \
- filedef.h hash.h \
- variable.h
+ filedef.h hash.h variable.h
