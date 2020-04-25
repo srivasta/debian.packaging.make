@@ -132,7 +132,7 @@ AS_IF([test "$ac_cv_func_gettimeofday" = yes],
             [Define to 1 if you have a standard gettimeofday function])
 ])
 
-AC_CHECK_FUNCS([strdup strndup mkstemp mktemp fdopen fileno \
+AC_CHECK_FUNCS([strdup strndup umask mkstemp mktemp fdopen fileno \
                 dup dup2 getcwd realpath sigsetmask sigaction \
                 getgroups seteuid setegid setlinebuf setreuid setregid \
                 getrlimit setrlimit setvbuf pipe strerror strsignal \
@@ -168,8 +168,8 @@ AC_ARG_WITH([guile], [AS_HELP_STRING([--with-guile],
 # comes with it's own PC file so we have to specify them as individual
 # packages.  Ugh.
 AS_IF([test "x$with_guile" != xno],
-[ PKG_CHECK_MODULES([GUILE], [guile-2.0], [have_guile=yes],
-  [PKG_CHECK_MODULES([GUILE], [guile-1.8], [have_guile=yes],
+[ PKG_CHECK_MODULES([GUILE], [guile-3.0], [have_guile=yes],
+  [PKG_CHECK_MODULES([GUILE], [guile-2.2], [have_guile=yes],
     [have_guile=no])])
 ])
 
@@ -399,10 +399,9 @@ AC_CACHE_CHECK([if system libc has GNU glob], [make_cv_sys_gnu_glob],
 #include <glob.h>
 #include <fnmatch.h>
 
-#define GLOB_INTERFACE_VERSION 1
 #if !defined _LIBC && defined __GNU_LIBRARY__ && __GNU_LIBRARY__ > 1
 # include <gnu-versions.h>
-# if _GNU_GLOB_INTERFACE_VERSION == GLOB_INTERFACE_VERSION
+# if _GNU_GLOB_INTERFACE_VERSION == 1 || _GNU_GLOB_INTERFACE_VERSION == 2
    gnu glob
 # endif
 #endif],

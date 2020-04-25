@@ -18,6 +18,8 @@ BUILDDIR_GUILE  = $(SRCTOP)/debian/build-make-guile
 DPKG_ARCH := dpkg-architecture
 export DEB_HOST_MULTIARCH  := $(shell $(DPKG_ARCH) $(ha) -qDEB_HOST_MULTIARCH)
 
+export DEB_CFLAGS_APPEND=-Wall
+
 %:
 	dh $@ --parallel  --with autoreconf
 
