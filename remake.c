@@ -353,23 +353,6 @@ update_file (struct file *file, unsigned int depth)
         status = new;
     }
 
-  /* Process the remaining rules in the double colon chain so they're marked
-     considered.  Start their prerequisites, too.  */
-  if (file->double_colon)
-    for (; f != 0 ; f = f->prev)
-      {
-        struct dep *d;
-
-        f->considered = considered;
-
-        for (d = f->deps; d != 0; d = d->next)
-          {
-            enum update_status new = update_file (d->file, depth + 1);
-            if (new > status)
-              status = new;
-          }
-      }
-
   return status;
 }
 
@@ -1510,7 +1493,7 @@ name_mtime (const char *name)
 #ifndef S_ISLNK
 # define S_ISLNK(_m)     (((_m)&S_IFMT)==S_IFLNK)
 #endif
-  if (check_symlink_flag)
+  if (check_symlink_flag && strlen (name) <= GET_PATH_MAX)
     {
       PATH_VAR (lpath);
 
@@ -1585,9 +1568,11 @@ library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
 {
   static const char *dirs[] =
     {
+#ifdef MULTIARCH_DIRS
+      MULTIARCH_DIRS
+#endif
 #ifndef _AMIGA
       "/lib",
-      "/usr/lib",
 #endif
 #if defined(WINDOWS32) && !defined(LIBDIR)
 /*
@@ -1596,7 +1581,19 @@ library_search (const char *lib, FILE_TIMESTAMP *mtime_ptr)
  */
 #define LIBDIR "."
 #endif
-      LIBDIR,                   /* Defined by configuration.  */
+      LIBDIR,			/* Defined by configuration.  */
+#ifndef _AMIGA
+/*
+ * In the Debian binaries, PREFIX is /usr and thus this searches /lib,
+ * /usr/lib and /usr/lib again and therefore misses any libraries that
+ * are not packaged and were installed by the site admin.  The ideal
+ * behaviour would be to have the search path set by a Makefile
+ * variable (other than the VPATH blunt object) but even absent that,
+ * it would be more useful if it looked in /usr/local/lib even though
+ * make itself hasn't been installed in the /usr/local tree -- manoj
+ */
+      "/usr/local/lib",
+#endif
       0
     };
 
