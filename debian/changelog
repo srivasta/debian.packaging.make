@@ -1,3 +1,56 @@
+make-dfsg (4.2.1-2) unstable; urgency=medium
+
+  * Update to acknowledge NMUs by Rob Browning and Ben Hutchings.
+    Thank you.
+
+ -- Manoj Srivastava <srivasta@debian.org>  Sun, 03 May 2020 17:55:19 -0700
+
+make-dfsg (4.2.1-1.3) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Build against guile-3.0; drop 1.8 and 2.0. (Closes: 885213)
+
+ -- Rob Browning <rlb@defaultvalue.org>  Fri, 24 Apr 2020 20:02:33 -0500
+
+make-dfsg (4.2.1-1.3~1.gbpe4407c) UNRELEASED; urgency=medium
+
+  ** SNAPSHOT build @e4407cc53d66f2b594143ee73167cc64eac69ebe **
+
+  * Non-maintainer upload.
+  * UNRELEASED
+
+ -- Rob Browning <rlb@defaultvalue.org>  Fri, 24 Apr 2020 19:15:55 -0500
+
+make-dfsg (4.2.1-1.2) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Fix validation of long names in archives (regression in 4.2.1-1.1)
+    (Closes: #904749)
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Sat, 28 Jul 2018 18:07:31 +0800
+
+make-dfsg (4.2.1-1.1) unstable; urgency=medium
+
+  * Non-maintainer upload
+  * Resolve issues discovered by static code analysis.
+  * Fix potential hangs (Closes: #890309):
+    - [SV 51159] Use a non-blocking read with pselect to avoid hangs.
+    - [SV 51400] Only unblock fatal signals after child invocation
+    - Treat -Otarget and -Orecurse as -Oline, to avoid a hang
+  * Fix FTBFS with glibc 2.7, thanks to Aurelien Jarno (Closes: #891365):
+    - glob: Do not assume glibc glob internals.
+    - configure.ac: Support GLIBC glob interface version 2
+  * Restore old behaviour of -j in MAKEFLAGS variable (Closes: #890430):
+    - main.c (main): [SV 48274] Allow -j in makefile MAKEFLAGS variable.
+    - tests/scripts/features/output-sync: Revert bad change in 0c5a9f9b92a
+    - Makefile.am: Add jhelp.pl to remote test setup.
+  * make-guile: Add version to Provides field (Closes: #891702)
+  * debian/control: Update Vcs-{Browser,Git} fields to point to Salsa
+  * debian/control, debian/copyright: Update URLs to use HTTP-S
+  * debian/rules: Add -Wall to CFLAGS
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Wed, 11 Jul 2018 07:38:22 +0100
+
 make-dfsg (4.2.1-1) unstable; urgency=medium
 
   * New Upsrteam release.
