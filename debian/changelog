@@ -1,3 +1,10 @@
+make-dfsg (4.2.1-2) unstable; urgency=medium
+
+  * Update to acknowledge NMUs by Rob Browning and Ben Hutchings.
+    Thank you.
+
+ -- Manoj Srivastava <srivasta@debian.org>  Sun, 03 May 2020 17:55:19 -0700
+
 make-dfsg (4.2.1-1.3) unstable; urgency=medium
 
   * Non-maintainer upload.
