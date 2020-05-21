@@ -1,3 +1,22 @@
+make-dfsg (4.3-1) unstable; urgency=medium
+
+  * New upstream version (Closes: #951038).
+  * Bug fix: "man page/info doc enhancement", thanks to Michael Stone
+    (Closes: #912291).
+  * Bug fix: "[PATCH] make-dfsg: Please add support for a
+    &quot;noguile&quot; build-profile.", thanks to Karsten Merker
+    (Closes: #892566). The "noguile" profile results in dropping the
+    build-dependency on guile-2.0-dev and disabling the creation of the
+    "make-guile" binary package.  This eases (cross-)building the make
+    package when bootstrapping a new architecture.
+  * Bug fix: "please provide /usr/bin/gmake", thanks to Helmut Grohne
+    (Closes: #898101).
+  * Bug fix: "&#39;make -Orecurse&#39; does not work as expected", thanks
+    to Michael Olbrich (Closes: #909009).Reverted back to upstream
+    version.
+
+ -- Manoj Srivastava <srivasta@debian.org>  Wed, 20 May 2020 17:07:47 -0700
+
 make-dfsg (4.2.1-2) unstable; urgency=medium
 
   * Update to acknowledge NMUs by Rob Browning and Ben Hutchings.

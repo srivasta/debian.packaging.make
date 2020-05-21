@@ -26,7 +26,7 @@ SUBDIRS =	lib po
 bin_PROGRAMS =	make
 include_HEADERS = src/gnumake.h
 
-man_MANS =     doc/make.1
+man_MANS =     make.1
 
 make_SRCS =	src/ar.c src/arscan.c src/commands.c src/commands.h \
 		src/debug.h src/default.c src/dep.h src/dir.c src/expand.c \

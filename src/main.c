@@ -785,15 +785,10 @@ decode_output_sync_flags (void)
         output_sync = OUTPUT_SYNC_NONE;
       else if (streq (output_sync_option, "line"))
         output_sync = OUTPUT_SYNC_LINE;
-      /*
-       * benh: -Otarget and -Orecurse can currently cause make to hang
-       * (#890309).  For now, do the best we can and treat them like
-       * -Oline.
-       */
       else if (streq (output_sync_option, "target"))
-        output_sync = OUTPUT_SYNC_LINE;
+        output_sync = OUTPUT_SYNC_TARGET;
       else if (streq (output_sync_option, "recurse"))
-        output_sync = OUTPUT_SYNC_LINE;
+        output_sync = OUTPUT_SYNC_RECURSE;
       else
         OS (fatal, NILF,
             _("unknown output-sync type '%s'"), output_sync_option);

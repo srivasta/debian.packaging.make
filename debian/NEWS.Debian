@@ -1,3 +1,39 @@
+make-dfsg (4.3-1) unstable; urgency=medium
+
+  * WARNING: Backward-incompatibility!
+    Number signs (#) appearing inside a macro reference or function invocation
+    no longer introduce comments and should not be escaped with backslashes:
+    thus a call such as:
+      foo := $(shell echo '#')
+    is legal.  Previously the number sign needed to be escaped, for example:
+      foo := $(shell echo '\#')
+    Now this latter will resolve to "\#".  If you want to write makefiles
+    portable to both versions, assign the number sign to a variable:
+      H := \#
+      foo := $(shell echo '$H')
+    This was claimed to be fixed in 3.81, but wasn't, for some reason.
+    To detect this change search for 'nocomment' in the .FEATURES variable.
+  * WARNING: Backward-incompatibility!
+    Previously appending using '+=' to an empty variable would result in a value
+    starting with a space.  Now the initial space is only added if the variable
+    already contains some value.  Similarly, appending an empty string does not
+    add a trailing space.
+  * NOTE: Deprecated behavior.
+    Contrary to the documentation, suffix rules with prerequisites are being
+    treated BOTH as simple targets AND as pattern rules.  Further, the
+    prerequisites are ignored by the pattern rules.  POSIX specifies that in
+    order to be a suffix rule there can be no prerequisites defined.  In this
+    release if POSIX mode is enabled then rules with prerequisites cannot be
+    suffix rules.  If POSIX mode is not enabled then the previous behavior is
+    preserved (a pattern rule with no extra prerequisites is created) AND a
+    warning about this behavior is generated:
+      warning: ignoring prerequisites on suffix rule definition
+    The POSIX behavior will be adopted as the only behavior in a future release
+    of GNU make so please resolve any warnings.
+
+
+ -- Manoj Srivastava <srivasta@debian.org>  Wed, 20 May 2020 13:56:50 -0700
+
 make-dfsg (4.1-2) unstable; urgency=low
 
   WARNING: Backward-incompatibility!
