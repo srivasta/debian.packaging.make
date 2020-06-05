@@ -1,3 +1,18 @@
+make-dfsg (4.3-2) unstable; urgency=medium
+
+  * Fixes critical bugs
+  * Bug fix: "Broken symlinks: /usr/bin/gmake,
+    /usr/share/man/man1/gmake.1.gz", thanks to Peter Wienemann (Closes:
+    #961860). I forgot that we must use absolute pathnames,
+  * Bug fix: "Could the error message &quot;Profiling timer
+    expired&quot;?", thanks to Hugo Herbelin (Closes: #601474). This bug
+    is a decade old, and I can't reprodsuce it. I have not seen other
+    people being able to reproduce it either, and the codebase has changed
+    massively. If you have a recipe that can reproduce this with recent
+    versions, please do reopen the bug
+
+ -- Manoj Srivastava <srivasta@debian.org>  Thu, 04 Jun 2020 21:57:28 -0700
+
 make-dfsg (4.3-1) unstable; urgency=medium
 
   * New upstream version (Closes: #951038).
