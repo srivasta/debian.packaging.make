@@ -1,3 +1,14 @@
+make-dfsg (4.3-3) unstable; urgency=medium
+
+  * Fix ordering if include dirs
+    There has been a long standind bug where INCLUDE_DIRS /usr/include is
+    included twice.  The more important problem is it is before the
+    /usr/local/include. This commit fixes the ordering. So now
+    /usr/local/include comes before /usr/include, which it should, but
+    this is a change in behaviour.
+
+ -- Manoj Srivastava <srivasta@debian.org>  Fri, 05 Jun 2020 18:59:32 -0700
+
 make-dfsg (4.3-1) unstable; urgency=medium
 
   * WARNING: Backward-incompatibility!
