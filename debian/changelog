@@ -1,3 +1,12 @@
+make-dfsg (4.3-4) unstable; urgency=high
+
+  * Cherry picked [SV 58232] Disable inheritance of jobserver FDs for
+    recursive make from ther development branch
+  * Bug fix: "FTBFS: E: Build killed with signal TERM after 150 minutes of
+    inactivity", thanks to Lucas Nussbaum (Closes: #963335).
+
+ -- Manoj Srivastava <srivasta@debian.org>  Tue, 30 Jun 2020 00:58:36 -0700
+
 make-dfsg (4.3-3) unstable; urgency=medium
 
   * Fix ordering if include dirs
